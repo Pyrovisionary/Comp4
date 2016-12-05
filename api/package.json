@@ -1,0 +1,23 @@
+{
+  "name": "dev",
+  "version": "1.0.0",
+  "description": "Gets Stock prices from Google finance",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pyrovisionary/Comp4.git"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "node",
+    "express",
+    "finance"
+  ],
+  "author": "James Karpinski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pyrovisionary/Comp4/issues"
+  },
+  "homepage": "https://github.com/Pyrovisionary/Comp4#readme"
+}
