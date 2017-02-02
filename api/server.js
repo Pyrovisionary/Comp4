@@ -40,27 +40,6 @@ router.get("/", function(req, res){
   res.json({ message: "API incoming!"});
 });
 
-//CRUD routes for widgets
-
-router.route('/stocknames')
-    .get(function(req, res){
-        pool.query('Select TOP 1 sampletime FROM stockhistory ORDER BY sampletime DESC', function(err, rows, fields){
-          if (err) console.log(err);
-          var newestsampletime = rows[0].sampletime;
-          pool.query('Select * FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime =' + newestsampletime + ' ORDER BY stockname', function(err, rows, fields){
-            if (err) console.log(err);
-            res.json(rows);
-          });
-        });
-    })
-    //Add stock(By name)
-    .post(function(req, res){
-      pool.query('INSERT INTO stockname (stockticker, stockname) VALUES(\''  + req.body.stockticker + '\', \'' + req.body.stockname + '\')', function(err, rows, fields){
-        if(err) console.log(err);
-        res.json("Stock " +req.body.stockname+ " created")
-      });
-    });
-
 app.use('/api/', users);
 app.use('/api/', portfolios);
 app.use('/api/', stockhistory);

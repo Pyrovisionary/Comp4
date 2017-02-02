@@ -33,9 +33,12 @@ CREATE TABLE IF NOT EXISTS portfolios(
 );
 
 CREATE TABLE IF NOT EXISTS stocknames(
-	stockid integer primary key auto_increment not null ,
-    stockticker varchar(4) not null,
-    stockname varchar(20) not null
+	stockid integer primary key auto_increment not null, 
+    stockticker varchar(6) not null,
+	stockname varchar(100) not null,
+    ipoyear varchar(4),
+    sector varchar(90),
+    industry varchar(90)
 );
 
 CREATE TABLE IF NOT EXISTS stockhistory(
