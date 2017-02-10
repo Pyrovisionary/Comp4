@@ -21,10 +21,12 @@
   },
   "homepage": "https://github.com/Pyrovisionary/Comp4#readme",
   "dependencies": {
+    "async": "^2.1.4",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "mysql": "^2.12.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "request": "^2.79.0"
   }
 }

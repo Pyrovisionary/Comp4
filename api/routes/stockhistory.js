@@ -15,8 +15,15 @@ var pool        = mysql.createPool({
 
 var router = express.Router();
 
-
 router.route('/stocknames')
+  .get(function(req, res){
+    pool.query('Select * FROM stocknames', function(err, rows, fields){
+      if (err) console.log(err);
+      res.json(rows);
+    });
+  });
+
+router.route('/stocknames/stockhistory')
     .get(function(req, res){
         pool.query('Select TOP 1 sampletime FROM stockhistory ORDER BY sampletime DESC', function(err, rows, fields){
           if (err) console.log(err);
@@ -48,7 +55,7 @@ router.route('/stocknames/:stockid')
   //Delete a stock
   .delete(function(req,res){
     console.log("Attempting to delete");
-    pool.query('DELETE FROM stocknames WHERE stockid = ' + req.params.stockid, function(err, rows,fileds){
+    pool.query('DELETE FROM stocknames WHERE stockid = ' + req.params.stockid, function(err, rows,fields){
       if(err) console.log(err);
       res.json({message: "Stock" + req.params.stockid + "deleted successfully!"});
     });
