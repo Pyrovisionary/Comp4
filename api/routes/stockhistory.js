@@ -55,7 +55,7 @@ router.route('/stocknames/:stockid')
   //Delete a stock
   .delete(function(req,res){
     console.log("Attempting to delete");
-    pool.query('DELETE FROM stocknames WHERE stockid = ' + req.params.stockid, function(err, rows,fields){
+    pool.query('DELETE FROM stocknames WHERE stockid = ' + req.params.stockid, function(err, rows, fields){
       if(err) console.log(err);
       res.json({message: "Stock" + req.params.stockid + "deleted successfully!"});
     });

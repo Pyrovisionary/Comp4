@@ -1,0 +1,221 @@
+* {
+  margin:0;
+  padding:0;
+}
+
+body {
+background-color:white;
+}
+
+.navbar {
+  width: 100%;
+  background-color:white;
+  height:auto;
+  -webkit-box-shadow: 0 0 5px #757575 ;
+  -moz-box-shadow: 0 0 5px #757575;
+  box-shadow: 0 0 5px #757575;
+  }
+/*&#9776*/
+.navbar ul {
+  display:block;
+  margin: 0 auto;
+  text-align:center;
+  overflow: hidden;
+
+}
+.navbar ul li {
+  position: relative;
+  display:inline-block;
+  font-weight:300;
+  font-family: 'Lato', sans-serif;
+  font-size: 23px;
+  padding:15px 20px 21px 20px;
+}
+.navbar ul li > a{
+  position:relative;
+  text-decoration:none;
+  color:black;
+  padding-bottom:5px;
+}
+.navbar ul li.hoverable > a:before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color:black;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+.navbar ul li.hoverable > a:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+.navbar span li a:after{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color:#E31E2B;
+}
+.navbar ul span li a{
+  color:#E31E2B;
+}
+
+.menu-line{
+  bottom:21px;
+  display:block;
+  height:1px;
+  width:23px;
+  margin-bottom:6px;
+  border-radius: 1px;
+  background-color: white;
+}
+.menu-line-1{
+  margin-top:7px;
+}
+
+/*Responsive navbar code stolen from W3schools*/
+
+.navbar ul li.icon {
+  display:  none;
+
+}
+
+@media screen and (max-width:680px) {
+  div.navbar ul li:not(:first-child) {
+    display: none;
+  }
+
+  div.navbar ul li.icon {
+    float:right;
+    display: inline-block;
+    position:relative;
+  }
+  }
+  div.navbar ul li.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  div.navbar.responsive ul {position: relative;}
+  div.navbar.responsive ul li {
+    float: none;
+    display: block;
+  }
+}
+
+
+#header {
+height:auto;
+width:100%;
+background-color:white;
+margin: 0 auto;
+
+}
+#header h1 {
+font-family: 'Playfair Display SC' , serif;
+color:black;
+font-weight:lighter;
+font-size:80px;
+vertical-align: middle;
+text-align:center;
+padding: 40px 0 20px 0;
+}
+#header h2 {
+  font-family: 'Playfair Display', sans-serif;
+  font-size:30px;
+  font-weight:300;
+  text-align:center;
+  font-style:italic;
+  padding: 0 0 40px 0;
+  color:#737373;
+}
+.line-breaker{
+  display:block;
+  width:100%;
+  border-top: 2px solid #F2F2F2 ;
+}
+
+.main-body-wrapper {
+  width:40%;
+  margin:40px auto 40px;
+}
+
+
+.opener{
+  background-color: white;
+  color:black;
+  width:100%;
+  height: auto;
+}
+.opener p {
+  font-size:17px;
+  font-family: 'Merriweather', serif;
+  color:#737373;
+}
+.opener h2 {
+  font-size:30px;
+  font-family:'Playfair Display SC';
+  font-weight:lighter;
+  color:black;
+}
+.text-wrapper{
+  width:60%;
+  float:left;
+}
+.opener img {
+  display:block;
+  margin: 0 auto;
+  padding:10px 0 10px 0;
+}
+@media only screen and (max-width: 680px) {
+  .main-body-wrapper {
+    width:90%;
+    margin:20px auto 20px;
+  }
+  .text-wrapper {
+    width:100%;
+    float:none;
+  }
+}
+@media only screen and (min-width: 1441px) {
+  .main-body-wrapper{
+    width:50%;
+  }
+}
+#footer2 {
+  width:100%;
+  float:left;
+  height:400px; /*Make height auto after adding content*/
+  background-color:#333536;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  margin-top:40px;
+}
+
+#footer {
+  text-align: center;
+  width:100%;
+  float:left;
+  background-color:#E31E2B;
+  height:auto; /*Make height auto after adding content*/
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+#footer p {
+  color:white;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  font-weight:300;
+  padding:70px 0 70px 0;
+}

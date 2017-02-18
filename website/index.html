@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>James Karpinski</title>
+    <link rel="stylesheet" type="text/css" href="Stylesheet.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif|Lato:300,400|Open+Sans:300,400|Playfair+Display|Playfair+Display+SC|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="navbar" id="Mynavbar">
+      <ul>
+        <span><li><a href="#">Fancy
+        </a></li></span><li class="hoverable"><a href="#">Looking</a>
+        </li><li class="hoverable"><a href="#">Navbar</a>
+        </li><li class="icon"><a href="javascript:void(0);" onclick="myFunction()"><div class="menu-line menu-line-1"></div>
+        <div class="menu-line"></div>
+        <div class="menu-line"></div></a>
+        </li>
+      </ul>
+    </div>
+    <div id="header">
+        <p><h1>Stock market simulator</h1></p>
+        <h2>Please login or register to continue</h2>
+    </div>
+    <div class="line-breaker"></div>
+    <div class="main-body-wrapper">
+    <form>
+      <fieldset>
+        <legend>Login</legend>
+        Username:
+        <input type="text" name="username"><br>
+        Password:
+        <input type="text" name="password"><br>
+        <input type="submit" value="login">
+      </fieldset>
+    </form>
+    <br>
+    <form>
+      <fieldset>
+        <legend>Sign up</legend><br>
+        Username:
+        <input type="text" name="username"><br>
+        Forename:
+        <input type="text" name="forename"><br>
+        Surname:
+        <input type="text" name="surname"><br>
+        Password:
+        <input type="text" name="password"><br>
+        Type in the password again:
+        <input type="text" name="repeatpassword"><br>
+        Email:
+        <input type="text" name="email"><br>
+        Tick this box if you are a teacher:
+        <input type="radio" name="teacher"><br>
+        <input type="submit" value="login">
+      </fieldset>
+    </form>
+    </div>
+    <div id="footer2">
+    </div>
+    <div id="footer">
+      <p>Copyright James Karpinski 2016 &copy;</p>
+    </div>
+  <script>
+  function myFunction() {
+    var x = document.getElementById("Mynavbar");
+    if (x.className === "navbar") {
+        x.className += " responsive";
+    } else {
+        x.className = "navbar";
+    }
+}
+  </script>
+
+  </body>
+</html>

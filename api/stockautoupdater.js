@@ -1,14 +1,14 @@
 "use strict";
-var express    = require("express");
-var app        = express();
-var bodyParser = require("body-parser");
-var mysql      = require('mysql');
-var config     = require('./config');
-var schedule   = require('node-schedule');
-var asynchronous= require('async');
-var request = require('request');
+var express       = require("express");
+var app           = express();
+var bodyParser    = require("body-parser");
+var mysql         = require('mysql');
+var config        = require('./config');
+var schedule      = require('node-schedule');
+var asynchronous  = require('async');
+var request       = require('request');
 
-var pool        = mysql.createPool({
+var pool          = mysql.createPool({
   connectionLimit : 30,
   host            : config.mysql.host,
   user            : config.mysql.user,
@@ -17,6 +17,7 @@ var pool        = mysql.createPool({
 });
 console.log("Scheduled stock autoupdate online");
 var j = schedule.scheduleJob('* * */12 * * *', function(){
+  console.log("Stocks updated!");
   var builtstrings = [];
   pool.query('Select stockticker FROM stocknames', function(err, rows, fields){
     if (err) console.log(err);
@@ -44,7 +45,7 @@ var j = schedule.scheduleJob('* * */12 * * *', function(){
         if(err) console.log(err);
         if(body === null || body === undefined){
           console.log('Request has failed to return any results');
-        }
+        };
       body=JSON.parse(body);
         asynchronous.each(body.query.results.quote, function(stock, callback){
           pool.query('SELECT stockid FROM stocknames WHERE stockticker='+"'"+stock.Symbol+"'", function(err, rows, field){
