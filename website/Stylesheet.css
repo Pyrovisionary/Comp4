@@ -7,23 +7,80 @@ body {
 background-color:white;
 }
 
-.navbar {
-  width: 100%;
-  background-color:white;
+ul {
+  list-style-type: none;
+  text-decoration: none;
+}
+
+.main-body-wrapper {
+  float:left;
   height:auto;
-  -webkit-box-shadow: 0 0 5px #757575 ;
-  -moz-box-shadow: 0 0 5px #757575;
-  box-shadow: 0 0 5px #757575;
+  width:40%;
+  margin-left:30%;
+}
+.login-wrapper {
+  border:1px solid #E31E2B;
+  padding: 0 0 20px 0;
+  margin:40px 0 0 0;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+.login-wrapper form{
+  width:70%;
+  margin-left:15%;
+}
+.login-wrapper form input{
+  outline: none;
+}
+
+.login-wrapper form input[type='text'], input[type='password'], input[type='email']{
+  width:100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #9C9C9C;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.login-wrapper form input:focus{
+  border-color:black;
+}
+.login-wrapper form input[type='submit']:hover{
+  background-color:#E31E2B;
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+.login-wrapper form input[type='submit']{
+  background-color: black;
+  border: none;
+  color:white;
+  border-radius:4px;
+  font-family: 'Playfair Display SC', sans-serif;
+  font-size:17px;
+  padding:7px 12px 9px 12px;
+}
+.login-wrapper form #newforename, #newsurname{
+  width:48%;
+  margin: 8px 1% 0 0;
+  display:inline;
+}
+
+.ng-touched.ng-invalid {
+  border-color:red;
+}
+
+.LoginTabs {
+  height:auto;
   }
-/*&#9776*/
-.navbar ul {
+.LoginTabs ul {
   display:block;
   margin: 0 auto;
   text-align:center;
   overflow: hidden;
-
 }
-.navbar ul li {
+.LoginTabs ul li {
   position: relative;
   display:inline-block;
   font-weight:300;
@@ -31,13 +88,13 @@ background-color:white;
   font-size: 23px;
   padding:15px 20px 21px 20px;
 }
-.navbar ul li > a{
+.LoginTabs ul li > a{
   position:relative;
   text-decoration:none;
   color:black;
   padding-bottom:5px;
 }
-.navbar ul li.hoverable > a:before{
+.LoginTabs ul li.hoverable > a:before{
   content: "";
   position: absolute;
   width: 100%;
@@ -51,12 +108,12 @@ background-color:white;
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
 }
-.navbar ul li.hoverable > a:hover:before {
+.LoginTabs ul li.hoverable > a:hover:before {
   visibility: visible;
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }
-.navbar span li a:after{
+.LoginTabs ul .active a:after{
   content: "";
   position: absolute;
   width: 100%;
@@ -65,7 +122,20 @@ background-color:white;
   left: 0;
   background-color:#E31E2B;
 }
-.navbar ul span li a{
+.LoginTabs ul .active a{
+  color:#E31E2B;
+}
+
+form p {
+  font-weight:300;
+  font-family: 'Lato', sans-serif;
+  font-size:20px;
+}
+
+form p span {
+  font-weight:300;
+  font-family: 'Lato', sans-serif;
+  font-size:15px;
   color:#E31E2B;
 }
 
@@ -82,31 +152,31 @@ background-color:white;
   margin-top:7px;
 }
 
-/*Responsive navbar code stolen from W3schools*/
+/*Responsive LoginTabs code stolen from W3schools*/
 
-.navbar ul li.icon {
+.LoginTabs ul li.icon {
   display:  none;
 
 }
 
 @media screen and (max-width:680px) {
-  div.navbar ul li:not(:first-child) {
+  div.LoginTabs ul li:not(:first-child) {
     display: none;
   }
 
-  div.navbar ul li.icon {
+  div.LoginTabs ul li.icon {
     float:right;
     display: inline-block;
     position:relative;
   }
   }
-  div.navbar ul li.icon {
+  div.LoginTabs ul li.icon {
     position: absolute;
     right: 0;
     top: 0;
   }
-  div.navbar.responsive ul {position: relative;}
-  div.navbar.responsive ul li {
+  div.LoginTabs.responsive ul {position: relative;}
+  div.LoginTabs.responsive ul li {
     float: none;
     display: block;
   }
@@ -144,46 +214,11 @@ padding: 40px 0 20px 0;
   border-top: 2px solid #F2F2F2 ;
 }
 
-.main-body-wrapper {
-  width:40%;
-  margin:40px auto 40px;
-}
 
-
-.opener{
-  background-color: white;
-  color:black;
-  width:100%;
-  height: auto;
-}
-.opener p {
-  font-size:17px;
-  font-family: 'Merriweather', serif;
-  color:#737373;
-}
-.opener h2 {
-  font-size:30px;
-  font-family:'Playfair Display SC';
-  font-weight:lighter;
-  color:black;
-}
-.text-wrapper{
-  width:60%;
-  float:left;
-}
-.opener img {
-  display:block;
-  margin: 0 auto;
-  padding:10px 0 10px 0;
-}
 @media only screen and (max-width: 680px) {
   .main-body-wrapper {
     width:90%;
     margin:20px auto 20px;
-  }
-  .text-wrapper {
-    width:100%;
-    float:none;
   }
 }
 @media only screen and (min-width: 1441px) {
@@ -194,7 +229,7 @@ padding: 40px 0 20px 0;
 #footer2 {
   width:100%;
   float:left;
-  height:400px; /*Make height auto after adding content*/
+  height:30px; /*Make height auto after adding content*/
   background-color:#333536;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
