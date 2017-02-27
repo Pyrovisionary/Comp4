@@ -16,8 +16,7 @@ var pool          = mysql.createPool({
   database        : config.mysql.db
 });
 console.log("Scheduled stock autoupdate online");
-var j = schedule.scheduleJob('* * */12 * * *', function(){
-  console.log("Stocks updated!");
+var j = schedule.scheduleJob('* */1 * * *', function(){
   var builtstrings = [];
   pool.query('Select stockticker FROM stocknames', function(err, rows, fields){
     if (err) console.log(err);
@@ -51,7 +50,7 @@ var j = schedule.scheduleJob('* * */12 * * *', function(){
           pool.query('SELECT stockid FROM stocknames WHERE stockticker='+"'"+stock.Symbol+"'", function(err, rows, field){
               if(err) console.log(err);
               for(var k=0; k<rows.length; k++){
-                pool.query('INSERT INTO stockhistory (stockid, stockvalue, volume) VALUES(\''  + rows[k].stockid+ '\', \'' + stock.LastTradePriceOnly + '\', \''+stock.Volume + '\')', function(err){
+                pool.query('INSERT INTO stockhistory (stockid, stockvalue, stockvaluepercentagechange, volume) VALUES(\''  + rows[k].stockid+ '\', \'' + stock.LastTradePriceOnly+ '\', \''+stock.Change+ '\', \''+ stock.Volume + '\')', function(err){
                   if(err) console.log(err);
                   callback();
                 });

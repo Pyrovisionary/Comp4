@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var mysql      = require('mysql');
 var config     = require('../config');
 
+//Create a pool connection to SQL database
 var pool        = mysql.createPool({
   connectionLimit : 30,
   host            : config.mysql.host,
