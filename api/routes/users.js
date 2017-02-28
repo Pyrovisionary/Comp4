@@ -27,7 +27,7 @@ router.route('/users')
   })
   //Add user
   .post(function(req, res){
-    pool.query('INSERT INTO users (username, forename, surname, email, teacher) VALUES(\''  + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.email + '\', \'' + req.body.teacher +'\')', function(err, rows, fields){
+    pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + req.body.teacher +'\')', function(err, rows, fields){
       if(err) console.log(err);
       res.json("User " +req.body.username+ " created")
     });
