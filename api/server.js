@@ -7,6 +7,7 @@ var morgan     = require("morgan");
 var mysql      = require('mysql');
 var jwt        = require('jsonwebtoken');
 var config     = require('./config');
+var ngResource = require('ng-resource');
 
 //Create pooled connection to database
 var pool        = mysql.createPool({
@@ -22,6 +23,7 @@ var users          = require('./routes/users');
 var portfolios     = require('./routes/portfolios');
 var stockhistory   = require('./routes/stockhistory');
 var classes        = require('./routes/classes');
+var authenticate   = require('./routes/authenticate');
 
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 app.use(bodyParser.json({limit: "50mb"}));
@@ -45,31 +47,31 @@ router.get("/", function(req, res){
   res.json({ message: "API incoming!"});
 });
 
-router.route('/authenticate')
-  .post(function(req, res){
-    console.log("step 1 complete");
-    pool.query("SELECT pass FROM users WHERE username = " +req.body.username, function(err, rows, fields){
-      if (err) throw(err);
-      if (rows == req.body.pass) {
-        var token = jwt.sign(user, app.get("SecretVariable"), {
-          expiresInMinutes: 1440
-        });
-        res.json({
-          success:true,
-          message:"Auth successful",
-          token: token
-        });
+//TODO: learn how this works and make it look not stolen
+router.use(function(req, res, next){
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, app.get('SecretVariable'), function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Authentication failed, token rejected' });
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        next();
       }
-      else {
-        res.json({
-          success: false,
-          message: "Auth failed, password incorrect"
-        })
-      };
     });
-  });
+  } else {
+    //Return error when no token is provided
+    return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+    });
+  }
+});
 
 //Use routes
+app.use('/api/', authenticate);
+app.use('/api', router);
 app.use('/api/', users);
 app.use('/api/', portfolios);
 app.use('/api/', stockhistory);
