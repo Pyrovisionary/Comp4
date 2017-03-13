@@ -28,25 +28,36 @@ router.route('/authenticate')
   })
   .post(function(req, res){
     pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
+      //TODO: glitch where wrong username or password is entered returns error. Should return "user does not exist" etc
       if (err) throw(err);
-      if (rows[0].pass == req.body.pass) {
-        var user = {
-          "username" : rows[0].username,
-          "password" : rows[0].pass
+      if  (rows.length!==0) {
+        if (rows[0].pass == req.body.pass) {
+          var user = {
+            "username" : rows[0].username,
+            "password" : rows[0].pass
+          }
+          var token = jwt.sign(user, app.get('SecretVariable'), {
+            //"iss" : ,
+            //sub : rows[0].username,
+            expiresIn: 86400
+          });
+          res.json({
+            success:true,
+            message:"Auth successful",
+            token: token
+          });
         }
-        var token = jwt.sign(user, app.get('SecretVariable'), {
-          expiresIn: 86400
-        });
-        res.json({
-          success:true,
-          message:"Auth successful",
-          token: token
-        });
+        else {
+          res.json({
+            success: false,
+            message: "Auth failed, password incorrect"
+          })
+        }
       }
       else {
         res.json({
           success: false,
-          message: "Auth failed, password incorrect"
+          message: "Auth failed, user does not exist"
         })
       };
     });

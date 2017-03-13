@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app="myApp">
+<html>
   <head>
     <title>Stock Market Simulator</title>
     <link rel="stylesheet" type="text/css" href="Stylesheet.css">
@@ -19,20 +19,20 @@
     }
     </script>
   </head>
-  <body>
+  <body ng-app="myApp" ng-controller="Main as main">
     <div id="header">
         <p><h1>Stock market simulator</h1></p>
         <h2>Please login or register to continue</h2>
     </div>
     <div class="line-breaker"></div>
     <div class="main-body-wrapper">
-      <div class="login-wrapper" ng-controller="TabController as tab">
+      <div class="login-wrapper">
         <div class="LoginTabs" id="myLoginTabs">
           <ul>
-            <li class="hoverable" ng-class="{active:tab === 1}">
-              <a href ng-click="tab = 1" >Login</a></li>
-            <li class="hoverable" ng-class="{active:tab === 2}">
-              <a href ng-click="tab = 2" >Sign up</a></li>
+            <li class="hoverable" ng-class="{active:isSet(1)}">
+              <a href ng-click="setTab(1)" >Login</a></li>
+            <li class="hoverable" ng-class="{active:isSet(2)}">
+              <a href ng-click="setTab(2)" >Sign up</a></li>
             <li class="icon">
               <a href="javascript:void(0);" onclick="myFunction()">
                 <div class="menu-line menu-line-1"></div>
@@ -41,20 +41,20 @@
               </a></li>
           </ul>
         </div>
-        <form  ng-show="tab === 1" name="loginform" novalidate>
+
+        <form  ng-show="isSet(1)" name="loginform" ng-submit="main.login()" novalidate>
           <h1>Welcome back!</h1><br>
           <p>
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username" ng-model="username" required>
+            <input type="text" name="username" id="username" ng-model="main.username" required>
             <br><br>
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" ng-model="password" required>
+            <input type="password" name="password" id="password" ng-model="main.password" required>
             <br><br>
             <input type="submit" value="Login"><br>
-            <!--Form is {{loginform.$valid}}-->
           </p>
         </form>
-        <form ng-show="tab === 2" name="registrationform" novalidate>
+        <form ng-show="isSet(2)" name="registrationform" ng-submit="main.register" novalidate>
           <h1>Enter your details below</h1><br>
           <p>
             <label for="newusername">Choose your username:</label>
