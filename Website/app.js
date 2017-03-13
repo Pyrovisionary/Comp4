@@ -27,29 +27,43 @@ app.service('user', function($http, API, auth){
   var self = this;
 
   self.register = function( newusername, newforename, newsurname, newpassword, newemail, teacheryn){
-    return $http.post(API +'/users/', {
-      username: newusername,
-      forename: newforename,
-      surname:  newsurname,
-      pass: newpassword,
-      email: newemail,
-      teacher: teacheryn
+    return $http({
+      method: 'POST',
+      url: API +'/authenticate/users/',
+      headers: {
+       'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        'username': newusername,
+        'forename': newforename,
+        'surname':  newsurname,
+        'pass': newpassword,
+        'email': newemail,
+        'teacher': teacheryn
+      }
     });
+
   };
 
   self.login = function(username, password){
-    console.log('got to user service!');
-    return $http.post(API +'/authenticate', {
-      username: username,
-      pass: password
+    return $http({
+      method: 'POST',
+      url: API +'/authenticate',
+      headers: {
+       'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        'username':username,
+        'pass':password
+            }
     });
+
   };
 });
 
 app.service('auth', function($window){
   var self = this;
 
-  //TODO: Add JWT methods here
   self.parseJwt = function(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace('-', '+').replace('_', '/');
@@ -83,7 +97,7 @@ app.constant('API', 'http://localhost:8080/api')
 
 app.config(function($httpProvider) {
   $httpProvider.defaults.headers.common = {};
-  $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
+  //$httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
   $httpProvider.defaults.headers.put = {};
   $httpProvider.defaults.headers.patch = {};
   $httpProvider.interceptors.push('authInterceptor');

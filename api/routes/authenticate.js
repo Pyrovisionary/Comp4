@@ -27,15 +27,16 @@ router.route('/authenticate')
       res.json({ message: "GOT"});
   })
   .post(function(req, res){
-    pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
-      //TODO: glitch where wrong username or password is entered returns error. Should return "user does not exist" etc
+    //TODO: mke so you don't have to use this serverside workaround
+    var request = JSON.parse(Object.keys(req.body)[0]);
+    pool.query("SELECT * FROM users WHERE username = \'" +request.username + "\'", function(err, rows, fields){
       if (err) throw(err);
       if  (rows.length!==0) {
-        if (rows[0].pass == req.body.pass) {
+        if (rows[0].pass == request.pass) {
           var user = {
             "username" : rows[0].username,
             "password" : rows[0].pass
-          }
+            }
           var token = jwt.sign(user, app.get('SecretVariable'), {
             //"iss" : ,
             //sub : rows[0].username,
@@ -55,11 +56,48 @@ router.route('/authenticate')
         }
       }
       else {
+        console.log(req.body);
+        //console.log(req.body.username);
+        //console.log(req.body.pass);
         res.json({
           success: false,
           message: "Auth failed, user does not exist"
         })
       };
+    });
+  });
+
+router.route('/authenticate/users')
+  .post(function(req, res){
+    var request = JSON.parse(Object.keys(req.body)[0]);
+    var teacher = 0;
+    if (request.teacher == true){teacher=1;} else {teacher = 0;}
+    pool.query("SELECT * FROM users WHERE username = \'" +request.username + "\'", function(err, rows, fields){
+      if (rows.length == 0){
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher) VALUES(\'' + request.username + '\', \'' + request.forename + '\', \'' + request.surname + '\', \'' + request.pass + '\', \'' + request.email + '\', \'' + teacher +'\')', function(err, rows, fields){
+          if(err) console.log(err);
+          var user = {
+            "username" : request.username,
+            "password" : request.pass
+            }
+          var token = jwt.sign(user, app.get('SecretVariable'), {
+            //"iss" : ,
+            //sub : rows[0].username,
+            expiresIn: 86400
+          });
+          res.json({
+            success:true,
+            message:"Auth successful",
+            token: token
+          });
+        });
+      } else{
+        res.json({
+          success:false,
+          message:"Auth unsuccessful, username already exists"
+
+        })
+      }
     });
   });
 
