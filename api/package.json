@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/Pyrovisionary/Comp4#readme",
   "dependencies": {
+    "angular": "^1.6.3",
+    "angular-route": "^1.6.3",
     "async": "^2.1.4",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",

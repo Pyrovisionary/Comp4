@@ -7,8 +7,9 @@
     <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="app.js"></script>
     <script src="../api/node_modules/angular-resource/angular-resource.js"></script>
+    <script src="../api/node_modules/angular-route/angular-route.js"></script>
+    <script src="app.js"></script>
     <script>
       function myFunction() {
         var x = document.getElementById("MyLoginTabs");
@@ -19,7 +20,8 @@
     }
     </script>
   </head>
-  <body ng-app="myApp" ng-controller="Main as main">
+  <body ng-app="myApp" ng-controller="login as main">
+  <!--<div ng-view>-->
     <div id="header">
         <p><h1>Stock market simulator</h1></p>
         <h2>Please login or register to continue</h2>
@@ -95,7 +97,6 @@
             <br><br>
             <input ng-show="registrationform.$valid" type="submit" value="Register" >
             <br>
-            <!--Registration form is {{registrationform.$valid}}-->
           </p>
         </form>
       </div>
@@ -105,5 +106,6 @@
     <div id="footer">
       <p>Copyright James Karpinski 2016 &copy; <span ng-show="main.isAuthed()">You're authed! :), <a ng-click="main.logout()">Logout?</a></span></p>
     </div>
+  <!--</div>-->
       </body>
 </html>

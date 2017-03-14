@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+  <head>
+    <title>Stock Market Simulator</title>
+    <link rel="stylesheet" type="text/css" href="Stylesheet.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif|Lato:300,400|Open+Sans:300,400|Playfair+Display|Playfair+Display+SC|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <!--<script src="../api/node_modules/angular-resource/angular-resource.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+    <script src="app.js"></script>
+    <script>
+      function myFunction() {
+        var x = document.getElementById("MyLoginTabs");
+        if (x.className === "LoginTabs") {
+            x.className += " responsive";}
+        else {
+            x.className = "LoginTabs"; }
+    }
+    </script>
+  </head>
+  <body ng-app="myApp">
+    <div id="header">
+        <p><h1>Stock market simulator</h1></p>
+    </div>
+    <div class="line-breaker"></div>
+    <div class="LoginTabs" id="myLoginTabs">
+      <ul>
+        <li class="hoverable">
+          <a href="/">Login</a></li>
+        <li class="hoverable">
+          <a href="/">Profile</a></li>
+        <li class="hoverable">
+          <a href="/portfolios">Portfolios</a></li>
+        <li class="hoverable">
+          <a href="/classes">Classes</a></li>
+        <li class="hoverable">
+          <a href="/stocks">Stocks</a></li>
+        <li class="icon">
+          <a href="javascript:void(0);" onclick="myFunction()">
+            <div class="menu-line menu-line-1"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+          </a></li>
+      </ul>
+    </div>
+    <div class="line-breaker"></div>
+    <div ng-view>
+
+    </div>
+    <div id="footer2">
+    </div>
+    <div id="footer">
+      <p>Copyright James Karpinski 2016 &copy; <!--<span ng-show="main.isAuthed()">You're authed! :), <a ng-click="main.logout()">Logout?</a></span>--></p>
+    </div>
+  </body>
+</html>

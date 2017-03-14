@@ -1,6 +1,6 @@
 (function() {
 
-var app = angular.module('myApp', ['ngResource']);
+var app = angular.module('myApp', ['ngRoute']);
 
 app.factory('authInterceptor', function(API, auth){
   //Add the auth header to each request
@@ -57,7 +57,6 @@ app.service('user', function($http, API, auth){
         'pass':password
             }
     });
-
   };
 });
 
@@ -93,17 +92,31 @@ app.service('auth', function($window){
   };
 });
 
-app.constant('API', 'http://localhost:8080/api')
+app.constant('API', 'http://localhost:8080/api');
 
-app.config(function($httpProvider) {
-  $httpProvider.defaults.headers.common = {};
-  //$httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
-  $httpProvider.defaults.headers.put = {};
-  $httpProvider.defaults.headers.patch = {};
-  $httpProvider.interceptors.push('authInterceptor');
-})
+app.config(function($httpProvider, $routeProvider, $locationProvider) {
+  $routeProvider
+    .when("/", {
+        templateUrl : "routes/profile.htm"
+    })
+    .when('/portfolios', {
+        templateUrl : 'routes/portfolios.htm'
+    })
+    .when('/classes', {
+        templateUrl : 'routes/classes.htm'
+    })
+    .when('/stocks', {
+        templateUrl : 'routes/stocks.htm'
+    });
+    $httpProvider.interceptors.push('authInterceptor');
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    } );
 
-app.controller('Main', function(user, auth, $scope){
+});
+
+app.controller('login', function(user, auth, $scope){
   var self = this;
 
   function handleRequest(res) {
@@ -114,7 +127,6 @@ app.controller('Main', function(user, auth, $scope){
   };
 
   self.login = function($scope) {
-    console.log("got to main!");
     console.log('Username is: ' + self.username + ', Password is: ' + self.password);
     user.login(self.username, self.password)
       .then(handleRequest, handleRequest);
@@ -141,5 +153,11 @@ app.controller('Main', function(user, auth, $scope){
     $scope.activeTab = newValue;
   };
 });
+
+app.controller('dash', function($scope){
+
+
+});
+
 
 })();

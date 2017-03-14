@@ -1,0 +1,13 @@
+{
+  "name": "lloydgeorge_ui",
+  "version": "1.0.0",
+  "description": "UI for the LloydGeorge stock picker",
+  "main": "server.js",
+  "author": "James Karpinski",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1"
+  }
+}
