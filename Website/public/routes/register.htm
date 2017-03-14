@@ -1,0 +1,44 @@
+<h1>Register</h1>
+<form name="registrationform" ng-submit="login.register()" novalidate>
+  <h1>Enter your details below</h1><br>
+  <p>
+    <label for="newusername">Choose your username:</label>
+    <input type="text" name="newusername" id="newusername" ng-model="login.newusername" required>
+    <br>
+    <span ng-show="registrationform.newusername.$touched && registrationform.newusername.$invalid">Username is required</span>
+    <span ng-show="">Username is taken</span>
+    <br>
+    Name:<br>
+    <input type="text" name="newforename" id="newforename" ng-model="login.newforename" placeholder="First" required>
+    <input type="text" name="newsurname" id="newsurname" ng-model="login.newsurname" placeholder="Last" required>
+    <br>
+    <span ng-show="registrationform.newforename.$touched && registrationform.newforename.$invalid || registrationform.newsurname.$touched && registrationform.newsurname.$invalid ">
+    Name is required</span>
+    <br>
+    <label for="newpassword">Create a password:</label>
+    <input type="password" name="newpassword" id ="newpassword" ng-model="login.newpassword" required>
+    <br>
+    <span ng-show="registrationform.newpassword.$touched && registrationform.newpassword.$invalid">
+    Password is required</span>
+    <br>
+    <label for="newpasswordconfirm">Confirm your password:</label>
+    <input type="password" name="newpasswordconfirm" id="newpasswordconfirm" ng-model="login.newpasswordconfirm" required>
+    <br>
+    <span ng-show="registrationform.newpasswordconfirm.$touched && registrationform.newpasswordconfirm.$invalid">
+    Please confirm your password</span>
+    <span ng-show="">
+    Password do not match</span>
+    <br>
+    <label for="newemail">Email:</label>
+    <input type="email" name="newemail" id="newemail" ng-model="login.newemail" required>
+    <br>
+    <span ng-show="registrationform.newemail.$touched && registrationform.newemail.$invalid">
+    Please enter a valid email</span>
+    <br>
+    <label for="teacheryn">Are you a teacher?</label>
+    <input type="checkbox" name="teacher" id="teacheryn" ng-model="login.teacheryn">
+    <br><br>
+    <input ng-show="registrationform.$valid" type="submit" value="Register" >
+    <br>
+  </p>
+</form>

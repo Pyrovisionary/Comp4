@@ -15,18 +15,25 @@ app.factory('authInterceptor', function(API, auth){
     },
     //Save tokens that get returned
     response: function(res) {
+      if ( res.status=== 401 || res.status === 403 ){
+        $location.path('/login');
+      }
+
       if(res.config.url.indexOf(API) === 0 && res.data.token) {
         auth.saveToken(res.data.token);
-      };
+      }
       return res;
-    }
+    },
+
   };
 });
 
-app.service('user', function($http, API, auth){
+app.service('user', function($http, API, auth, $window, $location){
   var self = this;
 
   self.register = function( newusername, newforename, newsurname, newpassword, newemail, teacheryn){
+    $location.path('/profile');
+    $location.replace();
     return $http({
       method: 'POST',
       url: API +'/authenticate/users/',
@@ -46,6 +53,8 @@ app.service('user', function($http, API, auth){
   };
 
   self.login = function(username, password){
+    $location.path('/profile');
+    $location.replace();
     return $http({
       method: 'POST',
       url: API +'/authenticate',
@@ -57,17 +66,34 @@ app.service('user', function($http, API, auth){
         'pass':password
             }
     });
+
   };
 });
 
-app.service('auth', function($window){
+app.service('auth', function($window, $rootScope, $location){
   var self = this;
 
   self.parseJwt = function(token) {
+    $rootScope.token = token;
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse($window.atob(base64));
+    //$rootScope.user = JSON.parse($window.atob(base64));
   };
+
+  /*self.isAuthed = function(){
+    console.log('Got to service')
+    console.log($rootScope.user);
+    return !!$rootScope.user;
+  };
+
+  self.getUser = function(){
+    return $rootScope.user;
+  };
+
+  self.getToken = function(){
+    return $rootScope.token;
+  };*/
 
   self.saveToken = function(token) {
     $window.localStorage['jwtToken'] = token;
@@ -88,25 +114,72 @@ app.service('auth', function($window){
   };
 
   self.logout = function() {
+    $location.path('/login');
+    $location.replace();
     $window.localStorage.removeItem('jwtToken');
   };
 });
+
+
+app.service('data', function( auth, $http, API){
+  var self = this;
+
+  self.getUserData() = function() {
+    var token = auth.getToken();
+    return $http({
+      method: 'GET',
+      url: API +'/users',
+      headers: {
+       'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        'username':username,
+        'pass':password
+            }
+    });
+  };
+
+
+};
 
 app.constant('API', 'http://localhost:8080/api');
 
 app.config(function($httpProvider, $routeProvider, $locationProvider) {
   $routeProvider
-    .when("/", {
-        templateUrl : "routes/profile.htm"
+    .when("/profile", {
+        templateUrl : "routes/profile.htm",
+        controller  : 'profileCtrl',
+        controllerAs: 'profile'
+    })
+    .when('/login', {
+        templateUrl : 'routes/login.htm',
+        controller  : 'loginCtrl',
+        controllerAs: 'login'
+    })
+    .when('/register', {
+        templateUrl : 'routes/register.htm',
+        controller  : 'loginCtrl',
+        controllerAs: 'login'
     })
     .when('/portfolios', {
-        templateUrl : 'routes/portfolios.htm'
+        templateUrl : 'routes/portfolios.htm',
+        controller  : 'portfolioCtrl',
+        controllerAs: 'portfolios'
     })
     .when('/classes', {
-        templateUrl : 'routes/classes.htm'
+        templateUrl : 'routes/classes.htm',
+        controller  : 'classCtrl',
+        controllerAs: 'classes'
     })
     .when('/stocks', {
-        templateUrl : 'routes/stocks.htm'
+        templateUrl : 'routes/stocks.htm',
+        controller  : 'stockCtrl',
+        controllerAs: 'stocks'
+    })
+    .when('/',{
+      templateUrl : 'routes/login.htm',
+      controller  : 'loginCtrl',
+      controllerAs: 'login'
     });
     $httpProvider.interceptors.push('authInterceptor');
     $locationProvider.html5Mode({
@@ -116,7 +189,73 @@ app.config(function($httpProvider, $routeProvider, $locationProvider) {
 
 });
 
-app.controller('login', function(user, auth, $scope){
+
+
+app.controller('navbarCtrl', function(auth, $scope){
+  var self = this;
+
+  //TODO: active tab has outline (copy from tabs section of Codeschool's angular course)
+
+  self.logout = function() {
+    auth.logout && auth.logout()
+  };
+
+  self.isAuthed = function() {
+    return auth.isAuthed ? auth.isAuthed() : false
+  };
+
+});
+
+app.controller('profileCtrl', function(auth){
+  var self = this;
+
+  self.logout = function() {
+    auth.logout && auth.logout()
+  };
+
+  self.isAuthed = function() {
+    return auth.isAuthed ? auth.isAuthed() : false
+  };
+
+});
+
+app.controller('stockCtrl', function(auth){
+  var self = this;
+
+  self.logout = function() {
+    auth.logout && auth.logout()
+  };
+
+  self.isAuthed = function() {
+    return auth.isAuthed ? auth.isAuthed() : false
+  };
+});
+
+app.controller('portfolioCtrl', function(auth){
+  var self = this;
+
+  self.logout = function() {
+    auth.logout && auth.logout()
+  };
+
+  self.isAuthed = function() {
+    return auth.isAuthed ? auth.isAuthed() : false
+  };
+});
+
+app.controller('classCtrl', function(auth){
+  var self = this;
+
+  self.logout = function() {
+    auth.logout && auth.logout()
+  };
+
+  self.isAuthed = function() {
+    return auth.isAuthed ? auth.isAuthed() : false
+  };
+});
+
+app.controller('loginCtrl', function(user, auth, $scope){
   var self = this;
 
   function handleRequest(res) {
@@ -127,7 +266,6 @@ app.controller('login', function(user, auth, $scope){
   };
 
   self.login = function($scope) {
-    console.log('Username is: ' + self.username + ', Password is: ' + self.password);
     user.login(self.username, self.password)
       .then(handleRequest, handleRequest);
   };
@@ -144,20 +282,6 @@ app.controller('login', function(user, auth, $scope){
   self.isAuthed = function() {
     return auth.isAuthed ? auth.isAuthed() : false
   };
-
-  $scope.activeTab = 1;
-  $scope.isSet = function(tabName){
-    return $scope.activeTab === tabName;
-  };
-  $scope.setTab = function(newValue){
-    $scope.activeTab = newValue;
-  };
 });
-
-app.controller('dash', function($scope){
-
-
-});
-
 
 })();

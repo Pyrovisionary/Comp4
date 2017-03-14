@@ -1,84 +1,14 @@
-<div id="header">
-    <p><h1>Stock market simulator</h1></p>
-    <h2>Please login or register to continue</h2>
-</div>
-<div class="line-breaker"></div>
-<div class="main-body-wrapper">
-  <div class="login-wrapper">
-    <div class="LoginTabs" id="myLoginTabs">
-      <ul>
-        <li class="hoverable" ng-class="{active:isSet(1)}">
-          <a href ng-click="setTab(1)" >Login</a></li>
-        <li class="hoverable" ng-class="{active:isSet(2)}">
-          <a href ng-click="setTab(2)" >Sign up</a></li>
-        <li class="icon">
-          <a href="javascript:void(0);" onclick="myFunction()">
-            <div class="menu-line menu-line-1"></div>
-            <div class="menu-line"></div>
-            <div class="menu-line"></div>
-          </a></li>
-      </ul>
-    </div>
-
-    <form  ng-show="isSet(1)" name="loginform" ng-submit="main.login()" novalidate>
-      <h1>Welcome back!</h1><br>
-      <p>
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" ng-model="main.username" required>
-        <br><br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" ng-model="main.password" required>
-        <br><br>
-        <input type="submit" value="Login"><br>
-      </p>
-    </form>
-    <form ng-show="isSet(2)" name="registrationform" ng-submit="main.register()" novalidate>
-      <h1>Enter your details below</h1><br>
-      <p>
-        <label for="newusername">Choose your username:</label>
-        <input type="text" name="newusername" id="newusername" ng-model="main.newusername" required>
-        <br>
-        <span ng-show="registrationform.newusername.$touched && registrationform.newusername.$invalid">Username is required</span>
-        <span ng-show="">Username is taken</span>
-        <br>
-        Name:<br>
-        <input type="text" name="newforename" id="newforename" ng-model="main.newforename" placeholder="First" required>
-        <input type="text" name="newsurname" id="newsurname" ng-model="main.newsurname" placeholder="Last" required>
-        <br>
-        <span ng-show="registrationform.newforename.$touched && registrationform.newforename.$invalid || registrationform.newsurname.$touched && registrationform.newsurname.$invalid ">
-        Name is required</span>
-        <br>
-        <label for="newpassword">Create a password:</label>
-        <input type="password" name="newpassword" id ="newpassword" ng-model="main.newpassword" required>
-        <br>
-        <span ng-show="registrationform.newpassword.$touched && registrationform.newpassword.$invalid">
-        Password is required</span>
-        <br>
-        <label for="newpasswordconfirm">Confirm your password:</label>
-        <input type="password" name="newpasswordconfirm" id="newpasswordconfirm" ng-model="main.newpasswordconfirm" required>
-        <br>
-        <span ng-show="registrationform.newpasswordconfirm.$touched && registrationform.newpasswordconfirm.$invalid">
-        Please confirm your password</span>
-        <span ng-show="">
-        Password do not match</span>
-        <br>
-        <label for="newemail">Email:</label>
-        <input type="email" name="newemail" id="newemail" ng-model="main.newemail" required>
-        <br>
-        <span ng-show="registrationform.newemail.$touched && registrationform.newemail.$invalid">
-        Please enter a valid email</span>
-        <br>
-        <label for="teacheryn">Are you a teacher?</label>
-        <input type="checkbox" name="teacher" id="teacheryn" ng-model="main.teacheryn">
-        <br><br>
-        <input ng-show="registrationform.$valid" type="submit" value="Register" >
-        <br>
-      </p>
-    </form>
-  </div>
-</div>
-<div id="footer2">
-</div>
-<div id="footer">
-  <p>Copyright James Karpinski 2016 &copy; <span ng-show="main.isAuthed()">You're authed! :), <a ng-click="main.logout()">Logout?</a></span></p>
-</div>
+<h1> Login</h1>
+<form name="loginform" ng-submit="login.login()" ng-init='login.checkUserLoggedIn()' novalidate>
+  <h1>Welcome back!</h1><br>
+  <p>
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" ng-model="login.username" required>
+    <br><br>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" ng-model="login.password" required>
+    <br><br>
+    <input type="submit" value="Login"><br>
+  </p>
+</form>
+<button ng-show="login.isAuthed()" ng-click="login.logout()">Logout</button>

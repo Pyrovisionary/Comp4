@@ -28,7 +28,7 @@ router.route('/authenticate')
   })
   .post(function(req, res){
     //TODO: mke so you don't have to use this serverside workaround
-    console.log(req.body);
+    //console.log(req.body);
     var request = JSON.parse(Object.keys(req.body)[0]);
     pool.query("SELECT * FROM users WHERE username = \'" +request.username + "\'", function(err, rows, fields){
       if (err) throw(err);
@@ -36,11 +36,9 @@ router.route('/authenticate')
         if (rows[0].pass == request.pass) {
           var user = {
             "username" : rows[0].username,
-            "password" : rows[0].pass
+            "teacher"  : rows[0].teacher
             }
           var token = jwt.sign(user, app.get('SecretVariable'), {
-            //"iss" : ,
-            //sub : rows[0].username,
             expiresIn: 86400
           });
           res.json({
