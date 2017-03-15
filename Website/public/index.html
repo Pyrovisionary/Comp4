@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app="myApp">
+<html>
   <head>
     <title>Stock Market Simulator</title>
     <link rel="stylesheet" type="text/css" href="Stylesheet.css">
@@ -7,9 +7,10 @@
     <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
-    <!--<script src="../api/node_modules/angular-resource/angular-resource.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
-    <script src="app.js"></script>
+
+
     <script>
       function myFunction() {
         var x = document.getElementById("MyLoginTabs");
@@ -19,6 +20,7 @@
             x.className = "LoginTabs"; }
     }
     </script>
+    <script type="text/javascript" src="app.js"></script>
   </head>
   <body ng-app="myApp">
     <div id="header">
@@ -51,10 +53,9 @@
           </a></li>
       </ul>
     </div>
+    <div ng-controller='onLoadCtrl as load'></div>
     <div class="line-breaker"></div>
-    <div ng-view>
-
-    </div>
+    <div ng-view></div>
     <div id="footer2">
     </div>
     <div id="footer">
