@@ -1,8 +1,8 @@
 (function(){
   'use strict';
 
-  angular.module('myApp')
-    .controller('loginCtrl', function(user, auth, $scope){
+  angular.module('myApp' , [ 'ngRoute', 'ngResource'])
+    .controller('loginCtrl', function(userService, auth, $scope){
       var self = this;
 
       function handleRequest(res) {
@@ -12,12 +12,12 @@
       };
 
       self.login = function($scope) {
-        user.login(self.username, self.password)
+        userService.login(self.username, self.password)
           .then(handleRequest, handleRequest)
       };
 
       self.register = function() {
-        user.register(self.newusername, self.newforename, self.newsurname, self.newpassword, self.newemail, self.teacheryn)
+        userService.register(self.newusername, self.newforename, self.newsurname, self.newpassword, self.newemail, self.teacheryn)
           .then(handleRequest, handleRequest)
       };
 

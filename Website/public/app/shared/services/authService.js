@@ -10,17 +10,19 @@
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse($window.atob(base64));
-        //$rootScope.user = JSON.parse($window.atob(base64));
+        //$rootScope.userService = JSON.parse($window.atob(base64));
       };
+
+//TODO: redo auth with own code, perhaps using $rootscope
 
       /*self.isAuthed = function(){
         console.log('Got to service')
-        console.log($rootScope.user);
-        return !!$rootScope.user;
+        console.log($rootScope.userService);
+        return !!$rootScope.userService;
       };
 
       self.getUser = function(){
-        return $rootScope.user;
+        return $rootScope.userService;
       };
 
       self.getToken = function(){
@@ -52,15 +54,17 @@
       };
 
       self.RedirectIfLoggedIn = function() {
-        if ((($location.path() === '/login')|| ($location.path()==='/')) && (self.isAuthed()) ) {
+        if ((($location.path() === '/login') || ($location.path()==='/')) && (self.isAuthed()) ) {
           console.log('authed');
           $location.path('/profile');
           $location.replace();
-        } else {
+        }
+        if ($location.path() !== '/login' && (!self.isAuthed())) {
           console.log('not authed');
           $location.path('/login');
           $location.replace();
         }
+
 
       };
     });

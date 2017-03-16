@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  angular.module('myApp')
+  angular.module('myApp', [ 'ngRoute', 'ngResource'])
     .controller('stockCtrl', function(auth){
       var self = this;
 

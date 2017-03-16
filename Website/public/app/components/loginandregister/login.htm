@@ -1,14 +1,16 @@
-<h1> Login</h1>
-<form name="loginform" ng-submit="login.login()" novalidate>
-  <h1>Welcome back!</h1><br>
-  <p>
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" ng-model="login.username" required>
-    <br><br>
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" ng-model="login.password" required>
-    <br><br>
-    <input type="submit" value="Login"><br>
-  </p>
-</form>
-<button ng-show="login.isAuthed()" ng-click="login.logout()">Logout</button>
+<div class='login-wrapper'>
+  <form name="loginform" ng-submit="login.login()" novalidate>
+    <br>
+    <h1>Welcome back!</h1><br>
+    <p>
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" ng-model="login.username" required>
+      <br><br>
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" ng-model="login.password" required>
+      <br><br>
+      <input type="submit" value="Login"><br>
+    </p>
+  </form>
+  <button ng-show="login.isAuthed()" ng-click="login.logout()">Logout</button>
+</div>

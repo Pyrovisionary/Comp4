@@ -15,7 +15,7 @@ app.factory('authInterceptor', function(API, auth, $location){
     //Save tokens that get returned
     response: function(res) {
       if ( res.status=== 401 || res.status === 403 ){
-        $location.path('/login');
+        //$location.path('/login');
       }
 
       if(res.config.url.indexOf(API) === 0 && res.data.token) {
@@ -31,8 +31,10 @@ app.factory('authInterceptor', function(API, auth, $location){
 
 
 // TODO: use $resource to start making requests
-app.factory('AuthService', function($resource, API){
-  return $resource( API + '/authenticate',{user: "@user"});
+app.factory('AuthLogin', function($resource, API, username, password){
+  /*console.log('got to factory');
+  var url = API + '/authenticate';
+  return $resource( url,{username: "@user", pass: '@password'});*/
 });
 
 app.service('data', function( auth, $http, API){
@@ -57,24 +59,5 @@ app.service('data', function( auth, $http, API){
 });
 
 app.constant('API', 'http://localhost:8080/api');
-
-app.controller('onLoadCtrl', function(auth, $scope){
-    auth.RedirectIfLoggedIn();
-  });
-
-app.controller('navbarCtrl', function(auth, $scope){
-  var self = this;
-
-  //TODO: active tab has outline (copy from tabs section of Codeschool's angular course)
-
-  self.logout = function() {
-    auth.logout && auth.logout()
-  };
-
-  self.isAuthed = function() {
-    return auth.isAuthed ? auth.isAuthed() : false
-  };
-});
-
 
 })();

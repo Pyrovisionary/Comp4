@@ -26,7 +26,7 @@
         })
         .when('/classes', {
             templateUrl : 'app/components/classes/classes.htm',
-            controller  : 'ClassCtrl',
+            controller  : 'classCtrl',
             controllerAs: 'classes'
         })
         .when('/stocks', {
@@ -36,8 +36,8 @@
         })
         .when('/',{
           templateUrl : 'app/components/profile/profile.htm',
-          controller  : 'loginCtrl',
-          controllerAs: 'login'
+          controller  : 'profileCtrl',
+          controllerAs: 'profile'
         });
         $httpProvider.interceptors.push('authInterceptor');
         $locationProvider.html5Mode({
@@ -46,8 +46,4 @@
         } );
 
   });
-
-
-
-
 })();

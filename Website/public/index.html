@@ -19,16 +19,18 @@
             x.className = "LoginTabs"; }
     }
     </script>
-    <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="app/app.module.js"></script>
     <script type="text/javascript" src="app/app.route.js"></script>
-    <script type="text/javascript" src="app/components/classes/ClassCtrl.js"></script>
+    <script type="text/javascript" src="app/components/classes/classCtrl.js"></script>
     <script type="text/javascript" src="app/components/loginandregister/loginCtrl.js"></script>
     <script type="text/javascript" src="app/components/portfolios/portfolioCtrl.js"></script>
     <script type="text/javascript" src="app/components/profile/profileCtrl.js"></script>
     <script type="text/javascript" src="app/components/stocks/stockCtrl.js"></script>
+    <script type="text/javascript" src="app/components/onload/onLoadCtrl.js"></script>
+    <script type="text/javascript" src="app/components/navbar/navbarCtrl.js"></script>
     <script type="text/javascript" src="app/shared/services/authService.js"></script>
     <script type="text/javascript" src="app/shared/services/userService.js"></script>
+
 
   </head>
   <body ng-app="myApp">
@@ -36,7 +38,7 @@
         <p><h1>Stock market simulator</h1></p>
     </div>
     <div class="line-breaker"></div>
-    <div class="LoginTabs" id="myLoginTabs" ng-controller="navbarCtrl as nav">
+    <div class="LoginTabs" id="myLoginTabs" ng-Controller="navbarCtrl as nav" >
       <ul>
         <div ng-show='!nav.isAuthed()'>
           <li class="hoverable">
@@ -62,9 +64,11 @@
           </a></li>
       </ul>
     </div>
-    <div ng-controller='onLoadCtrl as load'></div>
+    <div ng-Controller='onLoadCtrl as load'></div>
     <div class="line-breaker"></div>
-    <div ng-view></div>
+    <div class='main-body-wrapper'>
+      <div ng-view></div>
+    </div>
     <div id="footer2">
     </div>
     <div id="footer">

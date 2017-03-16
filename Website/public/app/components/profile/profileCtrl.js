@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  angular.module('myApp')
+  angular.module('myApp', [ 'ngRoute', 'ngResource'])
     .controller('profileCtrl', function(auth, $scope){
       var self = this;
 
