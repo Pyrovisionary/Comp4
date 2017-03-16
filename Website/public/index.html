@@ -3,13 +3,12 @@
   <head>
     <title>Stock Market Simulator</title>
     <link rel="stylesheet" type="text/css" href="Stylesheet.css">
-    <link href="https://fonts.googleapis.com/css?family=Droid+Serif|Lato:300,400|Open+Sans:300,400|Playfair+Display|Playfair+Display+SC|Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Droid+Serif|Lato:300,400|Open+Sans:300,400|Playfair+Display|Playfair+Display+SC|Roboto" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
 
     <script>
       function myFunction() {
@@ -21,6 +20,16 @@
     }
     </script>
     <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="app/app.module.js"></script>
+    <script type="text/javascript" src="app/app.route.js"></script>
+    <script type="text/javascript" src="app/components/classes/ClassCtrl.js"></script>
+    <script type="text/javascript" src="app/components/loginandregister/loginCtrl.js"></script>
+    <script type="text/javascript" src="app/components/portfolios/portfolioCtrl.js"></script>
+    <script type="text/javascript" src="app/components/profile/profileCtrl.js"></script>
+    <script type="text/javascript" src="app/components/stocks/stockCtrl.js"></script>
+    <script type="text/javascript" src="app/shared/services/authService.js"></script>
+    <script type="text/javascript" src="app/shared/services/userService.js"></script>
+
   </head>
   <body ng-app="myApp">
     <div id="header">
@@ -34,7 +43,7 @@
             <a href="/login">Login</a></li>
           <li class="hoverable">
             <a href="/register">Register</a></li>
-      </div>
+        </div>
         <div ng-show="nav.isAuthed()">
           <li class="hoverable">
             <a href="/profile">Profile</a></li>
