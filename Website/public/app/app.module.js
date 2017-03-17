@@ -8,7 +8,7 @@ app.factory('authInterceptor', function(API, auth, $location){
       request: function(config) {
         var token = auth.getToken();
         if(config.url.indexOf(API) === 0 && token) {
-          config.headers.Authorization = 'Bearer ' + token;
+          config.headers['x-access-token'] =token;
         }
         return config;
     },
@@ -31,11 +31,18 @@ app.factory('authInterceptor', function(API, auth, $location){
 
 
 // TODO: use $resource to start making requests
-app.factory('AuthLogin', function($resource, API, username, password){
-  /*console.log('got to factory');
-  var url = API + '/authenticate';
-  return $resource( url,{username: "@user", pass: '@password'});*/
+app.factory('AuthLogin', function($resource, API){
+  return $resource( API + '/authenticate/', {username: "@user", pass: '@password'});
 });
+
+app.factory('UserData', function($resource, API){
+  return $resource( API + '/users/:userid', {userid:'@userid'});
+});
+
+app.factory('AuthRegister', function($resource, API){
+  return $resource( API + '/authenticate/users/', {username:'@user', forename:'@forename', surname:'@surname', pass:'@pass', email:'@email', teacher:'@teacher'});
+});
+
 
 app.service('data', function( auth, $http, API){
   var self = this;

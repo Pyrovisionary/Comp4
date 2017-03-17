@@ -1,1 +1,11 @@
 <h1>classes</h1>
+
+<button ng-show='classes.isTeacher()' type='submit' ng-submit=''>Create a class</button>
+
+<form ng-submit=''>
+<input type="text" name="joinClass" id="joinClass" ng-model="classes.joinClass" required>
+<input type="submit" value="Join a class"><br>
+
+</form>
+
+<h2>You are a member of the following classes:</h2>

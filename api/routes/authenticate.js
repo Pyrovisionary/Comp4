@@ -22,11 +22,11 @@ app.set('SecretVariable', config.json.secret); // sets secret variable for JWT e
   res.json({message: 'got here'});
 });*/
 
-function authenticateUser(req, res, request, pool) {
-  pool.query("SELECT * FROM users WHERE username = \'" +request.username + "\'", function(err, rows, fields){
+function authenticateUser(req, res, pool) {
+  pool.query("SELECT * FROM users WHERE username = \'" + req.body.username + "\'", function(err, rows, fields){
     if (err) throw(err);
     if  (rows.length!==0) {
-      if (rows[0].pass == request.pass) {
+      if (rows[0].pass == req.body.pass) {
         var user = {
           "username" : rows[0].username,
           'userid'   : rows[0].userid,
@@ -49,7 +49,6 @@ function authenticateUser(req, res, request, pool) {
       }
     }
     else {
-      console.log(req.body);
       //console.log(req.body.username);
       //console.log(req.body.pass);
       res.json({
@@ -67,22 +66,19 @@ router.route('/authenticate')
   })
   .post(function(req, res){
     //TODO: mke so you don't have to use this serverside workaround
-    console.log(req.body);
-    var request = JSON.parse(Object.keys(req.body)[0]);
-    authenticateUser(req, res, request, pool);
+    authenticateUser(req, res, pool);
   });
 
 router.route('/authenticate/users')
   .post(function(req, res){
-    var request = JSON.parse(Object.keys(req.body)[0]);
     var teacher = 0;
     console.log(req.body);
-    if (request.teacher == true){teacher=1;} else {teacher = 0;}
-    pool.query("SELECT * FROM users WHERE username = \'" +request.username + "\'", function(err, rows, fields){
+    if (req.body.teacher == true){teacher=1;} else {teacher = 0;}
+    pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
       if (rows.length == 0){
-        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher) VALUES(\'' + request.username + '\', \'' + request.forename + '\', \'' + request.surname + '\', \'' + request.pass + '\', \'' + request.email + '\', \'' + teacher +'\')', function(err, rows, fields){
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + teacher +'\')', function(err, rows, fields){
           if(err) console.log(err);
-          authenticateUser(req, res, request, pool);
+          authenticateUser(req, res, pool);
         });
       } else{
         res.json({

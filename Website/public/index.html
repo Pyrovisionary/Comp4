@@ -38,7 +38,7 @@
         <p><h1>Stock market simulator</h1></p>
     </div>
     <div class="line-breaker"></div>
-    <div class="LoginTabs" id="myLoginTabs" ng-Controller="navbarCtrl as nav" >
+    <div class="LoginTabs" id="myLoginTabs" ng-controller="navbarCtrl as nav">
       <ul>
         <div ng-show='!nav.isAuthed()'>
           <li class="hoverable">
@@ -64,7 +64,7 @@
           </a></li>
       </ul>
     </div>
-    <div ng-Controller='onLoadCtrl as load'></div>
+    <div ng-controller='onLoadCtrl as load'></div>
     <div class="line-breaker"></div>
     <div class='main-body-wrapper'>
       <div ng-view></div>

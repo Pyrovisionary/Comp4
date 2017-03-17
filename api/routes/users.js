@@ -24,30 +24,27 @@ router.route('/users')
       if (err) console.log(err);
       res.json(rows);
     });
-  })
-  //Add user
-  .post(function(req, res){
-    pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + req.body.teacher +'\')', function(err, rows, fields){
-      if(err) console.log(err);
-      res.json("User " +req.body.username+ " created")
-    });
   });
 
 router.route('/users/:userid')
   //Get a user
   .get(function(req,res){
+    //console.log(req.params);
     pool.query('SELECT * FROM users WHERE userid=' + req.params.userid, function(err, rows, fields){
       if (err) console.log(err);
+      //console.log(rows[0]);
       res.json(rows[0]);
     });
   })
   //Update a user
-  .put(function(req, res){
+  //TODO: update users route, write it u mong.
+  /*.put(function(req, res){
     pool.query('UPDATE users SET'+req.body.changeddatatype+'=' +req.body.changeddata+ 'WHERE userid = ' + req.params.userid, function(err, rows, fields){
       if (err) console.log(err);
       res.json("User " + req.params.userid + " updated");
     });
-  })
+  })*/
+
   //Delete a user
   .delete(function(req,res){
     console.log("Attempting to delete");

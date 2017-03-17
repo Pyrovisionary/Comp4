@@ -40,6 +40,11 @@
           controllerAs: 'profile'
         });
         $httpProvider.interceptors.push('authInterceptor');
+        //$httpProvider.defaults.headers.common = {};
+        //$httpProvider.defaults.headers.post = {};
+        //$httpProvider.defaults.headers.put = {};
+        //$httpProvider.defaults.headers.patch = {};
+
         $locationProvider.html5Mode({
           enabled: true,
           requireBase: false

@@ -6,7 +6,6 @@
       var self = this;
 
       self.parseJwt = function(token) {
-        $rootScope.token = token;
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse($window.atob(base64));
@@ -54,7 +53,7 @@
       };
 
       self.RedirectIfLoggedIn = function() {
-        if ((($location.path() === '/login') || ($location.path()==='/')) && (self.isAuthed()) ) {
+        if ((($location.path() === '/login') || ($location.path()==='/') || ($location.path()==='/register')) && (self.isAuthed()) ) {
           console.log('authed');
           $location.path('/profile');
           $location.replace();

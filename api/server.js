@@ -33,7 +33,9 @@ app.use(morgan("dev"));
 //Allow requests from different domains
 app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET", "POST");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET", "POST", 'OPTIONS');
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, origin, Authorization, x-access-token, accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   next();
 });
 
@@ -47,26 +49,35 @@ router.get("/", function(req, res){
   res.json({ message: "API incoming!"});
 });
 
-//TODO: learn how this works and make it look not stolen
 router.use(function(req, res, next){
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  if (token) {
-    jwt.verify(token, app.get('SecretVariable'), function(err, decoded) {
-      if (err) {
-        return res.json({ success: false, message: 'Authentication failed, token rejected' });
-      } else {
-        // if everything is good, save to request for use in other routes
-        req.decoded = decoded;
-        next();
-      }
-    });
-  } else {
-    //Return error when no token is provided
-    return res.status(403).send({
-        success: false,
-        message: 'No token provided.'
-    });
-  }
+  var option = req.headers['access-control-request-method'];
+  if (option) {
+    res.sendStatus(200);
+    next();
+  } else{
+    if (token) {
+      //Decode the JSON web-token
+      console.log('Token got');
+      jwt.verify(token, app.get('SecretVariable'), function(err, decoded) {
+        if (err) {
+          return res.json({ success: false, message: 'Authentication failed, token rejected' });
+        } else {
+          // if the token is valid, save to request for use in other routes
+          req.decoded = decoded;
+          next();
+        }
+      });
+    } else {
+      console.log('Token not got')
+      //Return error when no token is provided
+      return res.status(403).send({
+          success: false,
+          message: 'No token provided.'
+      });
+    }
+}
+
 });
 
 //Use routes
