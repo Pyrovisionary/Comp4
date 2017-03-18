@@ -54,14 +54,4 @@ router.route('/users/:userid')
     });
   });
 
-
-router.route('users/:userid/:classes')
-//Get a user's classes
-  .get(function(req, res){
-    pool.query('Select * FROM classes WHERE userid = ' + req.params.userid , function(err, rows, fields){
-      if (err) console.log(err);
-      res.json(rows);
-    });
-  });
-
 module.exports = router;
