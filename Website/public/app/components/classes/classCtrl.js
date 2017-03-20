@@ -2,10 +2,13 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('classCtrl', function(auth, $promise, ClassCreate, GetUserClassIds, ClassAddUsers, GetUserClassNames, GetUsersByClass, $scope){
+    .controller('classCtrl', function(auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope){
       var self = this;
-
       //console.log(token.userid);
+
+      self.displayUserClasses = function(res) {
+        console.log(res.data);
+      }
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -34,35 +37,17 @@
         var token = auth.parseJwt(auth.getToken());
         ClassAddUsers.save({classid:self.joinClass, userid:token.userid});
       };
+      var classes = [];
 
-      self.getClassIds = function(){
+      self.getUserClasses = function(){
         var token = auth.parseJwt(auth.getToken());
-        var rows = GetUserClassIds.query({userid:token.userid});
-        return rows
+        return GetUserClasses.query({userid:token.userid})
       };
 
-      self.getClassNames = function(rows){
-        var classes =[];
-        console.log(rows);
-        console.log(rows.length);
-        for( var i = 0; i < rows.length; count++){
-          console.log(i);
-          console.log(rows[i]);
-          var userClass = GetUserClassNames.get({classid:rows[i].classid});
-          classes.push(userClass);
-        };
-        console.log(classes);
-        return classes
-      };
-
-      self.getClassIds().$promise.then(self.getClassNames(rows));
-
-      self.DisplayUserClasses = function(classes){
-        console.log(classes)
-      };
-      self.DisplayClassesMaster = function(){
-        self.DisplayUserClasses(self.getClassNames(self.getClassIds()));
-      };
+      self.getUserClasses().$promise.then(function(data){
+        $scope.userclasses = data;
+        console.log(data);
+      });
 
     });
 

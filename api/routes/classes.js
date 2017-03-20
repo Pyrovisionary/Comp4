@@ -1,9 +1,10 @@
 "use strict";
-var express    = require("express");
-var app        = express();
-var bodyParser = require("body-parser");
-var mysql      = require('mysql');
-var config     = require('../config');
+var express       = require("express");
+var app           = express();
+var bodyParser    = require("body-parser");
+var asynchronous  = require('async');
+var mysql         = require('mysql');
+var config        = require('../config');
 
 //Create a pool connection to SQL database
 var pool        = mysql.createPool({
@@ -37,12 +38,25 @@ router.route('/classes/users/:userid')
   .get(function(req, res){
     pool.query('Select * FROM classuserlink WHERE userid = ' + req.params.userid , function(err, rows, fields){
       if (err) console.log(err);
-      res.json(rows);
+      var classes=[];
+      asynchronous.each(rows, function(userclass, callback){
+        pool.query('Select classes.classname, users.forename, users.surname, users.teacher FROM classes INNER JOIN classuserlink ON classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid +' ORDER BY classname DESC' , function(err, getrows, fields){
+          //classes.push(getrows);
+          var classname = getrows[0].classname;
+          var userdata  = 
+          callback();
+        });
+        },
+        function(err){
+        console.log(classes);
+        res.json(classes);
+      });
     });
   });
 
+//router.route();
 
-router.route('/classes/users/:classid')
+router.route('/classes/:classid')
   //Get a specific class
   .get(function(req, res){
     pool.query('SELECT * FROM classes INNER JOIN classuserlink ON classes.classid = classuserlink.classid WHERE classid = ' + req.body.classid, function(err, rows, fields){
@@ -50,13 +64,12 @@ router.route('/classes/users/:classid')
       res.json(rows);
     });
   })
-  //Update a specific class
-  .put(function(req,res){
-    pool.query('UPDATE classes SET classname="'+ req.body.classname +'" WHERE classid =' + req.body.classid, function(err, rows, fields){
-      if (err) console.log(err);
-      res.json("Classname updated");
+  .delete(function(req,res){
+    console.log("Attempting to delete");
+    pool.query('DELETE FROM classes WHERE classid = ' + req.body.classid +"; DELETE FROM classuserlink WHERE classid = " +req.body.classid, function(err, rows,fileds){
+      if(err) console.log(err);
+      res.json({message: "Class " + req.body.classid + " deleted successfully!"});
     });
-
   })
   //Add a pupil to a class
   .post(function(req, res){
@@ -64,14 +77,6 @@ router.route('/classes/users/:classid')
     pool.query('INSERT INTO classuserlink (classid, userid) VALUES(\''  +req.body.classid+'\', \'' +req.body.userid+'\')', function(err, rows, fields){
       if(err) console.log(err);
       console.log("User " +req.body.userid+ " added to class " + req.body.classid );
-    });
-  })
-  //Delete a specific class
-  .delete(function(req,res){
-    console.log("Attempting to delete");
-    pool.query('DELETE FROM classes WHERE classid = ' + req.body.classid +"; DELETE FROM classuserlink WHERE classid = " +req.body.classid, function(err, rows,fileds){
-      if(err) console.log(err);
-      res.json({message: "Class " + req.body.classid + " deleted successfully!"});
     });
   });
 

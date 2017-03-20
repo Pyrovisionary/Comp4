@@ -13,7 +13,8 @@
         return auth.isAuthed ? auth.isAuthed() : false
       };
 
-      var token = auth.parseJwt(auth.getToken())
+      var token = auth.parseJwt(auth.getToken());
       $scope.user = UserData.get({userid:token.userid});
+      console.log($scope.user);
     });
 })();

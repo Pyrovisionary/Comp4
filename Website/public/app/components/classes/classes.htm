@@ -12,5 +12,10 @@
 </form>
 
 <h2>You are a member of the following classes:</h2>
-<!--{{userClasses}}-->
-<div ng-init=''></div>
+{{userclasses}}
+<div ng-repeat='userclass in userclasses | filter:{classname:classname} '>
+  <h1>{{userclass[$index].classname}}</h1>
+  <!--<div ng-repeat='forename in userclass.forenames'>
+    {{name[$index].forename}}
+  </div>-->
+</div>

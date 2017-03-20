@@ -1,4 +1,5 @@
 "use strict";
+//Define dependencies. Node schedule is used to repeat a task within a certain time frame.
 var express       = require("express");
 var app           = express();
 var bodyParser    = require("body-parser");
@@ -8,6 +9,7 @@ var schedule      = require('node-schedule');
 var asynchronous  = require('async');
 var request       = require('request');
 
+//Pool a connection to the mysql database
 var pool          = mysql.createPool({
   connectionLimit : 30,
   host            : config.mysql.host,
@@ -15,17 +17,38 @@ var pool          = mysql.createPool({
   password        : config.mysql.password,
   database        : config.mysql.db
 });
+
+//Log to the console that the stockautoupdater is online
 console.log("Scheduled stock autoupdate online");
+
+// Schedule the following code to repeat every TODO: decide timeframe, else, every hour.
 var j = schedule.scheduleJob('* */60 * * *', function(){
   var builtstrings = [];
+
+//Select all of the stocktickers from the stocknames table in the DB.
   pool.query('Select stockticker FROM stocknames', function(err, rows, fields){
     if (err) console.log(err);
+
+//The stock autoupdater uses Yahoo query language to get stock info from the Yahoo finance api.
+//The following variables are the begining and end of the http request that the stock autoupdater
+//sends off to get stock values. The variable x='"' is defined so that I can quickly and easly concat
+//quotation marks around stocknames whilst building the resuest string
     var requeststring = "https://query.yahooapis.com/v1/public/yql?q=select Symbol, LastTradePriceOnly, Volume from yahoo.finance.quote where symbol in (";
     var endrequeststring = ")&format=json&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&jsonCompat=new&callback=";
     var x = '"';
+//Yahoo's finance api will only accept requests for info on up to 1000 stocks at a time, hence the
+//maxrequestlength variable is set to 1000
     var maxrequestlength = 1000;
+//The total amount of stocks to get the prices of is divided by 1000, then rounded up, to determine
+//how many requests to Yahoo's finance API will be needed. As the stocknames table has between 3 and 4
+//Thousand stocks to get info on, the amount of requests needed is usually 4.
     var len=Math.ceil(rows.length/maxrequestlength);
+
+//The autoupdater loops through the following code for the amount of requests that are needed. (in this case, 4 times)
     for(var i=0;  i<len; i++){
+
+//The variable that this program will use to concat the request is cleared.
+//This thing does some complex-ass shit to make a request, k? TODO: make this less vulgar and more explanatory.
       var querystring = '';
       var end=((i+1)*maxrequestlength);
       if (i==len-1) {

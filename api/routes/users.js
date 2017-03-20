@@ -29,10 +29,8 @@ router.route('/users')
 router.route('/users/:userid')
   //Get a user
   .get(function(req,res){
-    //console.log(req.params);
     pool.query('SELECT * FROM users WHERE userid=' + req.params.userid, function(err, rows, fields){
       if (err) console.log(err);
-      //console.log(rows[0]);
       res.json(rows[0]);
     });
   })

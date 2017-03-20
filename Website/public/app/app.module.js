@@ -56,19 +56,10 @@ app.factory('ClassAddUsers', function($resource, API){
 });
 
 //Get all of a user's classes' IDs
-app.factory('GetUserClassIds', function($resource, API){
+app.factory('GetUserClasses', function($resource, API){
   return $resource(API + '/classes/users/:userid', {userid:'@userid'});
 });
 
-//Get the name of a class by its ID
-app.factory('GetUserClassNames', function($resource, API){
-  return $resource(API + '/classes/:classid', {classid:'@classid'});
-});
-
-//Get all of the users in a class
-app.factory('GetUsersByClass', function($resource, API){
-  return $resource(API + '/', {classid:'@classid'});
-});
 
 
 app.constant('API', 'http://localhost:8080/api');
