@@ -5,6 +5,7 @@
     .controller('classCtrl', function(auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope){
       var self = this;
       //console.log(token.userid);
+      $scope.userclasses=[];
 
       self.displayUserClasses = function(res) {
         console.log(res.data);
@@ -45,8 +46,15 @@
       };
 
       self.getUserClasses().$promise.then(function(data){
-        $scope.userclasses = data;
-        console.log(data);
+        $scope.userclassnames = data[0];
+        for ( var i = 0; i < Object.keys(data[1]).length; i++) {
+          //console.log(Object.keys(data[1][i]).length);
+          for ( var j = 0; j < Object.keys(data[1][i]).length; j++) {
+            //console.log(data[1][i][j])
+            $scope.userclasses.push(data[1][i][j]);
+          }
+        }
+        //console.log(Object.keys(data[1][1]).length);
       });
 
     });

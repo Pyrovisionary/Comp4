@@ -53,10 +53,10 @@ router.route('/portfolios/:portfolioid')
     });
   });
 
-router.route('/portfolios/:portfolioid/:stockid')
+router.route('/portfolios/stocks/:portfolioid')
   //Add a specific stock to a specific portfolio
   .post(function(req, res){
-    pool.query('SELECT TOP 1 FROM stockhistory WHERE stockid = ' + req.params.stockid +' ORDER BY sampletime DESC', function(err, rows, fields){
+    pool.query('SELECT TOP 1 FROM stockhistory WHERE stockid = ' + req.body.stockid +' ORDER BY sampletime DESC', function(err, rows, fields){
       if(err) console.log(err);
       var buyprice = rows[0].stockvalue
       pool.query(' INSERT INTO portfoliostocklink (portfolioid, stockid, buyprice, volume) VALUES(\''  + req.body.portfolioid + '\', \'' + req.body.stockid + '\', \'' + buyprice + '\', \''+ req.body.volume+'\')', function(err, rows, fields){
@@ -67,8 +67,8 @@ router.route('/portfolios/:portfolioid/:stockid')
   });
 
 
-router.route('/portfolios/:userid')
-  //Get a user's portfolio
+router.route('/portfolios/users/:userid')
+  //Get all of a user's portfolios
   .get(function(req, res){
     pool.query('SELECT * FROM portfolios WHERE userid=' + req.params.userid, function(err, rows, fields){
       if (err) console.log(err);
@@ -77,10 +77,10 @@ router.route('/portfolios/:userid')
   });
 
 
-router.route('/portfolios/:userid/:portfolioid')
+router.route('/portfolios/users/:portfolioid')
   //Get a specific portfolio + all the portfoliostocklink data
   .get(function(req, res){
-    pool.query('SELECT * FROM portfolios INNER JOIN portfoliostocklink ON portfolios.'+req.params.portfolioid+' = portfoliostocklink.'+req.params.portfolioid+'  AND WHERE userid = ' + req.params.userid, function(err, rows, fields){
+    pool.query('SELECT * FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid  AND WHERE userid = ' + req.body.userid + ' AND WHERE portfolioid =' + req.body.portfolioid, function(err, rows, fields){
       if (err) console.log(err);
       res.json(rows);
     });

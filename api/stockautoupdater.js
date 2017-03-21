@@ -33,7 +33,7 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
 //The following variables are the begining and end of the http request that the stock autoupdater
 //sends off to get stock values. The variable x='"' is defined so that I can quickly and easly concat
 //quotation marks around stocknames whilst building the resuest string
-    var requeststring = "https://query.yahooapis.com/v1/public/yql?q=select Symbol, LastTradePriceOnly, Volume from yahoo.finance.quote where symbol in (";
+    var requeststring = "https://query.yahooapis.com/v1/public/yql?q=select Symbol, LastTradePriceOnly, Volume, Change from yahoo.finance.quote where symbol in (";
     var endrequeststring = ")&format=json&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&jsonCompat=new&callback=";
     var x = '"';
 //Yahoo's finance api will only accept requests for info on up to 1000 stocks at a time, hence the
@@ -69,7 +69,10 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
           console.log('Request has failed to return any results');
         };
       body=JSON.parse(body);
+      //console.log(body.query.results.quote[0])
+      //complete()
         asynchronous.each(body.query.results.quote, function(stock, callback){
+
           pool.query('SELECT stockid FROM stocknames WHERE stockticker='+"'"+stock.Symbol+"'", function(err, rows, field){
               if(err) console.log(err);
               for(var k=0; k<rows.length; k++){

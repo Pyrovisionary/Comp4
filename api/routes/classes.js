@@ -35,21 +35,24 @@ router.route('/classes')
 
 router.route('/classes/users/:userid')
 //Get a user's classes
+//TODO: get this to return a JSON object
   .get(function(req, res){
-    pool.query('Select * FROM classuserlink WHERE userid = ' + req.params.userid , function(err, rows, fields){
+    var classes = [];
+    var usersinclass = [];
+    pool.query('SELECT * FROM classuserlink INNER JOIN classes on classes.classid = classuserlink.classid WHERE userid = ' + req.params.userid , function(err, rows, fields){
       if (err) console.log(err);
-      var classes=[];
       asynchronous.each(rows, function(userclass, callback){
-        pool.query('Select classes.classname, users.forename, users.surname, users.teacher FROM classes INNER JOIN classuserlink ON classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid +' ORDER BY classname DESC' , function(err, getrows, fields){
-          //classes.push(getrows);
-          var classname = getrows[0].classname;
-          var userdata  = 
+        classes.push(userclass.classname);
+        pool.query('SELECT classes.classname, users.forename, users.surname, users.teacher FROM classes INNER JOIN classuserlink on classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid, function(err, getrows, fields){
+          usersinclass.push(getrows);
+          //var classname = getrows[0].classname;
+          //var userdata  =;
           callback();
         });
         },
         function(err){
-        console.log(classes);
-        res.json(classes);
+        var response =  [classes, usersinclass];
+        res.json(response);
       });
     });
   });
@@ -73,10 +76,15 @@ router.route('/classes/:classid')
   })
   //Add a pupil to a class
   .post(function(req, res){
-    //console.log(req.body);
-    pool.query('INSERT INTO classuserlink (classid, userid) VALUES(\''  +req.body.classid+'\', \'' +req.body.userid+'\')', function(err, rows, fields){
-      if(err) console.log(err);
-      console.log("User " +req.body.userid+ " added to class " + req.body.classid );
+    pool.query('SELECT * FROM classuserlink WERE userid =' + req.body.userid + ' AND WHERE classid =' + req.body.classid, function(err, rows, fields){
+      if (rows.length === 0){
+        pool.query('INSERT INTO classuserlink (classid, userid) VALUES(\''  +req.body.classid+'\', \'' +req.body.userid+'\')', function(err, rows, fields){
+          if(err) console.log(err);
+          console.log("User " +req.body.userid+ " added to class " + req.body.classid );
+        });
+      } else {
+        console.log('User already in class')
+      }
     });
   });
 

@@ -1,5 +1,11 @@
 <div ng-controller='profileCtrl as profile'>
   <h1>Profile</h1>
-  {{user}}
+  <p>
+  Username:  {{user.username}}<br>
+  Forename:  {{user.forename}}<br>
+  Surname:  {{user.surname}}<br>
+  Email:  {{user.email}}<br>
+  Teacher:  {{user.teacher}}<br>
+  </p>
   <button ng-show="profile.isAuthed()" ng-click="profile.logout()" >Logout</button>
 </div>

@@ -15,6 +15,5 @@
 
       var token = auth.parseJwt(auth.getToken());
       $scope.user = UserData.get({userid:token.userid});
-      console.log($scope.user);
     });
 })();

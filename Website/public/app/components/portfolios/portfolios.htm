@@ -1,1 +1,28 @@
 <h1>Potfolios</h1>
+<form ng-submit='portfolios.createPortfolio()'>
+  <label for="createPortfolio">Portfolio Name:</label>
+  <input type="text" name="createPortfolio" id="createPortfolio" ng-model="portfolios.portfolioname" required>
+  <input type="submit" value="Create a portfolio"><br>
+</form>
+<br>
+
+<h2>Your portolios:</h2>
+<div ng-repeat='userportfolioname in userportfolionames'>
+  <h1>{{userportfolioname.portfolioname}}</h1>
+  <table>
+    <tr>
+      <th>Stock Name</th>
+      <th>Stock Ticker</th>
+      <th>Buy Price</th>
+      <th>Volume</th>
+      <th>Value</th>
+    </tr>
+    <!--<tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioid:userportfolioname.portfolioid}'>
+      <td>{{portfoliostock.stockname}}</td>
+      <td>{{portfoliostock.stockticker}}</td>
+      <td>{{portfoliostock.buyprice}}</td>
+      <td>{{portfoliostock.volume}}</td>
+      <td>{{portfoliostock.volume * portfoliostock.buyprice}}</td>
+    </tr>-->
+  </table>
+</div>
