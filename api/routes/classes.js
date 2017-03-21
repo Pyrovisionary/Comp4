@@ -45,14 +45,13 @@ router.route('/classes/users/:userid')
         classes.push(userclass.classname);
         pool.query('SELECT classes.classname, users.forename, users.surname, users.teacher FROM classes INNER JOIN classuserlink on classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid, function(err, getrows, fields){
           usersinclass.push(getrows);
-          //var classname = getrows[0].classname;
-          //var userdata  =;
           callback();
         });
         },
         function(err){
-        var response =  [classes, usersinclass];
-        res.json(response);
+          if (err) {console.log(err)};
+          var response =  [classes, usersinclass];
+          res.json(response);
       });
     });
   });

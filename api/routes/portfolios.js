@@ -1,9 +1,10 @@
 "use strict";
-var express    = require("express");
-var app        = express();
-var bodyParser = require("body-parser");
-var mysql      = require('mysql');
-var config     = require('../config');
+var express       = require("express");
+var app           = express();
+var bodyParser    = require("body-parser");
+var asynchronous  = require('async');
+var mysql         = require('mysql');
+var config        = require('../config');
 
 //Create a pool connection to SQL database
 var pool        = mysql.createPool({
@@ -70,21 +71,34 @@ router.route('/portfolios/stocks/:portfolioid')
 router.route('/portfolios/users/:userid')
   //Get all of a user's portfolios
   .get(function(req, res){
+    var portfolios = [];
+    var stockinportfolio = [];
     pool.query('SELECT * FROM portfolios WHERE userid=' + req.params.userid, function(err, rows, fields){
       if (err) console.log(err);
-      res.json(rows);
+      asynchronous.each(rows, function(portfoliostock, callback){
+        portfolios.push(portfoliostock.portfolioname)
+        pool.query('SELECT portfolios.portfolioname, portfoliostocklink.buyprice, portfoliostocklink.volume, stocknames.stockname, stocknames.stockticker FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid INNER JOIN stocknames ON portfoliostocklink.stockid = stocknames.stockid WHERE userid = ' + req.params.userid + ' AND portfolios.portfolioid =' + portfoliostock.portfolioid, function(err, getrows, fields){
+          console.log(getrows);
+          stockinportfolio.push(getrows);
+          callback();
+        });
+      }, function(err){
+        if (err) console.log(err);
+        var response = [portfolios, stockinportfolio];
+        res.json(response);
+      })
     });
   });
 
 
-router.route('/portfolios/users/:portfolioid')
+/*router.route('/portfolios/users/:portfolioid')
   //Get a specific portfolio + all the portfoliostocklink data
   .get(function(req, res){
     pool.query('SELECT * FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid  AND WHERE userid = ' + req.body.userid + ' AND WHERE portfolioid =' + req.body.portfolioid, function(err, rows, fields){
       if (err) console.log(err);
       res.json(rows);
     });
-  })
+  })*/
 
 
 
