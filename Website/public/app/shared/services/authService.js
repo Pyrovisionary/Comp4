@@ -64,7 +64,6 @@
           $location.replace();
         }
 
-
       };
     });
 

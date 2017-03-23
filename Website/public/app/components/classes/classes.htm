@@ -1,26 +1,26 @@
-<h1>classes</h1>
-
 <form ng-show='classes.isTeacher()'  ng-submit='classes.createClass()'>
   <label for="createClass">Class Name:</label>
-  <input type="text" name="createClass" id="createClass" ng-model="classes.className" required>
-  <input type="submit" value="Create a class"><br>
+  <input type="text" name="createClass" id="createClass" ng-model="classes.classname" required>
+  <input type="submit" value="Create a class">
 </form>
-
 <form ng-submit='classes.AddUserToClass()'>
+  <label for='joinClass'>Clas ID:</label>
   <input type="text" name="joinClass" id="joinClass" ng-model="classes.joinClass" required>
   <input type="submit" value="Join a class"><br>
 </form>
 
 <h2>You are a member of the following classes:</h2>
-<div ng-repeat='userclassname in userclassnames'>
-  <h1>{{userclassname}}</h1>
+<div class='Class' ng-repeat='userclassname in userclassnames'>
+  <p>{{userclassname}}</p>
   <table>
     <tr>
+      <th>ClassID</th>
       <th>Forename</th>
       <th>Surname</th>
       <th>Teacher?</th>
     </tr>
     <tr ng-repeat='userclass in userclasses | filter:{classname:userclassname}'>
+      <td>{{userclass.classid}}</td>
       <td>{{userclass.forename}}</td>
       <td>{{userclass.surname}}</td>
       <td>{{userclass.teacher}}</td>

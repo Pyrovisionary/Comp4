@@ -57,7 +57,7 @@ router.route('/portfolios/:portfolioid')
 router.route('/portfolios/stocks/:portfolioid')
   //Add a specific stock to a specific portfolio
   .post(function(req, res){
-    pool.query('SELECT TOP 1 FROM stockhistory WHERE stockid = ' + req.body.stockid +' ORDER BY sampletime DESC', function(err, rows, fields){
+    pool.query('SELECT TOP 1 sampletime FROM stockhistory WHERE stockid = ' + req.body.stockid, function(err, rows, fields){
       if(err) console.log(err);
       var buyprice = rows[0].stockvalue
       pool.query(' INSERT INTO portfoliostocklink (portfolioid, stockid, buyprice, volume) VALUES(\''  + req.body.portfolioid + '\', \'' + req.body.stockid + '\', \'' + buyprice + '\', \''+ req.body.volume+'\')', function(err, rows, fields){
@@ -78,7 +78,6 @@ router.route('/portfolios/users/:userid')
       asynchronous.each(rows, function(portfoliostock, callback){
         portfolios.push(portfoliostock.portfolioname)
         pool.query('SELECT portfolios.portfolioname, portfoliostocklink.buyprice, portfoliostocklink.volume, stocknames.stockname, stocknames.stockticker FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid INNER JOIN stocknames ON portfoliostocklink.stockid = stocknames.stockid WHERE userid = ' + req.params.userid + ' AND portfolios.portfolioid =' + portfoliostock.portfolioid, function(err, getrows, fields){
-          console.log(getrows);
           stockinportfolio.push(getrows);
           callback();
         });

@@ -35,6 +35,10 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
 //quotation marks around stocknames whilst building the resuest string
     var requeststring = "https://query.yahooapis.com/v1/public/yql?q=select Symbol, LastTradePriceOnly, Volume, Change from yahoo.finance.quote where symbol in (";
     var endrequeststring = ")&format=json&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&jsonCompat=new&callback=";
+//This establishes the timestamp variable, to record the datetime when the data is collected.
+//As the stockdata requests are sent off and responded to, and entered into the db asynchronously,
+//This variable makes sure that they all have the same timestamp for reference.
+    var timestamp = Math.floor(Date.now()/1000);
     var x = '"';
 //Yahoo's finance api will only accept requests for info on up to 1000 stocks at a time, hence the
 //maxrequestlength variable is set to 1000
@@ -76,7 +80,7 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
           pool.query('SELECT stockid FROM stocknames WHERE stockticker='+"'"+stock.Symbol+"'", function(err, rows, field){
               if(err) console.log(err);
               for(var k=0; k<rows.length; k++){
-                pool.query('INSERT INTO stockhistory (stockid, stockvalue, stockvaluepercentagechange, volume) VALUES(\''  + rows[k].stockid+ '\', \'' + stock.LastTradePriceOnly+ '\', \''+stock.Change+ '\', \''+ stock.Volume + '\')', function(err){
+                pool.query('INSERT INTO stockhistory (stockid, stockvalue, stockvaluepercentagechange, sampletime, volume) VALUES(\''  + rows[k].stockid+ '\', \'' + stock.LastTradePriceOnly+ '\', \''+stock.Change+ '\', \''+timestamp+'\', \''+ stock.Volume + '\')', function(err){
                   if(err) console.log(err);
                   callback();
                 });

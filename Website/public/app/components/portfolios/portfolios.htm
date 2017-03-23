@@ -1,4 +1,3 @@
-<h1>Potfolios</h1>
 <form ng-submit='portfolios.createPortfolio()'>
   <label for="createPortfolio">Portfolio Name:</label>
   <input type="text" name="createPortfolio" id="createPortfolio" ng-model="portfolios.portfolioname" required>
@@ -17,12 +16,12 @@
       <th>Volume</th>
       <th>Value</th>
     </tr>
-    <!--<tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioid:userportfolioname.portfolioid}'>
+    <tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioid:userportfolioname.portfolioid}'>
       <td>{{portfoliostock.stockname}}</td>
       <td>{{portfoliostock.stockticker}}</td>
       <td>{{portfoliostock.buyprice}}</td>
       <td>{{portfoliostock.volume}}</td>
       <td>{{portfoliostock.volume * portfoliostock.buyprice}}</td>
-    </tr>-->
+    </tr>
   </table>
 </div>

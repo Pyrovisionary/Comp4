@@ -88,6 +88,8 @@ app.factory('GetPortfolioStocks', function($resource, API){
   return $resource(API + '/portfolios/users/:portfolioid', {userid:'@userid', portfolioid:'@portfolioid'});
 });
 
+//TODO: write a route that updates a user's account balance
+
 //Get the value of a user's portfolio TODO: make this route
 /*app.factory('GetPortfolioValue', function($resource, API){
   return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
@@ -98,12 +100,12 @@ app.factory('SellStock', function($resource, API){
   //return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
 });
 
-//Get stocks
+//Get all stocks
 app.factory('GetStocks', function($resource, API){
-  //return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
+  return $resource(API + '/stocknames/stockhistory');
 });
 
-//Search stocks (get stocks by name/ticker)
+//Search stocks (get stocks by name/ticker) TODO: this
 app.factory('GetSearchedStocks', function($resource, API){
   //return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
 });
@@ -114,5 +116,13 @@ app.factory('BuyStock', function($resource, API){
 });
 
 app.constant('API', 'http://localhost:8080/api');
+
+//TODO: make this look more authentic
+app.filter('pagination', function(){
+  return function(input, start){
+    start = +start;
+    return input.slice(start);
+    };
+});
 
 })();

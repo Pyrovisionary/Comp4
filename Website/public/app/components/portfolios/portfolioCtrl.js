@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('portfolioCtrl', function(auth, $scope, CreatePortfolio, GetUserPortfolios){
+    .controller('portfolioCtrl', function(auth, $scope, CreatePortfolio, GetUserPortfolios, $route){
       var self = this;
       $scope.portfoliostocks = [];
 
@@ -17,7 +17,10 @@
 
     self.createPortfolio = function(){
       var token = auth.parseJwt(auth.getToken());
-      CreatePortfolio.save({userid:token.userid, portfolioname:self.portfolioname});
+      CreatePortfolio.save({userid:token.userid, portfolioname:self.portfolioname}).$promise.then(function(){
+        $scope.portfolios.portfolioname ='';
+        $route.reload()
+      });
     };
 
     self.getUserPortfolios = function(){

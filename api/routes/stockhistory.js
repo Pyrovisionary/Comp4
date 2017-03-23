@@ -28,13 +28,13 @@ router.route('/stocknames')
 router.route('/stocknames/stockhistory')
     .get(function(req, res){
     //Gets all the newest stockhistory data in descending order
-        pool.query('Select TOP 1 sampletime FROM stockhistory ORDER BY sampletime DESC', function(err, rows, fields){
+        pool.query('SELECT sampletime FROM stockhistory LIMIT 1', function(err, rows, fields){
           if (err) console.log(err);
-          var newestsampletime = rows[0].sampletime;
+          var newestsampletime = rows[0].sampletime ;
     //Gets the stocknames joined with their newest stock history
-          pool.query('Select * FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime =' + newestsampletime + ' ORDER BY stockname', function(err, rows, fields){
+          pool.query('SELECT stocknames.stockname, stocknames.stockid, stocknames.stockticker, stockhistory.stockvalue, stockhistory.stockvaluepercentagechange FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime ="' + newestsampletime + '" ORDER BY stockname DESC', function(err, getrows, fields){
             if (err) console.log(err);
-            res.json(rows);
+            res.json(getrows);
           });
         });
     })

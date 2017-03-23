@@ -28,9 +28,9 @@ function authenticateUser(req, res, pool) {
     if  (rows.length!==0) {
       if (rows[0].pass == req.body.pass) {
         var user = {
-          "username" : rows[0].username,
-          'userid'   : rows[0].userid,
-          "teacher"  : rows[0].teacher
+          "username"        : rows[0].username,
+          'userid'          : rows[0].userid,
+          "teacher"         : rows[0].teacher
           }
         var token = jwt.sign(user, app.get('SecretVariable'), {
           expiresIn: 86400
@@ -76,7 +76,7 @@ router.route('/authenticate/users')
     if (req.body.teacher == true){teacher=1;} else {teacher = 0;}
     pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
       if (rows.length == 0){
-        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + teacher +'\')', function(err, rows, fields){
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
           if(err) console.log(err);
           authenticateUser(req, res, pool);
         });

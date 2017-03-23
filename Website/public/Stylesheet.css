@@ -12,13 +12,44 @@ ul {
   text-decoration: none;
 }
 
+input[type='submit'], button{
+  background-color: black;
+  border: none;
+  color:white;
+  border-radius:4px;
+  font-size:12px;
+  padding:6px 9px 7px 9px;
+}
+
 .main-body-wrapper {
   float:left;
   height:auto;
-  width:40%;
-  margin-left:30%;
+  width:80%;
+  margin-left:10%;
+  margin-top:40px;
+  margin-bottom:40px;
+
+}
+
+.main-body-wrapper table {
+  border-collapse: collapse;
+  margin: 0 auto;
+
+}
+
+.main-body-wrapper td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.main-body-wrapper tr:nth-child(even) {
+    background-color: #dddddd;
 }
 .login-wrapper {
+  float:left;
+  width:70%;
+  margin: 0, auto;
   border:1px solid #E31E2B;
   padding: 0 0 20px 0;
   margin:40px 0 0 0;
@@ -36,7 +67,7 @@ ul {
 
 .login-wrapper form input[type='text'], input[type='password'], input[type='email']{
   width:100%;
-  padding: 12px 20px;
+  padding: 8px 10px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #9C9C9C;
@@ -57,9 +88,8 @@ ul {
   border: none;
   color:white;
   border-radius:4px;
-  font-family: 'Playfair Display SC', sans-serif;
-  font-size:17px;
-  padding:7px 12px 9px 12px;
+  font-size:12px;
+  padding:6px 9px 7px 9px;
 }
 .login-wrapper form #newforename, #newsurname{
   width:48%;
@@ -69,6 +99,10 @@ ul {
 
 .ng-touched.ng-invalid {
   border-color:red;
+}
+
+.Class p {
+  font-size:;
 }
 
 .LoginTabs {
@@ -137,6 +171,19 @@ form p span {
   font-family: 'Lato', sans-serif;
   font-size:15px;
   color:#E31E2B;
+}
+
+.pagebuttons ul {
+  display:block;
+  margin: 0 auto;
+  text-align:center;
+  overflow: hidden;
+}
+
+.pagebuttons ul li{
+  display:inline-block;
+  font-size:17px;
+  padding:10px 15px 16px 10px;
 }
 
 .menu-line{
@@ -223,7 +270,8 @@ padding: 40px 0 20px 0;
 }
 @media only screen and (min-width: 1441px) {
   .main-body-wrapper{
-    width:50%;
+    width:95%;
+    margin-left:2.5%;
   }
 }
 #footer2 {
@@ -234,7 +282,6 @@ padding: 40px 0 20px 0;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-  margin-top:40px;
 }
 
 #footer {
