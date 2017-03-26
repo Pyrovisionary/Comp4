@@ -1,36 +1,41 @@
+<div>
+  <form>
+    <select ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
+      <option value=''>Portfolio</option>
+    </select>
+    <input type="text" ng-model='stocks.buyvolume' name='buyvolume' required>
+    <!--<input type="submit" ng-click='stocks.buyStock(stock.stockid, stock.stockvalue)' value="Buy">-->
+  </form>
+</div>
+<br>
+<select ng-model='searchexchange' ng-options='stock.stockexchange for stock in stockitems | unique:"stockexchange"' required>
+  <option value=''>Exchange</option>
+</select>
+
+<select ng-model='searchsector' ng-options='stock.sector for stock in stockitems | unique:"sector"' required>
+  <option value=''>Sector</option>
+</select>
+<br>
+<label>Search:</label> <input ng-model="search.stockname">
+
 <table>
   <tr>
     <th>Stock</th>
     <th>Ticker</th>
     <th>Value</th>
     <th>Value Change (%)</th>
-    <th>Portfolio</th>
-    <th>Volume</th>
-    <th>Purchase</th>
+    <th>Market cap</th>
   </tr>
-  <tr ng-repeat="datalist in datalists |
-  pagination: curPage * pageSize | limitTo: pageSize">
-    <form novalidate>
-      <td>{{datalist.stockname}}</td>
-      <td>{{datalist.stockticker}}</td>
-      <td>{{datalist.stockvalue}}</td>
-      <td>{{datalist.stockvaluepercentagechange}}</td>
-      <td>
-        <select ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
-          <option value=''>Portfolio</option>
-        </select>
-      </td>
-      <td>
-        <input type="text" ng-model='stocks.buyvolume' name='buyvolume' required>
-      </td>
-      <td>
-        <input type="submit" ng-click='stocks.buyStock(datalist.stockid, datalist.stockvalue)' value="Buy">
-      </td>
-    </form>
+  <tr ng-repeat="stockitem in filtered = (stockitems | filter:search | filter:{stockexchange:searchexchange.stockexchange} | filter:{sector:searchsector.sector} | pagination: curPage * pageSize | limitTo: pageSize) ">
+    <td>{{stockitem.stockname}}</td>
+    <td>{{stockitem.stockticker}}</td>
+    <td>{{stockitem.stockvalue}}</td>
+    <td>{{stockitem.stockvaluepercentagechange}}</td>
+    <td>{{stockitem.stockmarketcap}}</td>
   </tr>
 </table>
 
-<div class="pagebuttons" ng-show="datalists.length">
+<div class="pagebuttons" ng-show="stockitems.length">
   <ul>
     <li>
       <button type="button" ng-disabled="curPage == 0" ng-click="curPage=curPage-1">
@@ -43,7 +48,7 @@
       </span>
     </li>
     <li>
-      <button type="button" ng-disabled="curPage >= datalists.length/pageSize - 1" ng-click="curPage = curPage+1">
+      <button type="button" ng-disabled="curPage >= stocks.length/pageSize - 1" ng-click="curPage = curPage+1">
         NEXT
       </button>
     </li>

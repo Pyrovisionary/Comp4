@@ -83,12 +83,6 @@ app.factory('GetUserPortfolios', function($resource, API){
   return $resource(API + '/portfolios/users/:userid', {userid:'@userid'});
 });
 
-//Get all of the stocks in a user's portfolio
-app.factory('GetPortfolioStocks', function($resource, API){
-  return $resource(API + '/portfolios/users/:portfolioid', {userid:'@userid', portfolioid:'@portfolioid'});
-});
-
-//TODO: write a route that updates a user's account balance
 app.factory('UpdateAccountBalance', function($resource, API){
   var data = $resource(API + '/users/stocks/', {userid:'@userid', cost:'@cost'}, {
     update:{
@@ -105,7 +99,7 @@ app.factory('UpdateAccountBalance', function($resource, API){
 
 //Remove a stock (sell it) from a portfolio
 app.factory('SellStock', function($resource, API){
-  return $resource(API + '/portfolios/stocks/:portfoliostocklinkid', {portfoliostocklinkid:'@portfoliostocklinkid', sellvolume:'@sellvolume', volume:'@volume'});
+  return $resource(API + '/portfolios/stocks/users/', {portfoliostocklinkid:'@portfoliostocklinkid', sellvolume:'@sellvolume', volume:'@volume'});
 });
 
 //Get latest data for one stock
@@ -125,17 +119,34 @@ app.factory('GetSearchedStocks', function($resource, API){
 
 //Buy stock
 app.factory('BuyStock', function($resource, API){
-  return $resource(API + '/portfolios/stocks/', {stockid:'@stockid', userid:'@userid', portfolioname:'@portfolioname', volume:'@volume', price:'@price'});
+  return $resource(API + '/portfolios/stocks/users/', {stockid:'@stockid', userid:'@userid', portfolioname:'@portfolioname', volume:'@volume', price:'@price'});
 });
 
 app.constant('API', 'http://localhost:8080/api');
 
-//TODO: make this look more authentic
+//TODO: make these filters look more authentic
 app.filter('pagination', function(){
   return function(input, start){
     start = +start;
     return input.slice(start);
     };
+});
+
+app.filter('unique', function() {
+   return function(collection, keyname) {
+      var output = [];
+      var keys = [];
+
+      angular.forEach(collection, function(item) {
+          var key = item[keyname];
+          if(keys.indexOf(key) === -1) {
+              keys.push(key);
+              output.push(item);
+          }
+      });
+
+      return output;
+   };
 });
 
 })();

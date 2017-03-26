@@ -4,10 +4,12 @@
   angular.module('myApp')
     .controller('stockCtrl', function($scope, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
       var self = this;
-      $scope.stocks = [];
       $scope.curPage = 0;
       $scope.pageSize = 15;
-      $scope.datalists = [];
+      $scope.stockitems = [];
+      $scope.searched = [];
+      $scope.search = {};
+      $scope.search.stockname = '';
       var token = auth.parseJwt(auth.getToken());
       $scope.user = UserData.get({userid:token.userid});
 
@@ -20,12 +22,12 @@
       };
 
       self.getAllStocks = function(){
-        return GetStocks.query()
+        return GetStocks.query();
       };
 
       self.getAllStocks().$promise.then(function(data){
           //console.log(data[0])
-          $scope.datalists = data
+          $scope.stockitems = data
 
       });
 
@@ -55,7 +57,7 @@
       };
 
       $scope.numberOfPages = function() {
-        return Math.ceil($scope.datalists.length / $scope.pageSize);
+        return Math.ceil($scope.stockitems.length / $scope.pageSize);
       };
 
     });

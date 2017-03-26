@@ -22,7 +22,7 @@ var pool          = mysql.createPool({
 console.log("Scheduled stock autoupdate online");
 
 // Schedule the following code to repeat every TODO: decide timeframe, else, every hour.
-var j = schedule.scheduleJob('* */60 * * *', function(){
+//var j = schedule.scheduleJob('* */60 * * *', function(){
   var builtstrings = [];
 
 //Select all of the stocktickers from the stocknames table in the DB.
@@ -33,7 +33,7 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
 //The following variables are the begining and end of the http request that the stock autoupdater
 //sends off to get stock values. The variable x='"' is defined so that I can quickly and easly concat
 //quotation marks around stocknames whilst building the resuest string
-    var requeststring = "https://query.yahooapis.com/v1/public/yql?q=select Symbol, LastTradePriceOnly, Volume, Change from yahoo.finance.quote where symbol in (";
+    var requeststring = "https://query.yahooapis.com/v1/public/yql?q=select Symbol, LastTradePriceOnly, MarketCapitalization, StockExchange, Change from yahoo.finance.quote where symbol in (";
     var endrequeststring = ")&format=json&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&jsonCompat=new&callback=";
 //This establishes the timestamp variable, to record the datetime when the data is collected.
 //As the stockdata requests are sent off and responded to, and entered into the db asynchronously,
@@ -80,7 +80,7 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
           pool.query('SELECT stockid FROM stocknames WHERE stockticker='+"'"+stock.Symbol+"'", function(err, rows, field){
               if(err) console.log(err);
               for(var k=0; k<rows.length; k++){
-                pool.query('INSERT INTO stockhistory (stockid, stockvalue, stockvaluepercentagechange, sampletime, volume) VALUES(\''  + rows[k].stockid+ '\', \'' + stock.LastTradePriceOnly+ '\', \''+stock.Change+ '\', \''+timestamp+'\', \''+ stock.Volume + '\')', function(err){
+                pool.query('INSERT INTO stockhistory (stockid, stockvalue, stockvaluepercentagechange, sampletime, stockmarketcap, stockexchange) VALUES(\''  + rows[k].stockid+ '\', \'' + stock.LastTradePriceOnly+ '\', \''+stock.Change+ '\', \''+timestamp+'\', \''+ stock.MarketCapitalization +'\', \''+ stock.StockExchange + '\')', function(err){
                   if(err) console.log(err);
                   callback();
                 });
@@ -96,4 +96,4 @@ var j = schedule.scheduleJob('* */60 * * *', function(){
     console.log(' all done!');
     });
   });
-});
+//});

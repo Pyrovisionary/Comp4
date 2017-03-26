@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('classCtrl', function(auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope, $route){
+    .controller('classCtrl', function(auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope, $route, GetUserPortfolios){
       var self = this;
       //console.log(token.userid);
       $scope.userclasses=[];
@@ -57,6 +57,19 @@
         }
         //console.log(Object.keys(data[1][1]).length);
       });
+
+      self.getStudentPortfolios = function(userid){
+        $scope.studentportfoliostocks=[];
+        $scope.studentportfolionames
+        GetUserPortfolios.query({userid:userid}).$promise.then(function(data){
+          $scope.studentportfolionames = data[0];
+          for ( var i = 0; i < Object.keys(data[1]).length; i++) {
+            for ( var j = 0; j < Object.keys(data[1][i]).length; j++) {
+              $scope.studentportfoliostocks.push(data[1][i][j]);
+            }
+          }
+        });
+      };
 
     });
 

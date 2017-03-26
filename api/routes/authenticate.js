@@ -73,11 +73,12 @@ router.route('/authenticate/users')
     pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
       if (rows.length == 0){
         //TODO: you've hashed the password here, great, but how do you compare hashes now, how to use this hasing method on client side to get login working
-        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', PASSWORD(\'' + req.body.pass + '\'), \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
           if(err) console.log(err);
           authenticateUser(req, res, pool);
         });
       } else{
+        console.log("Auth unsuccessful, username already exists");
         res.json({
           success:false,
           message:"Auth unsuccessful, username already exists"

@@ -59,8 +59,8 @@ router.route('/classes/users/:userid')
     pool.query('SELECT * FROM classuserlink INNER JOIN classes on classes.classid = classuserlink.classid WHERE userid = ' + req.params.userid , function(err, rows, fields){
       if (err) console.log(err);
       asynchronous.each(rows, function(userclass, callback){
-        classes.push(userclass.classname);
-        pool.query('SELECT classes.classname, classes.classid, users.forename, users.surname, users.teacher FROM classes INNER JOIN classuserlink on classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid, function(err, getrows, fields){
+        classes.push(userclass);
+        pool.query('SELECT classes.classname, classes.classid, users.forename, users.userid, users.surname, users.teacher FROM classes INNER JOIN classuserlink on classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid, function(err, getrows, fields){
           usersinclass.push(getrows);
           callback();
         });

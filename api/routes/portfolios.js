@@ -54,7 +54,7 @@ router.route('/portfolios/:portfolioid')
     });
   });
 
-router.route('/portfolios/stocks/:portfoliostocklinkid')
+router.route('/portfolios/stocks/users/')
   //Add a specific stock to a specific portfolio (Buy a stock)
   .post(function(req, res){
     pool.query('SELECT portfolioid FROM portfolios WHERE portfolioname="'+req.body.portfolioname+'" AND userid='+req.body.userid, function(err, getrows, fields){
