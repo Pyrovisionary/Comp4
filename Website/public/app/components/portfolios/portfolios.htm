@@ -15,13 +15,22 @@
       <th>Buy Price</th>
       <th>Volume</th>
       <th>Value</th>
+      <th>Volume</th>
+      <th>Sell</th>
     </tr>
-    <tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioid:userportfolioname.portfolioid}'>
+    <tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioname:userportfolioname}'>
       <td>{{portfoliostock.stockname}}</td>
       <td>{{portfoliostock.stockticker}}</td>
       <td>{{portfoliostock.buyprice}}</td>
       <td>{{portfoliostock.volume}}</td>
       <td>{{portfoliostock.volume * portfoliostock.buyprice}}</td>
+      <td>
+        <input type="text" ng-model='portfolios.sellvolume' name='sellvolume' required>
+      </td>
+      <td>
+        <input type="submit" ng-click='portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)' value="Sell">
+      </td>
     </tr>
   </table>
+  <br>
 </div>

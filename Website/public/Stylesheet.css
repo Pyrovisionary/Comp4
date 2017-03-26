@@ -97,7 +97,7 @@ input[type='submit'], button{
   display:inline;
 }
 
-.ng-touched.ng-invalid {
+.lgin-wrapper .ng-touched.ng-invalid {
   border-color:red;
 }
 
@@ -288,7 +288,7 @@ padding: 40px 0 20px 0;
   text-align: center;
   width:100%;
   float:left;
-  background-color:#E31E2B;
+  background-color:black;
   height:auto; /*Make height auto after adding content*/
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);

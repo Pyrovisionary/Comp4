@@ -89,6 +89,14 @@ app.factory('GetPortfolioStocks', function($resource, API){
 });
 
 //TODO: write a route that updates a user's account balance
+app.factory('UpdateAccountBalance', function($resource, API){
+  var data = $resource(API + '/users/stocks/', {userid:'@userid', cost:'@cost'}, {
+    update:{
+      method:'PUT'
+    }
+  });
+  return data
+});
 
 //Get the value of a user's portfolio TODO: make this route
 /*app.factory('GetPortfolioValue', function($resource, API){
@@ -97,7 +105,12 @@ app.factory('GetPortfolioStocks', function($resource, API){
 
 //Remove a stock (sell it) from a portfolio
 app.factory('SellStock', function($resource, API){
-  //return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
+  return $resource(API + '/portfolios/stocks/:portfoliostocklinkid', {portfoliostocklinkid:'@portfoliostocklinkid', sellvolume:'@sellvolume', volume:'@volume'});
+});
+
+//Get latest data for one stock
+app.factory('GetStockPrice', function($resource, API){
+  return $resource(API + '/stockhistory/:stockid', {stockid:'@stockid'})
 });
 
 //Get all stocks
@@ -112,7 +125,7 @@ app.factory('GetSearchedStocks', function($resource, API){
 
 //Buy stock
 app.factory('BuyStock', function($resource, API){
-  return $resource(API + '/portfolios/stocks/:portfolioid', {stockid:'@stockid', portfolioid:'@portfolioid', volume:'@volume'});
+  return $resource(API + '/portfolios/stocks/', {stockid:'@stockid', userid:'@userid', portfolioname:'@portfolioname', volume:'@volume', price:'@price'});
 });
 
 app.constant('API', 'http://localhost:8080/api');

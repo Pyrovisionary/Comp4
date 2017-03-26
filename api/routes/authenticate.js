@@ -61,12 +61,8 @@ function authenticateUser(req, res, pool) {
 };
 
 router.route('/authenticate')
-  .get(function(req,res){
-      res.json({ message: "GOT"});
-  })
   .post(function(req, res){
-    //TODO: mke so you don't have to use this serverside workaround
-    authenticateUser(req, res, pool);
+      authenticateUser(req, res, pool);
   });
 
 router.route('/authenticate/users')
@@ -76,7 +72,8 @@ router.route('/authenticate/users')
     if (req.body.teacher == true){teacher=1;} else {teacher = 0;}
     pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
       if (rows.length == 0){
-        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
+        //TODO: you've hashed the password here, great, but how do you compare hashes now, how to use this hasing method on client side to get login working
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', PASSWORD(\'' + req.body.pass + '\'), \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
           if(err) console.log(err);
           authenticateUser(req, res, pool);
         });

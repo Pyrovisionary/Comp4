@@ -6,7 +6,7 @@
       var self = this;
 
       self.login = function($scope) {
-        userService.login(self.username, self.password)
+        userService.login(self.username, self.password);
       };
 
       self.register = function() {

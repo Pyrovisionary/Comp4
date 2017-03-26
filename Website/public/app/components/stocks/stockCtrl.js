@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('stockCtrl', function($scope, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock){
+    .controller('stockCtrl', function($scope, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
       var self = this;
       $scope.stocks = [];
       $scope.curPage = 0;
@@ -40,10 +40,15 @@
       });
 
       self.buyStock = function(stockid, stockvalue){
+        var stockscost = -1*self.buyvolume*stockvalue;
+        if ($scope.user.accountbalance + stockscost >=0){
+          var token = auth.parseJwt(auth.getToken());
+          BuyStock.save({stockid:stockid, userid:token.userid, portfolioname:self.portfolioname, volume:self.buyvolume, price:stockvalue}).$promise.then(function(){
+            UpdateAccountBalance.update({userid:token.userid, cost:stockscost})
+            $scope.stocks.buyvolume ='';
+            $scope.stocks.portfolioname ='';
 
-        if ($scope.user.accountbalance - (self.buyvolume*stockvalue) >=0){
-          
-          buyStock.save({stockid:stockid, portfolioid:self.portfolioname, volume:self.buyvolume})
+          });
         } else {
           console.log('Insufficient funds');
         }

@@ -29,6 +29,7 @@ var portfolios     = require('./routes/portfolios');
 var stockhistory   = require('./routes/stockhistory');
 var classes        = require('./routes/classes');
 var authenticate   = require('./routes/authenticate');
+var cors           = require('cors')
 
 // Set a default limit on data transfers (50mb is much higher than the default),
 // and suits our data transmission purposes much better
@@ -37,16 +38,21 @@ app.use(bodyParser.json({limit: "50mb"}));
 
 //Use morgan, TODO: why do I use morgan
 app.use(morgan("dev"));
+//Use cors module to enable options and put AJAX requests
+app.use(cors());
+
+
 
 //Allow requests from different domains, allow GET, POST and OPTIONS requests,
 //allow the following headers when cross origin requests are made
-app.use(function(req, res, next) {
+app.options('*', cors());
+/*app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "GET", "POST", 'OPTIONS');
+  res.setHeader("Access-Control-Allow-Methods", "GET", 'PUT', "POST", 'OPTIONS' );
   res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, origin, Authorization, x-access-token, accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   next();
-});
+});*/
 
 //Set port to 8080
 var port = process.env.port || 8080;

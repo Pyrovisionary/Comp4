@@ -46,22 +46,24 @@ router.route('/stocknames/stockhistory')
       });
     });
 
-router.route('/stocknames/:stockid')
-  //get one stock
+router.route('/stockhistory/:stockid')
+  //get the latest price of a specific stock
   .get(function(req,res){
-    pool.query('SELECT * FROM stocknames WHERE stockid=' + req.params.stockid, function(err, rows, fields){
+    //console.log(req.params.stockid)
+    pool.query('SELECT * FROM stockhistory WHERE stockid=' + req.params.stockid + ' ORDER BY sampletime LIMIT 1', function(err, rows, fields){
       if (err) console.log(err);
       res.json(rows[0]);
     });
-  })
+  });
   //Delete a stock
-  .delete(function(req,res){
+  //TODO: do I delete this method? do I need it?
+  /*.delete(function(req,res){
     console.log("Attempting to delete");
     pool.query('DELETE FROM stocknames WHERE stockid = ' + req.params.stockid, function(err, rows, fields){
       if(err) console.log(err);
       res.json({message: "Stock" + req.params.stockid + "deleted successfully!"});
     });
-  });
+  });*/
 
 
 router.route('/stockhistory')

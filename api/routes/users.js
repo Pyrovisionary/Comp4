@@ -46,10 +46,23 @@ router.route('/users/:userid')
   //Delete a user
   .delete(function(req,res){
     console.log("Attempting to delete");
-    pool.query('DELETE FROM users WHERE userid = ' + req.params.userid, function(err, rows,fileds){
+    pool.query('DELETE FROM users WHERE userid = ' + req.params.userid, function(err, rows,fields){
       if(err) console.log(err);
       res.json({message: "User deleted successfully!"});
     });
   });
+
+router.route('/users/stocks/')
+  //Update a user's accountbalance
+  .put(function(req, res){
+    pool.query('SELECT accountbalance FROM users WHERE userid='+req.body.userid, function(err, rows, fields){
+      var newbalance=rows[0].accountbalance + req.body.cost;
+      pool.query('UPDATE users SET accountbalance =' + newbalance + ' WHERE userid =' +req.body.userid,function(err, rows, fields){
+        if (err) console.log(err);
+        res.json('Balance updated')
+      });
+    });
+  });
+
 
 module.exports = router;

@@ -54,17 +54,29 @@ router.route('/portfolios/:portfolioid')
     });
   });
 
-router.route('/portfolios/stocks/:portfolioid')
-  //Add a specific stock to a specific portfolio
+router.route('/portfolios/stocks/:portfoliostocklinkid')
+  //Add a specific stock to a specific portfolio (Buy a stock)
   .post(function(req, res){
-    pool.query('SELECT TOP 1 sampletime FROM stockhistory WHERE stockid = ' + req.body.stockid, function(err, rows, fields){
-      if(err) console.log(err);
-      var buyprice = rows[0].stockvalue
-      pool.query(' INSERT INTO portfoliostocklink (portfolioid, stockid, buyprice, volume) VALUES(\''  + req.body.portfolioid + '\', \'' + req.body.stockid + '\', \'' + buyprice + '\', \''+ req.body.volume+'\')', function(err, rows, fields){
+    pool.query('SELECT portfolioid FROM portfolios WHERE portfolioname="'+req.body.portfolioname+'" AND userid='+req.body.userid, function(err, getrows, fields){
+      var portfolioid = getrows[0].portfolioid;
+      pool.query('INSERT INTO portfoliostocklink (portfolioid, stockid, buyprice, volume) VALUES(\'' + portfolioid + '\', \'' + req.body.stockid + '\', \'' + req.body.price + '\', \'' + req.body.volume + '\')', function(err, rows, fields){
         if(err) console.log(err);
-        res.json("Stock " +req.body.stockid+ " added to portfolio " + req.body.portfolioid)
+        res.json("Stock " + req.body.stockid + " added to portfolio " + req.body.portfolioid)
       });
     });
+  })
+  //Remove a specific stock from a specific portfolio (sell a stock)
+  .delete(function(req,res){
+    if(req.query.volume==req.query.sellvolume){
+      pool.query('DELETE FROM portfoliostocklink WHERE portfoliostocklinkid ='+req.params.portfoliostocklinkid, function(err, rows, fields){
+        res.json('Stock sold!')
+      });
+    } else{
+      var newvolume = req.query.volume - req.query.sellvolume;
+      pool.query('UPDATE portfoliostocklink SET volume =' + newvolume + ' WHERE portfoliostocklinkid='+req.params.portfoliostocklinkid,function(err, rows, fields){
+        res.json('Stock sold')
+      });
+    }
   });
 
 
@@ -77,7 +89,7 @@ router.route('/portfolios/users/:userid')
       if (err) console.log(err);
       asynchronous.each(rows, function(portfoliostock, callback){
         portfolios.push(portfoliostock.portfolioname)
-        pool.query('SELECT portfolios.portfolioname, portfoliostocklink.buyprice, portfoliostocklink.volume, stocknames.stockname, stocknames.stockticker FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid INNER JOIN stocknames ON portfoliostocklink.stockid = stocknames.stockid WHERE userid = ' + req.params.userid + ' AND portfolios.portfolioid =' + portfoliostock.portfolioid, function(err, getrows, fields){
+        pool.query('SELECT portfoliostocklink.portfoliostocklinkid, portfolios.portfolioid, stocknames.stockid, portfolios.portfolioname, stocknames.stockname, stocknames.stockticker, portfoliostocklink.buyprice, portfoliostocklink.volume FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid INNER JOIN stocknames ON portfoliostocklink.stockid = stocknames.stockid WHERE userid = ' + req.params.userid + ' AND portfolios.portfolioid =' + portfoliostock.portfolioid, function(err, getrows, fields){
           stockinportfolio.push(getrows);
           callback();
         });
@@ -88,16 +100,6 @@ router.route('/portfolios/users/:userid')
       })
     });
   });
-
-
-/*router.route('/portfolios/users/:portfolioid')
-  //Get a specific portfolio + all the portfoliostocklink data
-  .get(function(req, res){
-    pool.query('SELECT * FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid  AND WHERE userid = ' + req.body.userid + ' AND WHERE portfolioid =' + req.body.portfolioid, function(err, rows, fields){
-      if (err) console.log(err);
-      res.json(rows);
-    });
-  })*/
 
 
 
