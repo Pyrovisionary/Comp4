@@ -7,37 +7,44 @@
         .when("/profile", {
             templateUrl : "app/components/profile/profile.htm",
             controller  : 'profileCtrl',
-            controllerAs: 'profile'
+            controllerAs: 'profile',
+            activetab: 'profile'
         })
         .when('/login', {
             templateUrl : 'app/components/loginandregister/login.htm',
             controller  : 'loginCtrl',
-            controllerAs: 'login'
+            controllerAs: 'login',
+            activetab: 'login'
         })
         .when('/register', {
             templateUrl : 'app/components/loginandregister/register.htm',
             controller  : 'loginCtrl',
-            controllerAs: 'login'
+            controllerAs: 'login',
+            activetab:'register'
         })
         .when('/portfolios', {
             templateUrl : 'app/components/portfolios/portfolios.htm',
             controller  : 'portfolioCtrl',
-            controllerAs: 'portfolios'
+            controllerAs: 'portfolios',
+            activetab:'portfolios'
         })
         .when('/classes', {
             templateUrl : 'app/components/classes/classes.htm',
             controller  : 'classCtrl',
-            controllerAs: 'classes'
+            controllerAs: 'classes',
+            activetab: 'classes'
         })
         .when('/stocks', {
             templateUrl : 'app/components/stocks/stocks.htm',
             controller  : 'stockCtrl',
-            controllerAs: 'stocks'
+            controllerAs: 'stocks',
+            activetab: 'stocks'
         })
         .when('/',{
           templateUrl : 'app/components/profile/profile.htm',
           controller  : 'profileCtrl',
-          controllerAs: 'profile'
+          controllerAs: 'profile',
+          activetab: 'profile'
         });
         $httpProvider.interceptors.push('authInterceptor');
         //$httpProvider.defaults.headers.common = {};

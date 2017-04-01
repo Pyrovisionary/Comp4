@@ -10,6 +10,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
 
+    <!-- TODO: put this script somewhere, preferrably navbar control -->
     <script>
       function myFunction() {
         var x = document.getElementById("MyLoginTabs");
@@ -41,19 +42,19 @@
     <div class="LoginTabs" id="myLoginTabs" ng-controller="navbarCtrl as nav">
       <ul>
         <div ng-show='!nav.isAuthed()'>
-          <li class="hoverable">
-            <a href="/login">Login</a></li>
-          <li class="hoverable">
+          <li ng-class="{active: $route.current.activetab == 'login'}" class="hoverable">
+            <a  href="/login">Login</a></li>
+          <li ng-class="{active: $route.current.activetab == 'register'}" class="hoverable">
             <a href="/register">Register</a></li>
         </div>
         <div ng-show="nav.isAuthed()">
-          <li class="hoverable">
+          <li ng-class="{active: $route.current.activetab == 'profile'}" class="hoverable">
             <a href="/profile">Profile</a></li>
-          <li class="hoverable">
-            <a href="/portfolios">Portfolios</a></li>
-          <li class="hoverable">
+          <li ng-class="{active: $route.current.activetab == 'portfolios'}" class="hoverable">
+            <a  href="/portfolios">Portfolios</a></li>
+          <li ng-class="{active: $route.current.activetab == 'classes'}" class="hoverable">
             <a href="/classes">Classes</a></li>
-          <li class="hoverable">
+          <li ng-class="{active: $route.current.activetab == 'stocks'}" class="hoverable">
             <a href="/stocks">Stocks</a></li>
         </div>
         <li class="icon">

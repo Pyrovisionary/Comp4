@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('portfolioCtrl', function(auth, $scope, CreatePortfolio, GetUserPortfolios, $route, GetStockPrice, SellStock, UpdateAccountBalance){
+    .controller('portfolioCtrl', function(auth, $scope, $route, CreatePortfolio, GetUserPortfolios, GetStockPrice, SellStockDelete, SellStockPut, UpdateAccountBalance){
       var self = this;
       $scope.portfoliostocks = [];
 
@@ -25,18 +25,29 @@
 
     self.sellStock = function(portfoliostocklinkid, stockid, volume){
       var token = auth.parseJwt(auth.getToken());
+      console.log('Selling')
       if (volume<self.sellvolume){
         console.log('You\'re trying to sell more than you have, please type in a valid volume to sell')
       } else {
-        console.log('Sale begining');
-        SellStock.remove({portfoliostocklinkid:portfoliostocklinkid, sellvolume:self.sellvolume, volume:volume}).$promise.then(function(){
-          GetStockPrice.get({stockid:stockid}).$promise.then(function(data){
-            var value = data.stockvalue*self.sellvolume;
-            UpdateAccountBalance.update({userid:token.userid, cost:value})
-            $scope.portfolios.sellvolume ='';
-            $route.reload()
+        if(volume==self.sellvolume){
+          SellStockDelete.remove({portfoliostocklinkid:portfoliostocklinkid, sellvolume:self.sellvolume, volume:volume}).$promise.then(function(){
+            GetStockPrice.get({stockid:stockid}).$promise.then(function(data){
+              var value = data.stockvalue*self.sellvolume;
+              UpdateAccountBalance.update({userid:token.userid, cost:value})
+              $scope.portfolios.sellvolume ='';
+              $route.reload()
+            });
           });
+      } else {
+          SellStockPut.update({portfoliostocklinkid:portfoliostocklinkid, sellvolume:self.sellvolume, volume:volume}).$promise.then(function(){
+            GetStockPrice.get({stockid:stockid}).$promise.then(function(data){
+              var value = data.stockvalue*self.sellvolume;
+              UpdateAccountBalance.update({userid:token.userid, cost:value})
+              $scope.portfolios.sellvolume ='';
+              $route.reload()
+            });
         });
+        }
       }
     };
 

@@ -23,15 +23,14 @@ app.set('SecretVariable', config.json.secret); // sets secret variable for JWT e
 });*/
 
 function authenticateUser(req, res, pool) {
-  pool.query("SELECT * FROM users WHERE username = \'" + req.body.username + "\'", function(err, rows, fields){
+  pool.query("SELECT * FROM users WHERE username = \'" + req.body.username + "\' AND pass=PASSWORD(\'" +req.body.pass+'\')', function(err, rows, fields){
     if (err) throw(err);
     if  (rows.length!==0) {
-      if (rows[0].pass == req.body.pass) {
         var user = {
           "username"        : rows[0].username,
           'userid'          : rows[0].userid,
           "teacher"         : rows[0].teacher
-          }
+        }
         var token = jwt.sign(user, app.get('SecretVariable'), {
           expiresIn: 86400
         });
@@ -40,20 +39,13 @@ function authenticateUser(req, res, pool) {
           message:"Auth successful",
           token: token
         });
-      }
-      else {
-        res.json({
-          success: false,
-          message: "Auth failed, password incorrect"
-        })
-      }
     }
     else {
       //console.log(req.body.username);
       //console.log(req.body.pass);
       res.json({
         success: false,
-        message: "Auth failed, user does not exist"
+        message: "Auth failed"
       })
     };
   });
@@ -73,7 +65,7 @@ router.route('/authenticate/users')
     pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
       if (rows.length == 0){
         //TODO: you've hashed the password here, great, but how do you compare hashes now, how to use this hasing method on client side to get login working
-        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', \'' + req.body.pass + '\', \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', PASSWORD(\'' + req.body.pass + '\'), \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
           if(err) console.log(err);
           authenticateUser(req, res, pool);
         });
@@ -82,7 +74,6 @@ router.route('/authenticate/users')
         res.json({
           success:false,
           message:"Auth unsuccessful, username already exists"
-
         })
       }
     });

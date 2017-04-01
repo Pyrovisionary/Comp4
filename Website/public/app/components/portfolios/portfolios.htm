@@ -6,6 +6,8 @@
 <br>
 
 <h2>Your portolios:</h2>
+
+
 <div ng-repeat='userportfolioname in userportfolionames'>
   <h1>{{userportfolioname}}</h1>
   <table>
@@ -19,18 +21,27 @@
       <th>Sell</th>
     </tr>
     <tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioname:userportfolioname}'>
-      <td>{{portfoliostock.stockname}}</td>
-      <td>{{portfoliostock.stockticker}}</td>
-      <td>{{portfoliostock.buyprice}}</td>
-      <td>{{portfoliostock.volume}}</td>
-      <td>{{portfoliostock.volume * portfoliostock.buyprice}}</td>
-      <td>
-        <input type="text" ng-model='portfolios.sellvolume' name='sellvolume' required>
-      </td>
-      <td>
-        <input type="submit" ng-click='portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)' value="Sell">
-      </td>
+      <form name='sellStockForm' ng-submit='portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)'>
+        <td>{{portfoliostock.stockname}}</td>
+        <td>{{portfoliostock.stockticker}}</td>
+        <td>{{portfoliostock.buyprice}}</td>
+        <td>{{portfoliostock.volume}}</td>
+        <td>{{portfoliostock.volume * portfoliostock.buyprice}}</td>
+        <td>
+          <input type="number" ng-model='portfolios.sellvolume' name='volume' min='0' max='portfoliostock.volume' required>
+        </td>
+        <td>
+          <input type="submit" ng-disabled='sellStockForm.volume.$error.number || (sellStockForm.volume.$error.required && sellStockForm.volume.$touched)' value="Sell">
+        </td>
+      </form>
+
     </tr>
   </table>
   <br>
+  <span class='error' ng-show="sellStockForm.volume.$error.number">
+    Please enter a valid number
+  </span>
+  <span class='error' ng-show="sellStockForm.volume.$error.required && sellStockForm.volume.$touched">
+    Please enter a number
+  </span>
 </div>

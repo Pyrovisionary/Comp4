@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('profileCtrl', function(auth, $scope, UserData){
+    .controller('profileCtrl', function(auth, $scope, UserData, $route){
       var self = this;
 
       self.logout = function() {

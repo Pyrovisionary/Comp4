@@ -12,22 +12,6 @@
         //$rootScope.userService = JSON.parse($window.atob(base64));
       };
 
-//TODO: redo auth with own code, perhaps using $rootscope
-
-      /*self.isAuthed = function(){
-        console.log('Got to service')
-        console.log($rootScope.userService);
-        return !!$rootScope.userService;
-      };
-
-      self.getUser = function(){
-        return $rootScope.userService;
-      };
-
-      self.getToken = function(){
-        return $rootScope.token;
-      };*/
-
       self.saveToken = function(token) {
         $window.localStorage['jwtToken'] = token;
       };

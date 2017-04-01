@@ -1,10 +1,39 @@
-<div>
-  <form>
-    <select ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
+<p>Click on a stock in the list below to view its data, and add it to a portfolio</p>
+<br>
+
+<div ng-repeat='stock in stockitems | filter:{stockticker:stockview}' novalidate>
+  <form name='buyStockForm' ng-submit='stocks.buyStock(stock.stockid, stock.stockvalue); buyStockForm.$setPristine'>
+  {{stock.stockname}}
+  {{stock.stockticker}}
+  {{stock.stockvalue}}
+  {{stock.stockvaluepercentagechange}}
+  {{stock.stockmarketcap}}
+  {{stock.stockexchange}}
+  {{stock.sector}}
+  <br>
+    <label for='buyportfolio'>Portfolio: </label>
+    <select name='buyportfolio' ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
       <option value=''>Portfolio</option>
     </select>
-    <input type="text" ng-model='stocks.buyvolume' name='buyvolume' required>
-    <!--<input type="submit" ng-click='stocks.buyStock(stock.stockid, stock.stockvalue)' value="Buy">-->
+    <span class='error' ng-show="buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched">
+      Select Portfolio
+    </span>
+    <br>
+    <label for='buyvolume'>Volume: </label>
+    <input type="number" ng-model='stocks.buyvolume' name='buyvolume' required>
+    <span class='error' ng-show="buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$touched">
+      Enter volume
+    </span>
+    <span class="error" ng-show="buyStockForm.buyvolume.$error.number">
+      Enter a  valid volume
+    </span>
+    <br>
+    <input ng-disabled='buyStockForm.buyvolume.$error.number || (buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$touched) || (buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched)' type="submit" value="Buy">
+    <br>
+    <span class='error' ng-show='stocks.InsufficientFunds == true'>
+      Inssuficient funds to buy this stock, please enter a lower volume or sell some stocks
+    </span>
+
   </form>
 </div>
 <br>
@@ -27,7 +56,7 @@
     <th>Market cap</th>
   </tr>
   <tr ng-repeat="stockitem in filtered = (stockitems | filter:search | filter:{stockexchange:searchexchange.stockexchange} | filter:{sector:searchsector.sector} | pagination: curPage * pageSize | limitTo: pageSize) ">
-    <td>{{stockitem.stockname}}</td>
+    <td ng-click='stocks.setStockView(stockitem.stockticker)'>{{stockitem.stockname}}</td>
     <td>{{stockitem.stockticker}}</td>
     <td>{{stockitem.stockvalue}}</td>
     <td>{{stockitem.stockvaluepercentagechange}}</td>

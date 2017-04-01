@@ -32,7 +32,7 @@ router.route('/stocknames/stockhistory')
           if (err) console.log(err);
           var newestsampletime = rows[0].sampletime ;
     //Gets the stocknames joined with their newest stock history
-          pool.query('SELECT stocknames.stockname, stocknames.sector, stocknames.stockid, stocknames.stockticker, stockhistory.stockvalue, stockhistory.stockvaluepercentagechange, stockhistory.stockexchange, stockhistory.stockmarketcap FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime ="' + newestsampletime + '" ORDER BY stockname DESC', function(err, getrows, fields){
+          pool.query('SELECT stocknames.stockname, stocknames.sector, stocknames.stockid, stocknames.stockticker, stockhistory.stockvalue, stockhistory.stockvaluepercentagechange, stockhistory.stockexchange, stockhistory.stockmarketcap FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime ="' + newestsampletime + '" ORDER BY stockname ASC', function(err, getrows, fields){
             if (err) console.log(err);
             res.json(getrows);
           });
@@ -55,26 +55,5 @@ router.route('/stockhistory/:stockid')
       res.json(rows[0]);
     });
   });
-  //Delete a stock
-  //TODO: do I delete this method? do I need it?
-  /*.delete(function(req,res){
-    console.log("Attempting to delete");
-    pool.query('DELETE FROM stocknames WHERE stockid = ' + req.params.stockid, function(err, rows, fields){
-      if(err) console.log(err);
-      res.json({message: "Stock" + req.params.stockid + "deleted successfully!"});
-    });
-  });*/
-
-
-router.route('/stockhistory')
-//Creates a item in stockhistory
-.post(function(req, res){
-  pool.query('INSERT INTO stockhistory (stockid, stockvalue, volume) VALUES(\''  + req.body.stockid + '\', \'' + req.body.stockvalue + '\', \''+req.body.volume + '\')', function(err, rows, fields){
-    if(err) console.log(err);
-    res.json("Stock " +req.body.stockid+ " updated")
-  });
-});
-
-
 
 module.exports = router;

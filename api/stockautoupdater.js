@@ -52,7 +52,6 @@ console.log("Scheduled stock autoupdate online");
     for(var i=0;  i<len; i++){
 
 //The variable that this program will use to concat the request is cleared.
-//This thing does some complex-ass shit to make a request, k? TODO: make this less vulgar and more explanatory.
       var querystring = '';
       var end=((i+1)*maxrequestlength);
       if (i==len-1) {

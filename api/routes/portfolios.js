@@ -58,6 +58,7 @@ router.route('/portfolios/stocks/users/')
   //Add a specific stock to a specific portfolio (Buy a stock)
   .post(function(req, res){
     pool.query('SELECT portfolioid FROM portfolios WHERE portfolioname="'+req.body.portfolioname+'" AND userid='+req.body.userid, function(err, getrows, fields){
+      if (err) console.log(err);
       var portfolioid = getrows[0].portfolioid;
       pool.query('INSERT INTO portfoliostocklink (portfolioid, stockid, buyprice, volume) VALUES(\'' + portfolioid + '\', \'' + req.body.stockid + '\', \'' + req.body.price + '\', \'' + req.body.volume + '\')', function(err, rows, fields){
         if(err) console.log(err);
@@ -67,16 +68,17 @@ router.route('/portfolios/stocks/users/')
   })
   //Remove a specific stock from a specific portfolio (sell a stock)
   .delete(function(req,res){
-    if(req.query.volume==req.query.sellvolume){
-      pool.query('DELETE FROM portfoliostocklink WHERE portfoliostocklinkid ='+req.params.portfoliostocklinkid, function(err, rows, fields){
+      pool.query('DELETE FROM portfoliostocklink WHERE portfoliostocklinkid ='+req.query.portfoliostocklinkid, function(err, rows, fields){
         res.json('Stock sold!')
+        console.log('Delete request')
       });
-    } else{
-      var newvolume = req.query.volume - req.query.sellvolume;
-      pool.query('UPDATE portfoliostocklink SET volume =' + newvolume + ' WHERE portfoliostocklinkid='+req.params.portfoliostocklinkid,function(err, rows, fields){
-        res.json('Stock sold')
-      });
-    }
+  })
+  .put(function(req,res){
+    var newvolume = req.query.volume - req.query.sellvolume;
+    pool.query('UPDATE portfoliostocklink SET volume =' + newvolume + ' WHERE portfoliostocklinkid='+req.query.portfoliostocklinkid,function(err, rows, fields){
+      if (err) console.log(err);
+      res.json('Stock sold')
+    });
   });
 
 

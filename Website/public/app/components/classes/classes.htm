@@ -29,6 +29,7 @@
   <input type="text" name="joinClass" id="joinClass" ng-model="classes.joinClass" required>
   <input type="submit" value="Join a class"><br>
 </form>
+<p ng-show='classes.isTeacher()'>Click on a student's name to see their portfolios</p>
 
 <h2>You are a member of the following classes:</h2>
 <div class='Class' ng-repeat='userclassname in userclassnames'>
@@ -43,6 +44,8 @@
       <td ng-click='classes.getStudentPortfolios(userclass.userid)'>{{userclass.forename}}</td>
       <td>{{userclass.surname}}</td>
       <td>{{userclass.teacher}}</td>
+      <td ng-show='classes.isTeacher()'><button ng-click="classes.removeUserFromClass(userclass.userid, userclass.classid)">Remove User</button></td>
     </tr>
   </table>
 </div>
+<!--TODO: 1 displays as teacher, and 0 as student -->

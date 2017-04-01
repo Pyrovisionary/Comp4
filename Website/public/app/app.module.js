@@ -60,8 +60,9 @@ app.factory('ClassAddUsers', function($resource, API){
 });
 
 //Remove a user from a class TODO: add deleting to be allowed requests in some cases
-
-//Get a student's portfolios as a teacher TODO: this
+app.factory('RemoveUserFromClass', function($resource, API){
+  return $resource(API + '/classes/users/:userid', {userid:'@userid', classid:'@classid'});
+});
 
 //Get all of a user's classes' IDs
 app.factory('GetUserClasses', function($resource, API){
@@ -98,8 +99,17 @@ app.factory('UpdateAccountBalance', function($resource, API){
 });*/
 
 //Remove a stock (sell it) from a portfolio
-app.factory('SellStock', function($resource, API){
+app.factory('SellStockDelete', function($resource, API){
   return $resource(API + '/portfolios/stocks/users/', {portfoliostocklinkid:'@portfoliostocklinkid', sellvolume:'@sellvolume', volume:'@volume'});
+});
+
+app.factory('SellStockPut', function($resource, API){
+  var data = $resource(API + '/portfolios/stocks/users/', {portfoliostocklinkid:'@portfoliostocklinkid', sellvolume:'@sellvolume', volume:'@volume'},{
+    update:{
+      method:'PUT'
+      }
+    });
+  return data;
 });
 
 //Get latest data for one stock
@@ -110,11 +120,6 @@ app.factory('GetStockPrice', function($resource, API){
 //Get all stocks
 app.factory('GetStocks', function($resource, API){
   return $resource(API + '/stocknames/stockhistory');
-});
-
-//Search stocks (get stocks by name/ticker) TODO: this
-app.factory('GetSearchedStocks', function($resource, API){
-  //return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
 });
 
 //Buy stock

@@ -2,10 +2,11 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('classCtrl', function(auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope, $route, GetUserPortfolios){
+    .controller('classCtrl', function($route, auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope, GetUserPortfolios, RemoveUserFromClass){
       var self = this;
       //console.log(token.userid);
       $scope.userclasses=[];
+
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -40,7 +41,6 @@
           $route.reload()
         });
       };
-      var classes = [];
 
       self.getUserClasses = function(){
         $scope.userclasses=[];
@@ -59,18 +59,29 @@
       });
 
       self.getStudentPortfolios = function(userid){
-        $scope.studentportfoliostocks=[];
-        $scope.studentportfolionames
-        GetUserPortfolios.query({userid:userid}).$promise.then(function(data){
-          $scope.studentportfolionames = data[0];
-          for ( var i = 0; i < Object.keys(data[1]).length; i++) {
-            for ( var j = 0; j < Object.keys(data[1][i]).length; j++) {
-              $scope.studentportfoliostocks.push(data[1][i][j]);
+        if(self.isTeacher()){
+          $scope.studentportfoliostocks=[];
+          $scope.studentportfolionames
+          GetUserPortfolios.query({userid:userid}).$promise.then(function(data){
+            $scope.studentportfolionames = data[0];
+            for ( var i = 0; i < Object.keys(data[1]).length; i++) {
+              for ( var j = 0; j < Object.keys(data[1][i]).length; j++) {
+                $scope.studentportfoliostocks.push(data[1][i][j]);
+              }
             }
-          }
-        });
+          });
+        }
       };
 
+      self.removeUserFromClass = function(userid, classid){
+        if(self.isTeacher()){
+        RemoveUserFromClass.remove({userid:userid, classid:classid}).$promise.then(function(){
+          $route.reload()
+        });
+      } else {
+        console.log('User is not a teacher, not authed to expel students from a class')
+        }
+      }
     });
 
 

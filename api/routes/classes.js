@@ -52,7 +52,6 @@ router.route('/classes')
 
 router.route('/classes/users/:userid')
 //Get a user's classes
-//TODO: get this to return a JSON object
   .get(function(req, res){
     var classes = [];
     var usersinclass = [];
@@ -70,6 +69,13 @@ router.route('/classes/users/:userid')
           var response =  [classes, usersinclass];
           res.json(response);
       });
+    });
+  })
+  //delete a user from a class
+  .delete(function(req, res){
+    pool.query('DELETE FROM classuserlink WHERE classid = ' + req.query.classid + ' AND userid =' +req.params.userid, function(err, rows,fileds){
+      if(err) console.log(err);
+      res.json({message: "User" + req.params.userid + " removed from class " + req.query.classid + " successfully!"});
     });
   });
 
@@ -90,7 +96,7 @@ router.route('/classes/:classid')
       res.json({message: "Class " + req.body.classid + " deleted successfully!"});
     });
   })
-  //Add a pupil to a class
+  //Add a user to a class
   .post(function(req, res){
     pool.query('SELECT * FROM classuserlink WERE userid =' + req.body.userid + ' AND WHERE classid =' + req.body.classid, function(err, rows, fields){
       if (!rows){

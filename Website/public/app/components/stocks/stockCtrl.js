@@ -2,17 +2,18 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('stockCtrl', function($scope, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
+    .controller('stockCtrl', function($scope, $route, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
       var self = this;
+      self.InsufficientFunds = false ;
+      console.log(self.InsufficientFunds)
       $scope.curPage = 0;
       $scope.pageSize = 15;
       $scope.stockitems = [];
-      $scope.searched = [];
       $scope.search = {};
       $scope.search.stockname = '';
       var token = auth.parseJwt(auth.getToken());
       $scope.user = UserData.get({userid:token.userid});
-
+      $scope.stockview=null;
       self.logout = function() {
         auth.logout && auth.logout()
       };
@@ -52,12 +53,17 @@
 
           });
         } else {
-          console.log('Insufficient funds');
+          self.InsufficientFunds = true ;
+          $scope.stocks.buyvolume='';
         }
       };
 
       $scope.numberOfPages = function() {
         return Math.ceil($scope.stockitems.length / $scope.pageSize);
+      };
+
+      self.setStockView = function(stockticker){
+          $scope.stockview=stockticker;
       };
 
     });
