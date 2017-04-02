@@ -21,7 +21,7 @@
       <th>Sell</th>
     </tr>
     <tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioname:userportfolioname}'>
-      <form name='sellStockForm' ng-submit='portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)'>
+      <form name='sellStockForm' ng-submit='portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)' novalidate>
         <td>{{portfoliostock.stockname}}</td>
         <td>{{portfoliostock.stockticker}}</td>
         <td>{{portfoliostock.buyprice}}</td>

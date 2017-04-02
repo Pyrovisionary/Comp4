@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users(
     pass varchar(100) not null,
     email varchar(100) not null,
     teacher boolean not null,
-    accountbalance boolean not null	
+    accountbalance integer(11) not null	
 );
 
 CREATE TABLE IF NOT EXISTS classuserlink (
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS stockhistory(
     stockvaluepercentagechange float not null,
     sampletime integer not null,
     stockmarketcap varchar(20) not null,
-    stockexchange varchar(10) not null
+    stockexchange varchar(10) not null,
     FOREIGN KEY (stockid) REFERENCES stocknames(stockid)
 );
 

@@ -1,6 +1,6 @@
 (function() {
 
-var app = angular.module('myApp', ['ngRoute', 'ngResource']);
+var app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngSanitize']);
 
 app.factory('authInterceptor', function(API, auth, $location){
   //Add the auth header to each request

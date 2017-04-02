@@ -5,7 +5,6 @@
     .controller('stockCtrl', function($scope, $route, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
       var self = this;
       self.InsufficientFunds = false ;
-      console.log(self.InsufficientFunds)
       $scope.curPage = 0;
       $scope.pageSize = 15;
       $scope.stockitems = [];

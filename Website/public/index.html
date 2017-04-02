@@ -9,6 +9,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.1/angular-sanitize.js'></script>
 
     <!-- TODO: put this script somewhere, preferrably navbar control -->
     <script>
@@ -56,6 +57,9 @@
             <a href="/classes">Classes</a></li>
           <li ng-class="{active: $route.current.activetab == 'stocks'}" class="hoverable">
             <a href="/stocks">Stocks</a></li>
+            <li>
+              <button ng-click="nav.logout()" >Logout</button>
+            </li>
         </div>
         <li class="icon">
           <a href="javascript:void(0);" onclick="myFunction()">
@@ -63,6 +67,7 @@
             <div class="menu-line"></div>
             <div class="menu-line"></div>
           </a></li>
+
       </ul>
     </div>
     <div ng-controller='onLoadCtrl as load'></div>
