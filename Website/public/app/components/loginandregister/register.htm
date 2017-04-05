@@ -3,34 +3,25 @@
     <br><h1>Enter your details below</h1><br>
     <p>
       <label for="newusername">Choose your username:</label>
-      <input type="text" name="newusername" id="newusername" ng-model="login.newusername" required>
+      <input type="text" name="newusername" id="newusername" ng-model="login.newusername" maxlength='60' required>
       <br>
       <span class='error' ng-show="registrationform.newusername.$touched && registrationform.newusername.$invalid">Username is required</span>
-      <span class='error' ng-show="">Username is taken</span>
       <br>
       Name:<br>
-      <input type="text" name="newforename" id="newforename" ng-model="login.newforename" placeholder="First" required>
-      <input type="text" name="newsurname" id="newsurname" ng-model="login.newsurname" placeholder="Last" required>
+      <input type="text" name="newforename" id="newforename" ng-model="login.newforename" placeholder="First" maxlength='30' required>
+      <input type="text" name="newsurname" id="newsurname" ng-model="login.newsurname" placeholder="Last" maxlength='40' required>
       <br>
       <span class='error' ng-show="registrationform.newforename.$touched && registrationform.newforename.$invalid || registrationform.newsurname.$touched && registrationform.newsurname.$invalid ">
       Name is required</span>
       <br>
       <label for="newpassword">Create a password:</label>
-      <input type="password" name="newpassword" id ="newpassword" ng-model="login.newpassword" required>
+      <input type="password" name="newpassword" id ="newpassword" ng-model="login.newpassword" maxlength='100' required>
       <br>
       <span class='error' ng-show="registrationform.newpassword.$touched && registrationform.newpassword.$invalid">
       Password is required</span>
       <br>
-      <label for="newpasswordconfirm">Confirm your password:</label>
-      <input type="password" name="newpasswordconfirm" id="newpasswordconfirm" ng-model="login.newpasswordconfirm" required>
-      <br>
-      <span class='error' ng-show="registrationform.newpasswordconfirm.$touched && registrationform.newpasswordconfirm.$invalid">
-      Please confirm your password</span>
-      <span class='error' ng-show="">
-      Password do not match</span>
-      <br>
       <label for="newemail">Email:</label>
-      <input type="email" name="newemail" id="newemail" ng-model="login.newemail" required>
+      <input type="email" name="newemail" id="newemail" ng-model="login.newemail" maxlength='100' required>
       <br>
       <span class='error' ng-show="registrationform.newemail.$touched && registrationform.newemail.$invalid">
       Please enter a valid email</span>

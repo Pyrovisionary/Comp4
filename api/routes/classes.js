@@ -29,14 +29,14 @@ router.route('/classes')
   .post(function(req, res){
     var classname = req.body.classname;
     var userid = req.body.userid;
-    pool.query('SELECT * FROM classes WHERE classname ="' + classname+'"', function(err, rows, fields) {
+    pool.query('SELECT * FROM classes WHERE classname = ?', [classname], function(err, rows, fields) {
       console.log(rows[0]);
       if (!rows[0]) {
-        pool.query('INSERT INTO classes (classname) VALUES(\''  + classname +'\')', function(err, getrows, fields) {
+        pool.query('INSERT INTO classes (classname) VALUES(?)', [classname], function(err, getrows, fields) {
           if(err) console.log(err);
-          pool.query('SELECT * FROM classes WHERE classname="'+classname+'"', function(err, getrow, fields) {
+          pool.query('SELECT * FROM classes WHERE classname = ?', [classname], function(err, getrow, fields) {
             console.log()
-            pool.query('INSERT INTO classuserlink (classid, userid) VALUES(\''  +getrow[0].classid+'\', \'' +userid+'\')', function(err, rows, fields){
+            pool.query('INSERT INTO classuserlink (classid, userid) VALUES( ?, ? )', [getrow[0].classid, userid], function(err, rows, fields){
               if(err) console.log(err);
               console.log("User " +userid+ " added to class " + classname );
               res.json("User " +userid+ " added to class " + classname)
@@ -55,11 +55,11 @@ router.route('/classes/users/:userid')
   .get(function(req, res){
     var classes = [];
     var usersinclass = [];
-    pool.query('SELECT * FROM classuserlink INNER JOIN classes on classes.classid = classuserlink.classid WHERE userid = ' + req.params.userid , function(err, rows, fields){
+    pool.query('SELECT * FROM classuserlink INNER JOIN classes on classes.classid = classuserlink.classid WHERE userid = ?', [req.params.userid], function(err, rows, fields){
       if (err) console.log(err);
       asynchronous.each(rows, function(userclass, callback){
         classes.push(userclass);
-        pool.query('SELECT classes.classname, classes.classid, users.forename, users.userid, users.surname, users.teacher FROM classes INNER JOIN classuserlink on classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ' + userclass.classid, function(err, getrows, fields){
+        pool.query('SELECT classes.classname, classes.classid, users.forename, users.userid, users.surname, users.teacher FROM classes INNER JOIN classuserlink on classes.classid = classuserlink.classid INNER JOIN users ON classuserlink.userid = users.userid WHERE classes.classid = ?', [userclass.classid], function(err, getrows, fields){
           usersinclass.push(getrows);
           callback();
         });
@@ -73,7 +73,7 @@ router.route('/classes/users/:userid')
   })
   //delete a user from a class
   .delete(function(req, res){
-    pool.query('DELETE FROM classuserlink WHERE classid = ' + req.query.classid + ' AND userid =' +req.params.userid, function(err, rows,fileds){
+    pool.query('DELETE FROM classuserlink WHERE classid = ? AND userid = ?', [req.query.classid, req.params.userid], function(err, rows,fileds){
       if(err) console.log(err);
       res.json({message: "User" + req.params.userid + " removed from class " + req.query.classid + " successfully!"});
     });
@@ -84,23 +84,23 @@ router.route('/classes/users/:userid')
 router.route('/classes/:classid')
   //Get a specific class
   .get(function(req, res){
-    pool.query('SELECT * FROM classes INNER JOIN classuserlink ON classes.classid = classuserlink.classid WHERE classid = ' + req.body.classid, function(err, rows, fields){
+    pool.query('SELECT * FROM classes INNER JOIN classuserlink ON classes.classid = classuserlink.classid WHERE classid = ?', [req.body.classid], function(err, rows, fields){
       if (err) console.log(err);
       res.json(rows);
     });
   })
   .delete(function(req,res){
     console.log("Attempting to delete");
-    pool.query('DELETE FROM classes WHERE classid = ' + req.body.classid +"; DELETE FROM classuserlink WHERE classid = " +req.body.classid, function(err, rows,fileds){
+    pool.query('DELETE FROM classuserlink WHERE classid = ?; DELETE FROM classes WHERE classid = ?;', [req.body.classid, req.body.classid], function(err, rows,fileds){
       if(err) console.log(err);
       res.json({message: "Class " + req.body.classid + " deleted successfully!"});
     });
   })
   //Add a user to a class
   .post(function(req, res){
-    pool.query('SELECT * FROM classuserlink WERE userid =' + req.body.userid + ' AND WHERE classid =' + req.body.classid, function(err, rows, fields){
+    pool.query('SELECT * FROM classuserlink WERE userid = ? AND WHERE classid = ?', [req.body.userid, req.body.classid], function(err, rows, fields){
       if (!rows){
-        pool.query('INSERT INTO classuserlink (classid, userid) VALUES(\''  +req.body.classid+'\', \'' +req.body.userid+'\')', function(err, rows, fields){
+        pool.query('INSERT INTO classuserlink (classid, userid) VALUES(?, ?)', [req.body.classid, req.body.userid], function(err, rows, fields){
           if(err) console.log(err);
           console.log("User " +req.body.userid+ " added to class " + req.body.classid );
           res.json("User " +req.body.userid+ " added to class " + req.body.classid );

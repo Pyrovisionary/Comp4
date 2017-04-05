@@ -16,15 +16,6 @@ var pool        = mysql.createPool({
 
 var router = express.Router();
 
-router.route('/stocknames')
-  .get(function(req, res){
-    //Get all stocknames (stockid's/names/tickers/ipoyear/sector/industry)
-    pool.query('Select * FROM stocknames', function(err, rows, fields){
-      if (err) console.log(err);
-      res.json(rows);
-    });
-  });
-
 router.route('/stocknames/stockhistory')
     .get(function(req, res){
     //Gets all the newest stockhistory data in descending order
@@ -40,7 +31,7 @@ router.route('/stocknames/stockhistory')
     })
     //Add stock(By name)
     .post(function(req, res){
-      pool.query('INSERT INTO stockname (stockticker, stockname) VALUES(\''  + req.body.stockticker + '\', \'' + req.body.stockname + req.body.ipoyear + '\', \'' + req.body.sector + '\', \'' + req.body.industry + '\')', function(err, rows, fields){
+      pool.query('INSERT INTO stockname (stockticker, stockname, ipoyear, sector, industry) VALUES(?, ?, ?, ?, ?)', [req.body.stockticker, req.body.stockname, req.body.ipoyear, req.body.sector, req.body.industry], function(err, rows, fields){
         if(err) console.log(err);
         res.json("Stock " +req.body.stockname+ " created")
       });
@@ -50,7 +41,7 @@ router.route('/stockhistory/:stockid')
   //get the latest price of a specific stock
   .get(function(req,res){
     //console.log(req.params.stockid)
-    pool.query('SELECT * FROM stockhistory WHERE stockid=' + req.params.stockid + ' ORDER BY sampletime LIMIT 1', function(err, rows, fields){
+    pool.query('SELECT * FROM stockhistory WHERE stockid = ? ORDER BY sampletime LIMIT 1', [req.params.stockid], function(err, rows, fields){
       if (err) console.log(err);
       res.json(rows[0]);
     });

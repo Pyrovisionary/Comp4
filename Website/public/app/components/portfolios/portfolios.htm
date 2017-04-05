@@ -1,12 +1,11 @@
 <form ng-submit='portfolios.createPortfolio()'>
   <label for="createPortfolio">Portfolio Name:</label>
-  <input type="text" name="createPortfolio" id="createPortfolio" ng-model="portfolios.portfolioname" required>
+  <input type="text" name="createPortfolio" id="createPortfolio" ng-model="portfolios.portfolioname" maxlength='20' required>
   <input type="submit" value="Create a portfolio"><br>
 </form>
 <br>
 
 <h2>Your portolios:</h2>
-
 
 <div ng-repeat='userportfolioname in userportfolionames'>
   <h1>{{userportfolioname}}</h1>
@@ -30,6 +29,7 @@
         <td>
           <input type="number" ng-model='portfolios.sellvolume' name='volume' min='0' max='portfoliostock.volume' required>
         </td>
+        <!--TODO: validate sellvolume. Perhaps use the same thing as in stocks with the thing you want to sell at the top etc.-->
         <td>
           <input type="submit" ng-disabled='sellStockForm.volume.$error.number || (sellStockForm.volume.$error.required && sellStockForm.volume.$touched)' value="Sell">
         </td>

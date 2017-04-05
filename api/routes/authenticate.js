@@ -23,7 +23,7 @@ app.set('SecretVariable', config.json.secret); // sets secret variable for JWT e
 });*/
 
 function authenticateUser(req, res, pool) {
-  pool.query("SELECT * FROM users WHERE username = \'" + req.body.username + "\' AND pass=PASSWORD(\'" +req.body.pass+'\')', function(err, rows, fields){
+  pool.query("SELECT * FROM users WHERE username = ? AND pass=PASSWORD(?)", [req.body.username, req.body.pass], function(err, rows, fields){
     if (err) throw(err);
     if  (rows.length!==0) {
         var user = {
@@ -41,8 +41,9 @@ function authenticateUser(req, res, pool) {
         });
     }
     else {
-      //console.log(req.body.username);
-      //console.log(req.body.pass);
+      console.log(req.body.username);
+      console.log(req.body.pass);
+      return false
       res.json({
         success: false,
         message: "Auth failed"
@@ -62,10 +63,10 @@ router.route('/authenticate/users')
     var teacher = 0;
     console.log(req.body);
     if (req.body.teacher == true){teacher=1;} else {teacher = 0;}
-    pool.query("SELECT * FROM users WHERE username = \'" +req.body.username + "\'", function(err, rows, fields){
+    pool.query("SELECT * FROM users WHERE username = ? ", [req.body.username], function(err, rows, fields){
       if (rows.length == 0){
         //TODO: you've hashed the password here, great, but how do you compare hashes now, how to use this hasing method on client side to get login working
-        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES(\'' + req.body.username + '\', \'' + req.body.forename + '\', \'' + req.body.surname + '\', PASSWORD(\'' + req.body.pass + '\'), \'' + req.body.email + '\', \'' + teacher +'\', "10000")', function(err, rows, fields){
+        pool.query('INSERT INTO users (username, forename, surname, pass, email, teacher, accountbalance) VALUES( ?, ?, ?, PASSWORD(?), ?, ?, "10000")', [req.body.username, req.body.forename, req.body.surname, req.body.pass, req.body.email, teacher ], function(err, rows, fields){
           if(err) console.log(err);
           authenticateUser(req, res, pool);
         });

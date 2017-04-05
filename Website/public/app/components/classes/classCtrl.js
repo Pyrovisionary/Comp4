@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('classCtrl', function($route, auth,  ClassCreate, GetUserClasses, ClassAddUsers,  $scope, GetUserPortfolios, RemoveUserFromClass){
+    .controller('classCtrl', function($route, $sanitize, auth, ClassCreate, GetUserClasses, ClassAddUsers,  $scope, GetUserPortfolios, RemoveUserFromClass){
       var self = this;
       //console.log(token.userid);
       $scope.userclasses=[];
@@ -27,7 +27,8 @@
 
       self.createClass = function(){
         var token = auth.parseJwt(auth.getToken());
-        ClassCreate.save({ userid:token.userid, classname:self.classname}).$promise.then(function(){
+        var classname = $sanitize(self.classname)
+        ClassCreate.save({ userid:token.userid, classname:classname}).$promise.then(function(){
           $scope.classes.classname ='';
           $route.reload()
         });
@@ -36,7 +37,8 @@
 
       self.AddUserToClass = function(){
         var token = auth.parseJwt(auth.getToken());
-        ClassAddUsers.save({classid:self.joinClass, userid:token.userid}).$promise.then(function(){
+        var classid = $sanitize(self.joinClass)
+        ClassAddUsers.save({classid:classid, userid:token.userid}).$promise.then(function(){
           $scope.classes.joinClass ='';
           $route.reload()
         });

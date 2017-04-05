@@ -42,10 +42,12 @@
       });
 
       self.buyStock = function(stockid, stockvalue){
-        var stockscost = -1*self.buyvolume*stockvalue;
+        var buyvolume = $sanitize(self.buyvolume);
+        var portfolioname= $sanitize(self.portfolioname);
+        var stockscost = -1*buyvolume*stockvalue;
         if ($scope.user.accountbalance + stockscost >=0){
           var token = auth.parseJwt(auth.getToken());
-          BuyStock.save({stockid:stockid, userid:token.userid, portfolioname:self.portfolioname, volume:self.buyvolume, price:stockvalue}).$promise.then(function(){
+          BuyStock.save({stockid:stockid, userid:token.userid, portfolioname:portfolioname, volume:buyvolume, price:stockvalue}).$promise.then(function(){
             UpdateAccountBalance.update({userid:token.userid, cost:stockscost})
             $scope.stocks.buyvolume ='';
             $scope.stocks.portfolioname ='';

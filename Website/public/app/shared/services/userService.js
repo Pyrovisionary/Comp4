@@ -13,23 +13,8 @@
           surname:  newsurname,
           pass: newpassword,
           email: newemail,
-          teacher: teacheryn    
+          teacher: teacheryn
         });
-        /*return $http({
-          method: 'POST',
-          url: API +'/authenticate/users/',
-          headers: {
-           'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          data: {
-            'username': newusername,
-            'forename': newforename,
-            'surname':  newsurname,
-            'pass': newpassword,
-            'email': newemail,
-            'teacher': teacheryn
-          }
-        });*/
       };
 
       self.login = function(username, password){

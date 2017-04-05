@@ -41,6 +41,8 @@ app.use(morgan("dev"));
 //Use cors module to enable options and put AJAX requests
 app.use(cors());
 
+//use the sql-injection module to detect SQL injection and issue 403 requests to possible injection attacks
+
 
 
 //Allow requests from different domains, allow GET, POST and OPTIONS requests,

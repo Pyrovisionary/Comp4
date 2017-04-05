@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('portfolioCtrl', function(auth, $scope, $route, CreatePortfolio, GetUserPortfolios, GetStockPrice, SellStockDelete, SellStockPut, UpdateAccountBalance){
+    .controller('portfolioCtrl', function(auth, $sanitize, $scope, $route, CreatePortfolio, GetUserPortfolios, GetStockPrice, SellStockDelete, SellStockPut, UpdateAccountBalance){
       var self = this;
       $scope.portfoliostocks = [];
 
@@ -17,7 +17,8 @@
 
     self.createPortfolio = function(){
       var token = auth.parseJwt(auth.getToken());
-      CreatePortfolio.save({userid:token.userid, portfolioname:self.portfolioname}).$promise.then(function(){
+      var portfolioname = $sanitize(self.portfolioname);
+      CreatePortfolio.save({userid:token.userid, portfolioname:portfolioname}).$promise.then(function(){
         $scope.portfolios.portfolioname ='';
         $route.reload()
       });
@@ -25,23 +26,24 @@
 
     self.sellStock = function(portfoliostocklinkid, stockid, volume){
       var token = auth.parseJwt(auth.getToken());
+      var sellvolume = $sanitize(self.sellvolume);
       console.log('Selling')
-      if (volume<self.sellvolume){
+      if (volume<sellvolume){
         console.log('You\'re trying to sell more than you have, please type in a valid volume to sell')
       } else {
-        if(volume==self.sellvolume){
-          SellStockDelete.remove({portfoliostocklinkid:portfoliostocklinkid, sellvolume:self.sellvolume, volume:volume}).$promise.then(function(){
+        if(volume==sellvolume){
+          SellStockDelete.remove({portfoliostocklinkid:portfoliostocklinkid, sellvolume:sellvolume, volume:volume}).$promise.then(function(){
             GetStockPrice.get({stockid:stockid}).$promise.then(function(data){
-              var value = data.stockvalue*self.sellvolume;
+              var value = data.stockvalue*sellvolume;
               UpdateAccountBalance.update({userid:token.userid, cost:value})
               $scope.portfolios.sellvolume ='';
               $route.reload()
             });
           });
       } else {
-          SellStockPut.update({portfoliostocklinkid:portfoliostocklinkid, sellvolume:self.sellvolume, volume:volume}).$promise.then(function(){
+          SellStockPut.update({portfoliostocklinkid:portfoliostocklinkid, sellvolume:sellvolume, volume:volume}).$promise.then(function(){
             GetStockPrice.get({stockid:stockid}).$promise.then(function(data){
-              var value = data.stockvalue*self.sellvolume;
+              var value = data.stockvalue*sellvolume;
               UpdateAccountBalance.update({userid:token.userid, cost:value})
               $scope.portfolios.sellvolume ='';
               $route.reload()

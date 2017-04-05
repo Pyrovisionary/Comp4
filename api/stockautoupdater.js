@@ -39,7 +39,7 @@ console.log("Scheduled stock autoupdate online");
 //As the stockdata requests are sent off and responded to, and entered into the db asynchronously,
 //This variable makes sure that they all have the same timestamp for reference.
     var timestamp = Math.floor(Date.now()/1000);
-    var x = '"';
+    var Quote = '"';
 //Yahoo's finance api will only accept requests for info on up to 1000 stocks at a time, hence the
 //maxrequestlength variable is set to 1000
     var maxrequestlength = 1000;
@@ -55,10 +55,11 @@ console.log("Scheduled stock autoupdate online");
       var querystring = '';
       var end=((i+1)*maxrequestlength);
       if (i==len-1) {
-        end=((i)*maxrequestlength)+(rows.length-(maxrequestlength*(len-1)))};
+        end=rows.length
+        };
       querystring = querystring + requeststring;
       for(var j=(i*maxrequestlength); j<end; j++){
-        querystring = querystring + x + rows[j].stockticker+ x;
+        querystring = querystring + Quote + rows[j].stockticker+ Quote;
         if(j<end-1) querystring = querystring + ',';
       };
       querystring = querystring + endrequeststring;

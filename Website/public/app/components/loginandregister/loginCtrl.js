@@ -2,15 +2,15 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('loginCtrl', function(userService, auth, $scope, $route){
+    .controller('loginCtrl', function(userService, auth, $scope, $route, $sanitize){
       var self = this;
 
       self.login = function($scope) {
-        userService.login(self.username, self.password);
+        userService.login($sanitize(self.username), $sanitize(self.password));
       };
 
       self.register = function() {
-        userService.register(self.newusername, self.newforename, self.newsurname, self.newpassword, self.newemail, self.teacheryn)
+        userService.register($sanitize(self.newusername), $sanitize(self.newforename), $sanitize(self.newsurname), $sanitize(self.newpassword), $sanitize(self.newemail), $sanitize(self.teacheryn))
       };
 
       self.logout = function() {
