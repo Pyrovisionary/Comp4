@@ -6,7 +6,7 @@
       var self = this;
       //console.log(token.userid);
       $scope.userclasses=[];
-
+      $scope.studentselected=false;
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -37,9 +37,9 @@
 
       self.AddUserToClass = function(){
         var token = auth.parseJwt(auth.getToken());
-        var classid = $sanitize(self.joinClass)
+        var classid = $sanitize(self.classId)
         ClassAddUsers.save({classid:classid, userid:token.userid}).$promise.then(function(){
-          $scope.classes.joinClass ='';
+          $scope.classes.classId ='';
           $route.reload()
         });
       };
@@ -60,10 +60,11 @@
         //console.log(Object.keys(data[1][1]).length);
       });
 
-      self.getStudentPortfolios = function(userid){
-        if(self.isTeacher()){
+      self.getStudentPortfolios = function(userid, forename, surname){
+          $scope.studentselected=true;
           $scope.studentportfoliostocks=[];
-          $scope.studentportfolionames
+          $scope.studentforename=forename;
+          $scope.studentsurname=surname;
           GetUserPortfolios.query({userid:userid}).$promise.then(function(data){
             $scope.studentportfolionames = data[0];
             for ( var i = 0; i < Object.keys(data[1]).length; i++) {
@@ -72,7 +73,6 @@
               }
             }
           });
-        }
       };
 
       self.removeUserFromClass = function(userid, classid){

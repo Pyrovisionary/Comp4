@@ -23,7 +23,7 @@ router.route('/stocknames/stockhistory')
           if (err) console.log(err);
           var newestsampletime = rows[0].sampletime ;
     //Gets the stocknames joined with their newest stock history
-          pool.query('SELECT stocknames.stockname, stocknames.sector, stocknames.stockid, stocknames.stockticker, stockhistory.stockvalue, stockhistory.stockvaluepercentagechange, stockhistory.stockexchange, stockhistory.stockmarketcap FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime ="' + newestsampletime + '" ORDER BY stockname ASC', function(err, getrows, fields){
+          pool.query('SELECT * FROM stocknames INNER JOIN stockhistory ON stocknames.stockid=stockhistory.stockid WHERE sampletime ="' + newestsampletime + '" ORDER BY stockname ASC', function(err, getrows, fields){
             if (err) console.log(err);
             res.json(getrows);
           });

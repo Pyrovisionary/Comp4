@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('stockCtrl', function($scope, $route, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
+    .controller('stockCtrl', function($scope, $sanitize, $route, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
       var self = this;
       self.InsufficientFunds = false ;
       $scope.curPage = 0;
@@ -10,6 +10,7 @@
       $scope.stockitems = [];
       $scope.search = {};
       $scope.search.stockname = '';
+      $scope.stockselected=false;
       var token = auth.parseJwt(auth.getToken());
       $scope.user = UserData.get({userid:token.userid});
       $scope.stockview=null;
@@ -26,9 +27,7 @@
       };
 
       self.getAllStocks().$promise.then(function(data){
-          //console.log(data[0])
           $scope.stockitems = data
-
       });
 
       self.getUserPortfolios = function(){
@@ -56,15 +55,15 @@
         } else {
           self.InsufficientFunds = true ;
           $scope.stocks.buyvolume='';
+          $scope.stocks.buyportfolio='';
+          $scope.buyStockForm.buyvolume.$setPristine();
+          $scope.buyStockForm.buyvolume.$setUntouched();
         }
-      };
-
-      $scope.numberOfPages = function() {
-        return Math.ceil($scope.stockitems.length / $scope.pageSize);
       };
 
       self.setStockView = function(stockticker){
           $scope.stockview=stockticker;
+          $scope.stockselected=true;
       };
 
     });

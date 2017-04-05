@@ -2,9 +2,15 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('portfolioCtrl', function(auth, $sanitize, $scope, $route, CreatePortfolio, GetUserPortfolios, GetStockPrice, SellStockDelete, SellStockPut, UpdateAccountBalance){
+    .controller('portfolioCtrl', function(auth, UserData, $sanitize, $scope, $route, CreatePortfolio, GetUserPortfolios, GetStockPrice, SellStockDelete, SellStockPut, UpdateAccountBalance){
       var self = this;
       $scope.portfoliostocks = [];
+      $scope.stockview=null;
+      $scope.stockviewprice=null;
+      self.InsufficientVolume = false ;
+      $scope.stockselected=false;
+      var token = auth.parseJwt(auth.getToken());
+      $scope.user = UserData.get({userid:token.userid});
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -29,7 +35,8 @@
       var sellvolume = $sanitize(self.sellvolume);
       console.log('Selling')
       if (volume<sellvolume){
-        console.log('You\'re trying to sell more than you have, please type in a valid volume to sell')
+        self.InsufficientVolume = true ;
+        $scope.portfolios.sellvolume='';
       } else {
         if(volume==sellvolume){
           SellStockDelete.remove({portfoliostocklinkid:portfoliostocklinkid, sellvolume:sellvolume, volume:volume}).$promise.then(function(){
@@ -60,7 +67,6 @@
     };
 
     self.getUserPortfolios().$promise.then(function(data){
-      //console.log(data[0]);
       $scope.userportfolionames = data[0];
       for ( var i = 0; i < Object.keys(data[1]).length; i++) {
         for ( var j = 0; j < Object.keys(data[1][i]).length; j++) {
@@ -68,6 +74,19 @@
         }
       }
     });
+
+    self.setStockView = function(stockname){
+        $scope.stockview=stockname;
+        $scope.stockselected=true;
+    };
+
+    self.getCurrentPrice = function(stockid){
+        GetStockPrice.get({stockid:stockid}).$promise.then(function(data){
+          $scope.stockviewprice=data.stockvalue;
+        });
+    };
+
+
   });
 
 })();

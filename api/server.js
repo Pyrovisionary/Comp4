@@ -13,6 +13,7 @@ var mysql         = require('mysql');
 var jwt           = require('jsonwebtoken');
 var config        = require('./config');
 var asynchronous  = require('async');
+var cors          = require('cors')
 
 //Create pooled connection to database, using data from the database config file
 var pool        = mysql.createPool({
@@ -29,7 +30,6 @@ var portfolios     = require('./routes/portfolios');
 var stockhistory   = require('./routes/stockhistory');
 var classes        = require('./routes/classes');
 var authenticate   = require('./routes/authenticate');
-var cors           = require('cors')
 
 // Set a default limit on data transfers (50mb is much higher than the default),
 // and suits our data transmission purposes much better
@@ -40,10 +40,6 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(morgan("dev"));
 //Use cors module to enable options and put AJAX requests
 app.use(cors());
-
-//use the sql-injection module to detect SQL injection and issue 403 requests to possible injection attacks
-
-
 
 //Allow requests from different domains, allow GET, POST and OPTIONS requests,
 //allow the following headers when cross origin requests are made

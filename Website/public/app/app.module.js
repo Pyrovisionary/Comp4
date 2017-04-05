@@ -45,14 +45,10 @@ app.factory('UserData', function($resource, API){
   return $resource( API + '/users/:userid', {userid:'@userid'});
 });
 
-//Rename a user TODO: put request
-
 //Create a class
 app.factory('ClassCreate', function($resource, API) {
   return $resource(API + '/classes', {classname:'@classname'});
 });
-
-//Rename a class TODO: put request
 
 //Add a user to a class
 app.factory('ClassAddUsers', function($resource, API){
@@ -74,11 +70,6 @@ app.factory('CreatePortfolio', function($resource, API){
   return $resource(API + '/portfolios', {userid:'@userid', portfolioname:'@portfolioname'});
 });
 
-//Rename a portfolio TODO: make this route
-/*app.factory('RenamePortfolio', function($resource, API){
-  return $resource(API + '/portfolios', {userid:'@userid', portfolioname:'@portfolioname'});
-});*/
-
 //Get all of a user's portfolios
 app.factory('GetUserPortfolios', function($resource, API){
   return $resource(API + '/portfolios/users/:userid', {userid:'@userid'});
@@ -92,11 +83,6 @@ app.factory('UpdateAccountBalance', function($resource, API){
   });
   return data
 });
-
-//Get the value of a user's portfolio TODO: make this route
-/*app.factory('GetPortfolioValue', function($resource, API){
-  return $resource(API + '/portfolios', {userid:'@userid', portfolioid:'@portfolioid'});
-});*/
 
 //Remove a stock (sell it) from a portfolio
 app.factory('SellStockDelete', function($resource, API){
