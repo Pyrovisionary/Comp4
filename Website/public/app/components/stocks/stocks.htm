@@ -1,24 +1,24 @@
 <p>Account balance: {{user.accountbalance}}</p>
 <br>
 <div>
-  <p ng-show='stockselected == false'>Click on a stock in the list below to view its data, and add it to a portfolio</p>
-  <div ng-show='stockselected == true' ng-repeat='stock in stockitems | filter:{stockname:stockview}' novalidate>
-    <form name='buyStockForm' ng-submit='stocks.buyStock(stock.stockid, stock.stockvalue)'>
+  <p ng-show="stockselected == false">Click on a stock in the list below to view its data, and add it to a portfolio</p>
+  <div ng-show="stockselected == true" ng-repeat="stock in stockItems | filter:{stockname:stockview}" novalidate>
+    <form name="buyStockForm" ng-submit="stocks.buyStock(stock.stockid, stock.stockvalue)">
       <p>
         Stock name:  {{stock.stockname}}<br>
         Ticker:  {{stock.stockticker}}<br>
         Price:  {{stock.stockvalue}}<br>
-        <label for='buyportfolio'>Portfolio:  </label>
-        <select name='buyportfolio' ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
-          <option value=''>Portfolio</option>
+        <label for="buyportfolio">Portfolio:  </label>
+        <select name="buyportfolio" ng-model="stocks.portfolioname" ng-options="userportfolioname for userportfolioname in userportfolionames" required>
+          <option value="">Portfolio</option>
         </select>
-        <span class='error' ng-show="buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched">
+        <span class="error" ng-show="buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched">
           Select Portfolio
         </span>
         <br>
-        <label for='buyvolume'>Volume: </label>
-        <input type="number" ng-model='stocks.buyvolume' name='buyvolume' min='0' required>
-        <span class='error' ng-show="buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$dirty">
+        <label for="buyvolume">Volume: </label>
+        <input type="number" ng-model="stocks.buyvolume" name="buyvolume" min="0" required>
+        <span class="error" ng-show="buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$dirty">
           Enter volume
         </span>
         <span class="error" ng-show="buyStockForm.buyvolume.$error.number">
@@ -29,12 +29,12 @@
         <br>
         New Account balance: {{user.accountbalance-(stocks.buyvolume*stock.stockvalue)}}
         <br>
-        <input ng-disabled='buyStockForm.buyvolume.$error.number || (buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$touched) || (buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched)' type="submit" value="Buy">
+        <input ng-disabled="buyStockForm.buyvolume.$error.number || (buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$touched) || (buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched)" type="submit" value="Buy">
         <br><br>
-        <span class='error' ng-show='stocks.InsufficientFunds == true'>
+        <span class="error" ng-show="stocks.InsufficientFunds == true">
           Insuficient funds to buy this stock, please enter a lower volume or sell some stocks
         </span>
-        <span ng-show='stocks.stockbought == true'>
+        <span class='message' ng-show="stocks.stockBought == true">
           Stock purchased successfully!
         </span>
       </p>
@@ -42,12 +42,12 @@
   </div>
 </div>
 <br>
-<select ng-model='searchexchange' ng-options='stock.stockexchange for stock in stockitems | unique:"stockexchange"' required>
-  <option value=''>Exchange</option>
+<select ng-model="searchexchange" ng-options="stock.stockexchange for stock in stockItems | uniqueFilter:'stockexchange'" required>
+  <option value="">Exchange</option>
 </select>
 
-<select ng-model='searchsector' ng-options='stock.sector for stock in stockitems | unique:"sector"' required>
-  <option value=''>Sector</option>
+<select ng-model="searchsector" ng-options="stock.sector for stock in stockItems | uniqueFilter:'sector'" required>
+  <option value="">Sector</option>
 </select>
 <br>
 <label>Search:</label> <input ng-model="search.stockname">
@@ -60,8 +60,8 @@
     <th>Value Change (%)</th>
     <th>Market cap</th>
   </tr>
-  <tr ng-repeat="stockitem in (stockitems | filter:search | filter:{stockexchange:searchexchange.stockexchange} | filter:{sector:searchsector.sector} | pagination: curPage * pageSize | limitTo: pageSize) ">
-    <td ng-click='stocks.setStockView(stockitem.stockname)'><u>{{stockitem.stockname}}</u></td>
+  <tr ng-repeat="stockitem in (stockItems | filter:search | filter:{stockexchange:searchexchange.stockexchange} | filter:{sector:searchsector.sector} | pagination: curPage * pageSize | limitTo: pageSize) ">
+    <td ng-click="stocks.setStockView(stockitem.stockname)"><u>{{stockitem.stockname}}</u></td>
     <td>{{stockitem.stockticker}}</td>
     <td>{{stockitem.stockvalue}}</td>
     <td>{{stockitem.stockvaluepercentagechange}}</td>
@@ -69,7 +69,7 @@
   </tr>
 </table>
 
-<div class="pagebuttons" ng-show="stockitems.length">
+<div class="pagebuttons" ng-show="stockItems.length">
   <ul>
     <li>
       <button type="button" ng-disabled="curPage == 0" ng-click="curPage=curPage-1">
@@ -82,7 +82,7 @@
       </span>
     </li>
     <li>
-      <button type="button" ng-disabled="curPage >= stockitems.length/pageSize - 1" ng-click="curPage = curPage+1">
+      <button type="button" ng-disabled="curPage >= stockItems.length/pageSize - 1" ng-click="curPage = curPage+1">
         NEXT
       </button>
     </li>

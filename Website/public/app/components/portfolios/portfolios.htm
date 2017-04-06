@@ -1,7 +1,7 @@
 
-<form ng-submit='portfolios.createPortfolio()'>
+<form ng-submit="portfolios.createPortfolio()">
   <label for="createPortfolio">Portfolio Name:</label>
-  <input type="text" name="createPortfolio" id="createPortfolio" ng-model="portfolios.portfolioname" maxlength='20' required>
+  <input type="text" name="createPortfolio" id="createPortfolio" ng-model="portfolios.portfolioname" maxlength="20" required>
   <input type="submit" value="Create a portfolio"><br>
 </form>
 <br>
@@ -9,21 +9,21 @@
 <br>
 
 <div>
-  <p ng-show='stockselected == false'>Click on a stock below to bring up the sell menu</p>
-  <div ng-show='stockselected == true' ng-repeat='portfoliostock in portfoliostocks | filter:{portfoliostocklinkid:stockview}' novalidate>
-    <form name='sellStockForm' ng-submit='portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)'>
+  <p ng-show="stockselected == false">Click on a stock below to bring up the sell menu</p>
+  <div ng-show="stockselected == true" ng-repeat="portfoliostock in portfoliostocks | filter:{portfoliostocklinkid:stockview}" novalidate>
+    <form name="sellStockForm" ng-submit="portfolios.sellStock(portfoliostock.portfoliostocklinkid, portfoliostock.stockid, portfoliostock.volume)">
       <p>Stock name: {{portfoliostock.stockname}}<br>
       Ticker: {{portfoliostock.stockticker}}<br>
       Price:
-      <span ng-init='portfolios.getCurrentPrice(portfoliostock.stockid)'>
+      <span ng-init="portfolios.getCurrentPrice(portfoliostock.stockid)">
         {{stockviewprice}}
       </span>
       <br>
       Buy Price: {{portfoliostock.buyprice}}<br>
-      <label for='sellvolume'>Volume: </label>
-      <input type="number" ng-model='portfolios.sellvolume' name='sellvolume' min='0' max='portfoliostock.volume' required>
+      <label for="sellvolume">Volume: </label>
+      <input type="number" ng-model="portfolios.sellvolume" name="sellvolume" min="0" max="portfoliostock.volume" required>
       / {{portfoliostock.volume}}
-      <span class='error' ng-show="sellStockForm.sellvolume.$error.required && sellStockForm.sellvolume.$touched">
+      <span class="error" ng-show="sellStockForm.sellvolume.$error.required && sellStockForm.sellvolume.$touched">
         Enter volume
       </span>
       <span class="error" ng-show="sellStockForm.sellvolume.$error.number">
@@ -33,10 +33,10 @@
       Sale revenue: {{portfoliostock.volume * stockviewprice}}<br>
       Sale profit: {{(stockviewprice*portfolios.sellvolume)-(portfoliostock.buyprice*portfolios.sellvolume)}} <br>
       New account balance: {{user.accountbalance+(stockviewprice*portfolios.sellvolume)}} <br>
-      <input ng-disabled='sellStockForm.sellvolume.$error.number || (sellStockForm.sellvolume.$error.required && sellStockForm.sellvolume.$touched)' type="submit" value="Sell">
+      <input ng-disabled="sellStockForm.sellvolume.$error.number || (sellStockForm.sellvolume.$error.required && sellStockForm.sellvolume.$touched)" type="submit" value="Sell">
     </p>
       <br>
-      <span class='error' ng-show='portfolios.InsufficientVolume == true'>
+      <span class="error" ng-show="portfolios.InsufficientVolume == true">
         You're trying to sell more stocks than you own! Enter a valid volume to sell this stock.
       </span>
     </form>
@@ -45,9 +45,9 @@
 <br>
 <h2>Your portolios:</h2>
 
-<div ng-repeat='userportfolioname in userportfolionames'>
+<div ng-repeat="userportfolioname in userportfolionames">
   <h1>{{userportfolioname}}</h1>
-  <table ng-show='filtered.length>0'>
+  <table ng-show="filtered.length>0">
     <tr>
       <th>Stock Name</th>
       <th>Stock Ticker</th>
@@ -55,8 +55,8 @@
       <th>Volume</th>
       <th>Value</th>
     </tr>
-    <tr ng-repeat='portfoliostock in portfoliostocks | filter:{portfolioname:userportfolioname} as filtered'>
-        <td ng-click='portfolios.setStockView(portfoliostock.portfoliostocklinkid)'>
+    <tr ng-repeat="portfoliostock in portfoliostocks | filter:{portfolioname:userportfolioname} as filtered">
+        <td ng-click="portfolios.setStockView(portfoliostock.portfoliostocklinkid)">
           <u>
             {{portfoliostock.stockname}}
           </u>
@@ -67,6 +67,6 @@
         <td>{{portfoliostock.volume * portfoliostock.buyprice}}</td>
     </tr>
   </table>
-  <p ng-show='filtered.length==0'>Buy equities in the stocks tab and they will appear here</p>
+  <p ng-show="filtered.length==0">Buy equities in the stocks tab and they will appear here</p>
   <br>
 </div>

@@ -8,7 +8,7 @@ var mysql         = require('mysql');
 var jwt           = require('jsonwebtoken');
 var config        = require('./config');
 var asynchronous  = require('async');
-var cors          = require('cors')
+var cors          = require('cors');
 
 //Create pooled connection to database, using data from the database config file
 var pool        = mysql.createPool({
@@ -39,47 +39,43 @@ app.options('*', cors());
 //Set port to 8080
 var port = process.env.port || 8080;
 var router = express.Router();
-app.set('SecretVariable', config.json.secret); // sets secret variable for JWT encryption
+app.set('secretVariable', config.json.secret); // sets secret variable for JWT encryption
 
 //Test route to test that everything's working ok
 //The following message is displayed on the console when the server starts up.
-router.get("/", function(req, res){
+router.get("/", function onEnd(req, res){
   res.json({ message: "API incoming!"});
 });
 
 router.use(function(req, res, next){
 
-//The following code handles JWT authorisation.
-//find the token from the request, as either a header or in the body.
+  //The following code handles JWT authorisation.
+  //find the token from the request, as either a header or in the body.
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-//Determine if the request is a CORS preflight options request
+  //Determine if the request is a CORS preflight options request
   var option = req.headers['access-control-request-method'];
 
-//If the request is a CORS preflight options request, return with a 200 status to allow following reqeusts
   if (option) {
+    //If the request is a CORS preflight options request, return with a 200
+    //status to allow following reqeusts
     return res.sendStatus(200);
     next();
   } else{
-//If the request isn't an CORS preflight options request;
     if (token) {
-//If the user has a JWT
-//Decode the JSON web-token using the secret variable
-      jwt.verify(token, app.get('SecretVariable'), function(err, decoded) {
-//If there's an error decoding it, reject the token and send the following message
+      jwt.verify(token, app.get('secretVariable'), function(err, decoded) {
         if (err) {
-          return res.json({ success: false, message: 'Authentication failed, token rejected' });
+          return res.json({ success: false, message: "Authentication failed, token rejected" });
         } else {
-// if the token is valid, save to request for use in other routes
           req.decoded = decoded;
           next();
         }
       });
     } else {
-//Return error when no token is provided
+      //Return error when no token is provided
       return res.status(403).send({
           success: false,
-          message: 'No token provided.'
+          message: "No token provided."
       });
     }
 }
@@ -95,4 +91,4 @@ app.use('/api/', stockhistory);
 app.use('/api/', classes);
 app.listen(port);
 //Show API is working in console
-console.log("API is running on port 8080");
+console.log('API is running on port 8080');

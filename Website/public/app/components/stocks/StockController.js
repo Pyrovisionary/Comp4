@@ -2,19 +2,21 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('stockCtrl', function($scope, $sanitize, $route, UserData, $rootScope, auth, GetStocks, GetUserPortfolios, BuyStock, UpdateAccountBalance){
+    .controller('StockController', function($scope, $sanitize, $route, userData, $rootScope, auth, getStocks, getUserPortfolios, buyStock, updateAccountBalance){
       var self = this;
       self.InsufficientFunds = false ;
       $scope.curPage = 0;
       $scope.pageSize = 15;
-      $scope.stockitems = [];
+      $scope.stockItems = [];
       $scope.search = {};
       $scope.search.stockname = '';
       $scope.stockselected=false;
-      self.stockbought=false;
+      self.stockBought=false;
       var token = auth.parseJwt(auth.getToken());
-      $scope.user = UserData.get({userid:token.userid});
+      $scope.user = userData.get({userid:token.userid});
       $scope.stockview=null;
+
+
       self.logout = function() {
         auth.logout && auth.logout()
       };
@@ -24,16 +26,15 @@
       };
 
       self.getAllStocks = function(){
-        return GetStocks.query();
+        return getStocks.query();
       };
 
       self.getAllStocks().$promise.then(function(data){
-          $scope.stockitems = data
+          $scope.stockItems = data;
       });
 
       self.getUserPortfolios = function(){
-        var token = auth.parseJwt(auth.getToken());
-        return GetUserPortfolios.query({userid:token.userid})
+        return getUserPortfolios.query({userid:token.userid})
 
       };
 
@@ -42,18 +43,15 @@
       });
 
       self.buyStock = function(stockid, stockvalue){
-        var buyvolume = $sanitize(self.buyvolume);
+        var buyVolume = $sanitize(self.buyvolume);
         var portfolioname= $sanitize(self.portfolioname);
-        var stockscost = -1*buyvolume*stockvalue;
-        if ($scope.user.accountbalance + stockscost >=0){
-          var token = auth.parseJwt(auth.getToken());
-          BuyStock.save({stockid:stockid, userid:token.userid, portfolioname:portfolioname, volume:buyvolume, price:stockvalue}).$promise.then(function(){
-            UpdateAccountBalance.update({userid:token.userid, cost:stockscost})
-            $scope.stocks.buyvolume ='';
-            $scope.stocks.portfolioname ='';
-            $scope.buyStockForm.$setPristine();
-            $scope.buyStockForm.$setUntouched();
-            self.stockbought=true;
+        var stocksCost = -1*buyVolume*stockvalue;
+        if ($scope.user.accountbalance + stocksCost >=0){
+          buyStock.save({stockid:stockid, userid:token.userid, portfolioname:portfolioname, volume:buyVolume, price:stockvalue}).$promise.then(function(){
+            updateAccountBalance.update({userid:token.userid, cost:stocksCost})
+            self.buyvolume ='';
+            self.portfolioname ='';
+            self.stockBought=true;
           });
         } else {
           self.InsufficientFunds = true ;

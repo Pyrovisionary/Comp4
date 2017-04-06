@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('classCtrl', function($route, $sanitize, auth, ClassCreate, GetUserClasses, ClassAddUsers,  $scope, GetUserPortfolios, RemoveUserFromClass){
+    .controller('ClassController', function($route, $sanitize, auth, classCreate, getUserClasses, classAddUsers,  $scope, getUserPortfolios, removeUserFromClass){
       var self = this;
       //console.log(token.userid);
       $scope.userclasses=[];
@@ -28,19 +28,19 @@
       self.createClass = function(){
         var token = auth.parseJwt(auth.getToken());
         var classname = $sanitize(self.classname)
-        ClassCreate.save({ userid:token.userid, classname:classname}).$promise.then(function(response){
+        classCreate.save({ userid:token.userid, className:classname}).$promise.then(function(response){
           $scope.classes.classname ='';
           $route.reload()
         });
 
       };
 
-      self.AddUserToClass = function(){
+      self.addUserToClass = function(){
         var token = auth.parseJwt(auth.getToken());
-        var classid = $sanitize(self.classId)
-        ClassAddUsers.save({classid:classid, userid:token.userid}).$promise.then(function(response){
+        var classid = $sanitize(self.classid)
+        classAddUsers.save({classid:classid, userid:token.userid}).$promise.then(function(response){
           self.classjoinsuccess=response.success;
-          $scope.classes.classId ='';
+          $scope.classes.classid ='';
           if(response.success == true){
           $route.reload()
           }
@@ -50,7 +50,7 @@
       self.getUserClasses = function(){
         $scope.userclasses=[];
         var token = auth.parseJwt(auth.getToken());
-        return GetUserClasses.query({userid:token.userid})
+        return getUserClasses.query({userid:token.userid})
       };
 
       self.getUserClasses().$promise.then(function(data){
@@ -68,7 +68,7 @@
           $scope.studentportfoliostocks=[];
           $scope.studentforename=forename;
           $scope.studentsurname=surname;
-          GetUserPortfolios.query({userid:userid}).$promise.then(function(data){
+          getUserPortfolios.query({userid:userid}).$promise.then(function(data){
             $scope.studentportfolionames = data[0];
             for ( var i = 0; i < Object.keys(data[1]).length; i++) {
               for ( var j = 0; j < Object.keys(data[1][i]).length; j++) {
@@ -78,9 +78,9 @@
           });
       };
 
-      self.removeUserFromClass = function(userid, classid){
+      self.removeStudent = function(userid, classid){
         if(self.isTeacher()){
-        RemoveUserFromClass.remove({userid:userid, classid:classid}).$promise.then(function(){
+        removeUserFromClass.remove({userid:userid, classid:classid}).$promise.then(function(){
           $route.reload()
         });
       } else {

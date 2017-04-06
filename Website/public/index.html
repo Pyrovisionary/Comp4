@@ -2,16 +2,15 @@
 <html>
   <head>
     <title>Stock Market Simulator</title>
-    <link rel="stylesheet" type="text/css" href="Stylesheet.css">
-    <link href="//fonts.googleapis.com/css?family=Droid+Serif|Lato:300,400|Open+Sans:300,400|Playfair+Display|Playfair+Display+SC|Roboto" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.1/angular-sanitize.js'></script>
-
-    <!-- TODO: put this script somewhere, preferrably navbar control -->
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif|Lato:300,400|Open+Sans:300,400|Playfair+Display|Playfair+Display+SC|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.1/angular-sanitize.js'></script>
     <script>
       function myFunction() {
         var x = document.getElementById("MyLoginTabs");
@@ -21,16 +20,16 @@
             x.className = "LoginTabs"; }
     }
     </script>
-    <script type="text/javascript" src="app/app.module.js"></script>
-    <script type="text/javascript" src="app/app.route.js"></script>
-    <script type="text/javascript" src="app/components/classes/classCtrl.js"></script>
-    <script type="text/javascript" src="app/components/loginandregister/loginCtrl.js"></script>
-    <script type="text/javascript" src="app/components/portfolios/portfolioCtrl.js"></script>
-    <script type="text/javascript" src="app/components/profile/profileCtrl.js"></script>
-    <script type="text/javascript" src="app/components/stocks/stockCtrl.js"></script>
-    <script type="text/javascript" src="app/components/onload/onLoadCtrl.js"></script>
-    <script type="text/javascript" src="app/components/navbar/navbarCtrl.js"></script>
-    <script type="text/javascript" src="app/shared/services/authService.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/app.route.js"></script>
+    <script src="app/components/classes/ClassController.js"></script>
+    <script src="app/components/loginandregister/LoginController.js"></script>
+    <script src="app/components/portfolios/PortfolioController.js"></script>
+    <script src="app/components/profile/ProfileController.js"></script>
+    <script src="app/components/stocks/StockController.js"></script>
+    <script src="app/components/onload/OnLoadController.js"></script>
+    <script src="app/components/navbar/NavbarController.js"></script>
+    <script src="app/shared/services/authService.js"></script>
 
   </head>
   <body ng-app="myApp">
@@ -38,7 +37,7 @@
         <h1>Stock market simulator</h1>
     </div>
     <div class="line-breaker"></div>
-    <div class="LoginTabs" id="myLoginTabs" ng-controller="navbarCtrl as nav">
+    <div class="tabs" id="myLoginTabs" ng-controller="NavbarController as nav">
       <ul>
         <div ng-show='!nav.isAuthed()'>
           <li ng-class="{active: $route.current.activetab == 'login'}" class="hoverable">
@@ -68,14 +67,14 @@
 
       </ul>
     </div>
-    <div ng-controller='onLoadCtrl as load'></div>
+    <div ng-controller='OnLoadController as load'></div>
     <div class="line-breaker"></div>
     <div class='main-body-wrapper'>
       <div ng-view></div>
     </div>
-    <div id="footer2">
+    <div id="footer-top">
     </div>
-    <div id="footer">
+    <div id="footer-bottom">
       <p>Copyright James Karpinski 2016 &copy;</p>
     </div>
   </body>

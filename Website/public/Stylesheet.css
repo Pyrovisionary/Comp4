@@ -1,10 +1,12 @@
+/* General style rules */
+
 * {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-background-color:white;
+  background-color: white;
 }
 
 ul {
@@ -12,38 +14,87 @@ ul {
   text-decoration: none;
 }
 
-h1, h2{
-  font-family:'Lato', sans-serif;
+h1,
+h2{
+  font-family: 'Lato', sans-serif;
 }
 
-input[type='submit'], button{
+input[type='submit'],
+button{
   background-color: black;
   border: none;
-  color:white;
+  color: white;
 }
 
 input[type='submit'] {
-  font-size:15px;
-  padding:5px 5px 5px 5px;
+  font-size: 15px;
+  padding: 5px 5px 5px 5px;
 }
 
 button  {
-  font-size:20px;
-  padding:6px 9px 7px 9px;
+  font-size: 20px;
+  padding: 6px 9px 7px 9px;
 
 }
 
-input[type='submit']:hover, button:hover {
-  background-color:red;
+input[type='submit']:hover,
+button:hover {
+  background-color: red;
   -webkit-transition: all 0.1s ease-in-out 0s;
   transition: all 0.1s ease-in-out 0s;
 }
 
+form input{
+  outline: none;
+}
+
+form input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number']{
+  border: 1px solid #9c9c9c;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 8px 0;
+  padding: 5px 5px;
+}
+
+form input:focus{
+  border-color: black;
+}
+
+p, label {
+  font: 20px 'Lato', sans-serif;
+}
+
+select{
+ font: inherit;
+}
+
+.ng-touched.ng-invalid {
+  border-color: red;
+}
+
+.error {
+ color: red;
+}
+
+.message {
+  color: green;
+}
+
+.line-breaker{
+  border-top: 2px solid #f2f2f2 ;
+  display: block;
+  width: 100%;
+}
+
+/* Main body wrapper */
+
 .main-body-wrapper {
-  float:left;
-  height:auto;
-  margin-top:40px;
-  margin-bottom:40px;
+  float: left;
+  height: auto;
+  margin: 40px 0 40px 0;
 }
 
 .main-body-wrapper table {
@@ -51,279 +102,253 @@ input[type='submit']:hover, button:hover {
 }
 
 .main-body-wrapper td, th {
-  font-size: 20px;
+  font: 20px;
   border-bottom: 2px solid #dddddd;
   text-align: center;
   padding: 8px;
 }
 
 .main-body-wrapper td u {
-  color:blue;
-}
-.main-body-wrapper td u:hover {
-  color:red;
+  color: blue;
 }
 
-.main-body-wrapper tr:nth-child(even) {
+.main-body-wrapper td u:hover {
+  color: red;
 }
+
+/* Login Page wrapper */
+
 .login-wrapper {
-  float:left;
-  width:70%;
-  margin: 0, auto;
-  border:1px solid red;
-  padding: 0 0 20px 0;
-  margin:40px 0 0 0;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  border: 1px solid red;
+  float: left;
+  margin: 40px 0 0 0;
+  padding: 0 0 20px 0;
+  width: 70%;
 }
 
-form input{
-  outline: none;
-}
-
-form input[type='text'], input[type='password'], input[type='email'], input[type='number']{
-  padding: 5px 5px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #9C9C9C;
-  box-sizing: border-box;
-}
-
-form input:focus{
-  border-color:black;
-}
 .login-wrapper form {
-  width:70%;
-  margin-left:15%;
+  margin-left: 15%;
+  width: 70%;
 }
 
 .login-wrapper form #newforename, #newsurname{
-  width:48%;
+  display: inline;
   margin: 8px 1% 0 0;
-  display:inline;
+  width: 48%;
+
 }
 
-.ng-touched.ng-invalid {
-  border-color:red;
+/*Navigation tabs*/
+
+.tabs {
+  height: auto;
 }
 
-.LoginTabs {
-  height:auto;
-  }
-.LoginTabs ul {
+.tabs ul {
   display:block;
   margin: 0 auto;
-  text-align:center;
   overflow: hidden;
+  text-align: center;
 }
-.LoginTabs ul li {
+
+.tabs ul li {
+  display: inline-block;
+  font: 23px 'Lato', sans-serif;
+  padding: 15px 20px 21px 20px;
   position: relative;
-  display:inline-block;
-  font-family: 'Lato', sans-serif;
-  font-size: 23px;
-  padding:15px 20px 21px 20px;
 }
-.LoginTabs ul li > a{
-  position:relative;
-  text-decoration:none;
-  color:black;
-  padding-bottom:5px;
+
+.tabs ul li > a{
+  color: black;
+  text-decoration: none;
+  padding-bottom: 5px;
+  position: relative;
 }
-.LoginTabs ul li.hoverable > a:before{
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  bottom: 0;
-  left: 0;
+
+.tabs ul li.hoverable > a:before{
   background-color:black;
-  visibility: hidden;
+  bottom: 0;
+  content: '';
+  height: 1px;
+  left: 0;
+  position: absolute;
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
+  visibility: hidden;
+  width: 100%;
 }
-.LoginTabs ul li.hoverable > a:hover:before {
-  visibility: visible;
-  -webkit-transform: scaleX(1);
+
+.tabs ul li.hoverable > a:hover:before {
   transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  visibility: visible;
 }
-.LoginTabs ul .active a:after{
-  content: "";
+
+.tabs ul .active a:after{
+  background-color: red;
+  bottom: 0;
+  content: '';
+  height: 1px;
+  left: 0;
   position: absolute;
   width: 100%;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color:red;
-}
-.LoginTabs ul .active a{
-  color:red;
 }
 
- p, label {
-   font-family:'Lato', sans-serif;
-   font-size: 20px;
- }
-
-select{
-  font:inherit;
+.tabs ul .active a{
+  color: red;
 }
+
+.tabs ul li.icon {
+  display: none;
+}
+
+/*Stocks form page buttons*/
 
 .pagebuttons ul {
-  display:block;
+  display: block;
   margin: 0 auto;
-  text-align:center;
   overflow: hidden;
+  text-align: center;
 }
 
 .pagebuttons ul li{
-  display:inline-block;
-  font-size:17px;
-  padding:10px 15px 16px 10px;
+  display: inline-block;
+  font-size: 17px;
+  padding: 10px 15px 16px 10px;
 }
+
+/* Menu lines */
 
 .menu-line{
-  bottom:21px;
-  display:block;
-  height:1px;
-  width:23px;
-  margin-bottom:6px;
-  border-radius: 1px;
   background-color: white;
+  bottom: 21px;
+  border-radius: 1px;
+  display: block;
+  height: 1px;
+  margin-bottom: 6px;
+  width: 23px;
 }
+
 .menu-line-1{
-  margin-top:7px;
+  margin-top: 7px;
 }
 
-/*Responsive LoginTabs code stolen from W3schools*/
-
-.LoginTabs ul li.icon {
-  display:  none;
-
-}
+/* Header */
 
 #header {
-height:auto;
-width:100%;
-background-color:white;
-margin: 0 auto;
-
+  background-color: white;
+  height: auto;
+  margin: 0 auto;
+  width: 100%;
 }
+
 #header h1 {
-font-family: 'Playfair Display SC' , serif;
-color:black;
-font-weight:lighter;
-font-size:80px;
-vertical-align: middle;
-text-align:center;
-padding: 40px 0 20px 0;
+  color: black;
+  font: 80px 'Playfair Display SC' , serif;
+  padding: 40px 0 20px 0;
+  text-align: center;
+  vertical-align: middle;
 }
 #header h2 {
-  font-family: 'Playfair Display', sans-serif;
-  font-size:30px;
-  font-weight:300;
-  text-align:center;
-  font-style:italic;
-  padding: 0 0 40px 0;
   color:#737373;
-}
-.line-breaker{
-  display:block;
-  width:100%;
-  border-top: 2px solid #F2F2F2 ;
-}
-
-#footer2 {
-  width:100%;
-  float:left;
-  height:30px; /*Make height auto after adding content*/
-  background-color:#333536;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-}
-
-#footer {
+  font: 30px 'Playfair Display', sans-serif;
+  padding: 0 0 40px 0;
   text-align: center;
-  width:100%;
-  float:left;
-  background-color:black;
-  height:auto; /*Make height auto after adding content*/
+}
+
+/*Footers*/
+
+#footer-top {
+  background-color: #333536;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  float: left;
+  height: 30px;
+  width: 100%;
 }
-#footer p {
-  color:white;
-  font-family: 'Lato', sans-serif;
-  font-size: 15px;
-  font-weight:300;
-  padding:70px 0 70px 0;
+
+#footer-bottom {
+  background-color: black;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  float: left;
+  height: auto;
+  text-align: center;
+  width: 100%;
 }
+
+#footer-bottom p {
+  color: white;
+  font: 15px 'Lato', sans-serif;
+  padding: 70px 0 70px 0;
+}
+
+/* Responsive media queries */
 
 @media only screen and (max-width: 1440px) {
   .main-body-wrapper{
-    width:40%;
-    margin-left:30%;
+    margin-left: 30%;
+    width: 40%;
   }
 }
 
 @media only screen and (max-width: 1055) {
   p, label {
-    font-size:22px;
+    font-size: 22px;
   }
 
   #header h1{
-    font-size:57px;
+    font-size: 57px;
   }
 
   .main-body-wrapper {
-    width:70%;
-    margin-left:15%;
+    margin-left: 15%;
+    width: 70%;
   }
 
   input[type='submit'], button{
-    font-size:19px;
+    font-size: 19px;
   }
 }
 
 @media only screen and (max-width:680px) {
   p, label {
-    font-size:25px;
+    font-size: 25px;
   }
 
-  div.LoginTabs ul li.icon {
-    float:right;
+  div.tabs ul li.icon {
     display: inline-block;
-    position:relative;
+    float: right;
+    position: relative;
     right: 0;
     top: 0;
   }
 
-  div.LoginTabs ul {
+  div.tabs ul {
     position: relative;
   }
-  div.LoginTabs ul li {
+  div.tabs ul li {
     float: none;
     display: block;
-    font-size:40px;
+    font-size: 40px;
   }
 
   #header h1{
-    font-size:55px;
+    font-size: 55px;
   }
   .main-body-wrapper {
-    width:90%;
-    margin-left:5%;
+    margin-left: 5%;
+    width: 90%;
   }
 
   input[type='submit'], button{
-    font-size:20px;
+    font-size: 20px;
   }
-}
-
-.error {
- color:red;
 }

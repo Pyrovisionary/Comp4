@@ -1,7 +1,7 @@
-"use strict";
-var express       = require("express");
+'use strict';
+var express       = require('express');
 var app           = express();
-var bodyParser    = require("body-parser");
+var bodyParser    = require('body-parser');
 var asynchronous  = require('async');
 var mysql         = require('mysql');
 var config        = require('../config');
@@ -22,7 +22,7 @@ router.route('/portfolios')
   .post(function(req, res){
     pool.query('INSERT INTO portfolios (userid, portfolioname) VALUES(?, ?)', [req.body.userid, req.body.portfolioname], function(err, rows, fields){
       if(err) console.log(err);
-      res.json("Portfolio " +req.body.portfolioname+ " created")
+      res.json("Portfolio " +req.body.portfolioname+ "created")
     });
   });
 
@@ -35,13 +35,10 @@ router.route('/portfolios/:portfolioid')
       res.json(rows[0]);
     });
   })
-  //Update a specific portfolio
-  .put(function(req, res){
-  })
   //Delete a specific portfolio
   .delete(function(req,res){
-    console.log("Attempting to delete");
-    pool.query('DELETE FROM portfolios WHERE portfolioid = ?;', [req.params.portfolioid], function(err, rows,fileds){
+    console.log('Attempting to delete');
+    pool.query('DELETE FROM portfoliostocklink WHERE portfolioid = ?; DELETE FROM portfolios WHERE portfolioid = ?;', [req.params.portfolioid, req.params.portfolioid], function(err, rows,fileds){
       if(err) console.log(err);
       res.json({message: "Portfolio deleted successfully!"});
     });
@@ -62,15 +59,15 @@ router.route('/portfolios/stocks/users/')
   //Remove a specific stock from a specific portfolio (sell a stock)
   .delete(function(req,res){
       pool.query('DELETE FROM portfoliostocklink WHERE portfoliostocklinkid = ? ;', [req.query.portfoliostocklinkid], function(err, rows, fields){
-        res.json('Stock sold!')
+        res.json("Stock sold!")
         console.log('Delete request')
       });
   })
   .put(function(req,res){
-    var newvolume = req.query.volume - req.query.sellvolume;
-    pool.query('UPDATE portfoliostocklink SET volume = ? WHERE portfoliostocklinkid = ? ;', [newvolume, req.query.portfoliostocklinkid], function(err, rows, fields){
+    var newVolume = req.query.volume - req.query.sellvolume;
+    pool.query('UPDATE portfoliostocklink SET volume = ? WHERE portfoliostocklinkid = ? ;', [newVolume, req.query.portfoliostocklinkid], function(err, rows, fields){
       if (err) console.log(err);
-      res.json('Stock sold')
+      res.json("Stock sold")
     });
   });
 
@@ -79,18 +76,18 @@ router.route('/portfolios/users/:userid')
   //Get all of a user's portfolios
   .get(function(req, res){
     var portfolios = [];
-    var stockinportfolio = [];
+    var stockInPortfolio = [];
     pool.query('SELECT * FROM portfolios WHERE userid = ?;', [req.params.userid], function(err, rows, fields){
       if (err) console.log(err);
-      asynchronous.each(rows, function(portfoliostock, callback){
-        portfolios.push(portfoliostock.portfolioname)
-        pool.query('SELECT portfoliostocklink.portfoliostocklinkid, portfolios.portfolioid, stocknames.stockid, portfolios.portfolioname, stocknames.stockname, stocknames.stockticker, portfoliostocklink.buyprice, portfoliostocklink.volume FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid INNER JOIN stocknames ON portfoliostocklink.stockid = stocknames.stockid WHERE userid = ? AND portfolios.portfolioid = ?', [req.params.userid, portfoliostock.portfolioid], function(err, getrows, fields){
-          stockinportfolio.push(getrows);
+      asynchronous.each(rows, function(portfolioStock, callback){
+        portfolios.push(portfolioStock.portfolioname)
+        pool.query('SELECT portfoliostocklink.portfoliostocklinkid, portfolios.portfolioid, stocknames.stockid, portfolios.portfolioname, stocknames.stockname, stocknames.stockticker, portfoliostocklink.buyprice, portfoliostocklink.volume FROM portfolios INNER JOIN portfoliostocklink ON portfolios.portfolioid = portfoliostocklink.portfolioid INNER JOIN stocknames ON portfoliostocklink.stockid = stocknames.stockid WHERE userid = ? AND portfolios.portfolioid = ?', [req.params.userid, portfolioStock.portfolioid], function(err, getrows, fields){
+          stockInPortfolio.push(getrows);
           callback();
         });
       }, function(err){
         if (err) console.log(err);
-        var response = [portfolios, stockinportfolio];
+        var response = [portfolios, stockInPortfolio];
         res.json(response);
       })
     });

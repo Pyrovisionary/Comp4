@@ -2,10 +2,10 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('loginCtrl', function(auth, $scope, $route, $sanitize, AuthLogin, AuthRegister){
+    .controller('LoginController', function(auth, $scope, $route, $sanitize, authLogin, authRegister){
       var self = this;
-      self.registersuccess=true;
-      self.loginsuccess=true;
+      self.registerSuccess=true;
+      self.loginSuccess=true;
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -16,7 +16,7 @@
       };
 
       self.register = function(){
-        AuthRegister.save({
+        authRegister.save({
           username: $sanitize(self.newusername),
           forename: $sanitize(self.newforename),
           surname:  $sanitize(self.newsurname),
@@ -25,14 +25,17 @@
           teacher:  self.teacheryn
         }).$promise.then(
           function(response){
-            self.registersuccess=response.success;
+            self.registerSuccess=response.success;
           });
       };
 
       self.login = function(username, password){
-        AuthLogin.save({username:$sanitize(self.username), pass:$sanitize(self.password)}).$promise.then(
+        authLogin.save({username:$sanitize(self.username), pass:$sanitize(self.password)}).$promise.then(
           function(response){
-            self.loginsuccess=response.success;
+            self.loginSuccess=response.success;
+            if (response.success = true) {
+
+            };
           });
       };
 

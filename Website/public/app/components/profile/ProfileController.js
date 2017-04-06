@@ -1,11 +1,9 @@
 (function(){
   'use strict';
-  angular.module('myApp')
-    .controller('navbarCtrl', function(auth, $scope, $route){
-      var self = this;
-      $scope.tab=1;
-      $scope.$route = $route;
 
+  angular.module('myApp')
+    .controller('ProfileController', function(auth, $scope, userData, $route){
+      var self = this;
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -15,13 +13,9 @@
         return auth.isAuthed ? auth.isAuthed() : false
       };
 
-      self.setTab = function(newValue){
-      $scope.tab = newValue;
-    };
-
-    self.isSet = function(tabName){
-      return $scope.tab === tabName;
-    };
+      var token = auth.parseJwt(auth.getToken());
+      userData.get({userid:token.userid}).$promise.then(function(data){
+        self.user = data
+      });
     });
-
 })();

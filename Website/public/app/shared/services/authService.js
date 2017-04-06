@@ -4,7 +4,7 @@
   angular.module('myApp')
     .service('auth', function($window, $rootScope, $location){
       var self = this;
-
+      
       self.parseJwt = function(token) {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
@@ -35,7 +35,7 @@
         $window.localStorage.removeItem('jwtToken');
       };
 
-      self.RedirectIfLoggedIn = function() {
+      self.redirectIfLoggedIn = function() {
         if ((($location.path() === '/login') || ($location.path()==='/') || ($location.path()==='/register')) && (self.isAuthed()) ) {
           console.log('authed');
           $location.path('/profile');

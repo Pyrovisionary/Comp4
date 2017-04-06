@@ -1,15 +1,15 @@
-<div class='login-wrapper'>
+<div class="login-wrapper">
   <form name="loginform" ng-submit="login.login()" novalidate>
     <br>
     <h2>Welcome back!</h2><br>
     <p>
       <label for="username">Username:</label>
-      <input type="text" name="username" id="username" ng-model="login.username" maxlength='60' required>
+      <input type="text" name="username" id="username" ng-model="login.username" maxlength="60" required>
       <br><br>
       <label for="password">Password:</label>
-      <input type="password" name="password" id="password" ng-model="login.password" maxlength='100' required>
+      <input type="password" name="password" id="password" ng-model="login.password" maxlength="100" required>
       <br>
-      <p class='error' ng-show='login.loginsuccess === false'>Incorrect username or password</p>
+      <p class="error" ng-show="login.loginSuccess === false">Incorrect username or password</p>
       <br>
       <input type="submit" value="Login"><br>
     </p>
