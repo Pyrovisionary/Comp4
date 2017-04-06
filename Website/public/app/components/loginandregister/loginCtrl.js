@@ -2,16 +2,10 @@
   'use strict';
 
   angular.module('myApp')
-    .controller('loginCtrl', function(userService, auth, $scope, $route, $sanitize){
+    .controller('loginCtrl', function(auth, $scope, $route, $sanitize, AuthLogin, AuthRegister){
       var self = this;
-
-      self.login = function($scope) {
-        userService.login($sanitize(self.username), $sanitize(self.password));
-      };
-
-      self.register = function() {
-        userService.register($sanitize(self.newusername), $sanitize(self.newforename), $sanitize(self.newsurname), $sanitize(self.newpassword), $sanitize(self.newemail), $sanitize(self.teacheryn))
-      };
+      self.registersuccess=true;
+      self.loginsuccess=true;
 
       self.logout = function() {
         auth.logout && auth.logout()
@@ -21,7 +15,26 @@
         return auth.isAuthed ? auth.isAuthed() : false
       };
 
+      self.register = function(){
+        AuthRegister.save({
+          username: $sanitize(self.newusername),
+          forename: $sanitize(self.newforename),
+          surname:  $sanitize(self.newsurname),
+          pass:     $sanitize(self.newpassword),
+          email:    $sanitize(self.newemail),
+          teacher:  self.teacheryn
+        }).$promise.then(
+          function(response){
+            self.registersuccess=response.success;
+          });
+      };
+
+      self.login = function(username, password){
+        AuthLogin.save({username:$sanitize(self.username), pass:$sanitize(self.password)}).$promise.then(
+          function(response){
+            self.loginsuccess=response.success;
+          });
+      };
+
     });
-
-
 })();

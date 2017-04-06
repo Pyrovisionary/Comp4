@@ -1,3 +1,28 @@
+<form ng-show='classes.isTeacher()'  ng-submit='classes.createClass()'>
+  <p>
+    <label for="createClass">Class Name:</label>
+    <input type="text" name="createClass" id="createClass" ng-model="classes.classname" maxlength='20' required>
+    <input type="submit" value="Create a class">
+  </p>
+</form>
+<br>
+
+<form name='joinClass' ng-submit='classes.AddUserToClass()'>
+  <p>
+    <label for='joinClass'>Class ID:</label>
+    <input type="number" name="classId" id="classId" ng-model="classes.classId" min='0' max='1000' required>
+    <input type="submit" value="Join a class"><br>
+  </p>
+</form>
+
+<span class="error" ng-show="classId.classId.$error.number">
+  Please enter a valid ID
+</span>
+
+<span class="error" ng-show='classes.classjoinsuccess==false'>
+  That class does not exist, please enter a valid class Id
+</span>
+
 <div>
   <p ng-show='studentselected==false'>Click on a student's name to see their portfolios</p>
   <div ng-show='studentselected==true'>
@@ -25,28 +50,15 @@
   </div>
 </div>
 <br>
-<form ng-show='classes.isTeacher()'  ng-submit='classes.createClass()'>
-  <label for="createClass">Class Name:</label>
-  <input type="text" name="createClass" id="createClass" ng-model="classes.classname" maxlength='20' required>
-  <input type="submit" value="Create a class">
-</form>
-<br>
-<form name='joinClass' ng-submit='classes.AddUserToClass()'>
-  <label for='joinClass'>Class ID:</label>
-  <input type="number" name="classId" id="classId" ng-model="classes.classId" min='0' max='1000' required>
-  <input type="submit" value="Join a class"><br>
-</form>
-<span class="error" ng-show="joinClass.classId.$error.number">
-  Please enter a valid ID
-</span>
 
 <h2>You are a member of the following classes:</h2>
 <div class='Class' ng-repeat='userclassname in userclassnames'>
-  <p>
-    <div ng-repeat='teachername in userclasses | filter:{classname:userclass.classname} | filter:{teacher:1} '>
+  <div ng-repeat='teachername in userclasses | filter:{classname:userclass.classname} | filter:{teacher:1} '>
+    <p>
       {{userclassname.classname}}, Classid: {{userclassname.classid}}, Teacher: {{teachername.forename}} {{teachername.surname}}
-    </div>
-  </p>
+    </p>
+  </div>
+
   <table ng-show='filtered.length>0'>
     <tr>
       <th>Forename</th>

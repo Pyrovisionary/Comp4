@@ -9,7 +9,6 @@
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse($window.atob(base64));
-        //$rootScope.userService = JSON.parse($window.atob(base64));
       };
 
       self.saveToken = function(token) {
@@ -42,7 +41,7 @@
           $location.path('/profile');
           $location.replace();
         }
-        if ($location.path() !== '/login' && (!self.isAuthed())) {
+        else if ($location.path() !== '/login' && (!self.isAuthed())) {
           console.log('not authed');
           $location.path('/login');
           $location.replace();

@@ -21,7 +21,7 @@ var pool          = mysql.createPool({
 console.log("Scheduled stock autoupdate online");
 
 
-var j = schedule.scheduleJob('* */60 * * *', function(){
+var j = schedule.scheduleJob('* 12 * * *', function(){
   var builtstrings = [];
 
 pool.query('Select stockticker FROM stocknames', function(err, rows, fields){

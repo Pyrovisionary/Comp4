@@ -1,4 +1,3 @@
-DROP DATABASE LloydGeorge;
 CREATE DATABASE LloydGeorge;
 
 USE LloydGeorge;

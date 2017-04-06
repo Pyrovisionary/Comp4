@@ -28,13 +28,13 @@
       <br>
       <label for="teacheryn">Are you a teacher?</label>
       <input type="checkbox" name="teacher" id="teacheryn" ng-model="login.teacheryn">
-      <br><br>
+      <br>
+      <span class='error' ng-show='login.registersuccess==false'>
+        Username is taken, please enter a different username
+      </span>
+      <br>
       <input ng-show="registrationform.$valid" type="submit" value="Register" >
       <br>
     </p>
   </form>
-  <span class='error' ng-show=''>
-    Username is taken, please enter a different username
-  </span>
-
 </div>

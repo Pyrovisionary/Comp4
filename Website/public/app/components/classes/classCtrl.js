@@ -28,7 +28,7 @@
       self.createClass = function(){
         var token = auth.parseJwt(auth.getToken());
         var classname = $sanitize(self.classname)
-        ClassCreate.save({ userid:token.userid, classname:classname}).$promise.then(function(){
+        ClassCreate.save({ userid:token.userid, classname:classname}).$promise.then(function(response){
           $scope.classes.classname ='';
           $route.reload()
         });
@@ -38,9 +38,12 @@
       self.AddUserToClass = function(){
         var token = auth.parseJwt(auth.getToken());
         var classid = $sanitize(self.classId)
-        ClassAddUsers.save({classid:classid, userid:token.userid}).$promise.then(function(){
+        ClassAddUsers.save({classid:classid, userid:token.userid}).$promise.then(function(response){
+          self.classjoinsuccess=response.success;
           $scope.classes.classId ='';
+          if(response.success == true){
           $route.reload()
+          }
         });
       };
 

@@ -41,9 +41,6 @@ function authenticateUser(req, res, pool) {
         });
     }
     else {
-      console.log(req.body.username);
-      console.log(req.body.pass);
-      return false
       res.json({
         success: false,
         message: "Auth failed"

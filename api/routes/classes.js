@@ -98,16 +98,27 @@ router.route('/classes/:classid')
   })
   //Add a user to a class
   .post(function(req, res){
-    pool.query('SELECT * FROM classuserlink WERE userid = ? AND WHERE classid = ?', [req.body.userid, req.body.classid], function(err, rows, fields){
-      if (!rows){
-        pool.query('INSERT INTO classuserlink (classid, userid) VALUES(?, ?)', [req.body.classid, req.body.userid], function(err, rows, fields){
-          if(err) console.log(err);
-          console.log("User " +req.body.userid+ " added to class " + req.body.classid );
-          res.json("User " +req.body.userid+ " added to class " + req.body.classid );
-        });
+    pool.query('SELECT * FROM classes WHERE classid = ?;', [req.params.classid], function(err, getrows, fields){
+      if(getrows.length>0){
+        pool.query('SELECT * FROM classuserlink WHERE userid = ? AND classid = ?', [req.body.userid, req.params.classid], function(err, rows, fields){
+          console.log(rows);
+          if (rows == undefined || rows.length==0){
+            pool.query('INSERT INTO classuserlink (classid, userid) VALUES(?, ?)', [req.body.classid, req.body.userid], function(err, rows, fields){
+              if(err) console.log(err);
+              console.log("User " +req.body.userid+ " added to class " + req.body.classid );
+              res.json({
+                message: "User " +req.body.userid+ " added to class " + req.body.classid
+              });
+            });
+            } else {
+              console.log('User already in class');
+              res.json('User already in class');
+            }
+            });
       } else {
-        console.log('User already in class');
-        res.json('User already in class');
+        res.json({
+          success: false
+        })
       }
     });
   });

@@ -1,10 +1,5 @@
 "use strict";
-//Express module dependencies
-//Express is what runs the server, and it is then defined as a variable to shorten
-//later code. Body parser is used to TODO: why do we use body parser and morgan
-// Mysql is used to allow the server to communicate with the database, JWT to create and sign JSON web tokens
-// Our config is required, this is so the passwords for the database are stored in a seperate file, one that
-//isnt uploaded to the git repository. Async is used to asynchronously deal with requests.
+
 var express       = require("express");
 var app           = express();
 var bodyParser    = require("body-parser");
@@ -36,21 +31,10 @@ var authenticate   = require('./routes/authenticate');
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 app.use(bodyParser.json({limit: "50mb"}));
 
-//Use morgan, TODO: why do I use morgan
 app.use(morgan("dev"));
-//Use cors module to enable options and put AJAX requests
 app.use(cors());
 
-//Allow requests from different domains, allow GET, POST and OPTIONS requests,
-//allow the following headers when cross origin requests are made
 app.options('*', cors());
-/*app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "GET", 'PUT', "POST", 'OPTIONS' );
-  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, origin, Authorization, x-access-token, accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-  next();
-});*/
 
 //Set port to 8080
 var port = process.env.port || 8080;
@@ -111,4 +95,4 @@ app.use('/api/', stockhistory);
 app.use('/api/', classes);
 app.listen(port);
 //Show API is working in console
-console.log("example API is running on port 8080");
+console.log("API is running on port 8080");

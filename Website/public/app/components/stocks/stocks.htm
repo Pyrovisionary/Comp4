@@ -1,39 +1,43 @@
-<p><b>Account balance:</b> {{user.accountbalance}}</p>
+<p>Account balance: {{user.accountbalance}}</p>
 <br>
 <div>
   <p ng-show='stockselected == false'>Click on a stock in the list below to view its data, and add it to a portfolio</p>
   <div ng-show='stockselected == true' ng-repeat='stock in stockitems | filter:{stockname:stockview}' novalidate>
     <form name='buyStockForm' ng-submit='stocks.buyStock(stock.stockid, stock.stockvalue)'>
-      <b>Stock name:</b>  {{stock.stockname}}<br>
-      <b>Ticker:</b>  {{stock.stockticker}}<br>
-      <b>Price:</b>  {{stock.stockvalue}}<br>
-      <b><label for='buyportfolio'>Portfolio:  </label></b>
-      <select name='buyportfolio' ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
-        <option value=''>Portfolio</option>
-      </select>
-      <span class='error' ng-show="buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched">
-        Select Portfolio
-      </span>
-      <br>
-      <b><label for='buyvolume'>Volume: </label></b>
-      <input type="number" ng-model='stocks.buyvolume' name='buyvolume' min='0' required>
-      <span class='error' ng-show="buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$dirty">
-        Enter volume
-      </span>
-      <span class="error" ng-show="buyStockForm.buyvolume.$error.number">
-        Enter a  valid volume
-      </span>
-      <br>
-      <b>Total cost:</b> {{stocks.buyvolume*stock.stockvalue}}
-      <br>
-      <b>New Account balance:</b> {{user.accountbalance-(stocks.buyvolume*stock.stockvalue)}}
-      <br>
-      <input ng-disabled='buyStockForm.buyvolume.$error.number || (buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$touched) || (buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched)' type="submit" value="Buy">
-      <br><br>
-      <span class='error' ng-show='stocks.InsufficientFunds == true'>
-        Inssuficient funds to buy this stock, please enter a lower volume or sell some stocks
-      </span>
-
+      <p>
+        Stock name:  {{stock.stockname}}<br>
+        Ticker:  {{stock.stockticker}}<br>
+        Price:  {{stock.stockvalue}}<br>
+        <label for='buyportfolio'>Portfolio:  </label>
+        <select name='buyportfolio' ng-model='stocks.portfolioname' ng-options='userportfolioname for userportfolioname in userportfolionames' required>
+          <option value=''>Portfolio</option>
+        </select>
+        <span class='error' ng-show="buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched">
+          Select Portfolio
+        </span>
+        <br>
+        <label for='buyvolume'>Volume: </label>
+        <input type="number" ng-model='stocks.buyvolume' name='buyvolume' min='0' required>
+        <span class='error' ng-show="buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$dirty">
+          Enter volume
+        </span>
+        <span class="error" ng-show="buyStockForm.buyvolume.$error.number">
+          Enter a  valid volume
+        </span>
+        <br>
+        Total cost: {{stocks.buyvolume*stock.stockvalue}}
+        <br>
+        New Account balance: {{user.accountbalance-(stocks.buyvolume*stock.stockvalue)}}
+        <br>
+        <input ng-disabled='buyStockForm.buyvolume.$error.number || (buyStockForm.buyvolume.$error.required && buyStockForm.buyvolume.$touched) || (buyStockForm.buyportfolio.$error.required && buyStockForm.buyportfolio.$touched)' type="submit" value="Buy">
+        <br><br>
+        <span class='error' ng-show='stocks.InsufficientFunds == true'>
+          Insuficient funds to buy this stock, please enter a lower volume or sell some stocks
+        </span>
+        <span ng-show='stocks.stockbought == true'>
+          Stock purchased successfully!
+        </span>
+      </p>
     </form>
   </div>
 </div>

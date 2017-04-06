@@ -11,6 +11,7 @@
       $scope.search = {};
       $scope.search.stockname = '';
       $scope.stockselected=false;
+      self.stockbought=false;
       var token = auth.parseJwt(auth.getToken());
       $scope.user = UserData.get({userid:token.userid});
       $scope.stockview=null;
@@ -50,14 +51,13 @@
             UpdateAccountBalance.update({userid:token.userid, cost:stockscost})
             $scope.stocks.buyvolume ='';
             $scope.stocks.portfolioname ='';
-
+            $scope.buyStockForm.$setPristine();
+            $scope.buyStockForm.$setUntouched();
+            self.stockbought=true;
           });
         } else {
           self.InsufficientFunds = true ;
-          $scope.stocks.buyvolume='';
-          $scope.stocks.buyportfolio='';
-          $scope.buyStockForm.buyvolume.$setPristine();
-          $scope.buyStockForm.buyvolume.$setUntouched();
+          $scope.stocks.buyvolume ='';
         }
       };
 
